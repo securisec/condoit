@@ -1,0 +1,35 @@
+{
+	"name": "condoit",
+	"version": "0.0.1",
+	"description": "",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"test": "./node_modules/.bin/tsc",
+		"docs": "./node_modules/typedoc/bin/typedoc --out docs ./src/index.ts"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/securisec/condoit.git"
+	},
+	"keywords": [
+		"phabricator",
+		"conduit"
+	],
+	"author": "Hapsida @securisec",
+	"license": "GPL-3.0",
+	"bugs": {
+		"url": "https://github.com/securisec/condoit/issues"
+	},
+	"homepage": "https://github.com/securisec/condoit#readme",
+	"dependencies": {
+		"axios": "^0.19.0",
+		"qs": "^6.9.1"
+	},
+	"devDependencies": {
+		"@types/node": "^13.1.2",
+		"@types/qs": "^6.9.0",
+		"typedoc": "^0.15.6",
+		"typescript": "^3.7.4"
+	}
+}
