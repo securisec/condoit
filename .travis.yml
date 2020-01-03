@@ -24,5 +24,6 @@ deploy:
       branch: master
     before_deploy:
       - touch .nojekyll
+      - sed -i '/docs/d' .gitignore
     script:
       - npm run docs
