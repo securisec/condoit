@@ -1,0 +1,8 @@
+{
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
+  // "workbench.colorTheme": "Gruvbox Minor Dark Hard"
+}
