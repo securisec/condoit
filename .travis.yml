@@ -4,6 +4,9 @@ node_js:
 cache:
   directories:
   - node_modules
+scripts:
+  - npm test
+  - npm run docs
 deploy:
   - provider: npm
     script: 
@@ -22,8 +25,6 @@ deploy:
       secure: "PlBhY2nvymuJK1U6OMwTTn+Cko8R2wVpVDcs9yYo8zyG3WrAW3FSjYEDyliK8J62HnlVjvHKG3v/ZVGtF7ed6nbUKaU1yo5e4PqTEkWoCBTXCISiesc1qje+ev2v/Pp/tQdxW07gWvWOD0/Q/1/ug6/qmjjtPX4fntQSJH0JFhT1QvMqvnPB2Z5OCbsDxifmJ6thGpCOukZZrj60rX1dwQGmEgOttJJgT7ksXBY+brhrb2xxs6It0jLnI8ENxjzSmspB96GfPJh371pac/QNcHtfxAea9TtLEQ0mEwENrHReB44TeRRY1l5nJM0DgqpYxsUt8NgbeipdLlBf/QwNx6KRY3GLtRewqk5Ncyu8pDyvYv00Xrn0Is+ZQFIXxiBI9x5N1xtkFKnxic9c8B2Vqsto92QQW2OD1sU+S0gwh2ysRFNLG/Ak9IMBPa3IfVuQxVMSH8Kq+o/ywDcLZBLY865cItIcEJMlQSujJH+ckvRaXE45R6ntMH6wtUbouLwmit5W7aKGU2vNLNFQ/MCo8VwLtFyA0yoWvGMaUYF5sMQ/X9pvBdJJds4XHKJxsS39nnlShW8BIfsGvaMZ5q13oY/896CmikrIZnkqE6AH8cYEr6XSWLKgZy2jT4/mmwZe66u58HhXoO9XODytwlY7CLtXbv1kELVsqtUhAa8sOKw="
     on:
       branch: master
-    before_deploy:
-      - touch .nojekyll
-      - sed -i '/docs/d' .gitignore
-    script:
-      - npm run docs
+before_deploy:
+  - touch .nojekyll
+  - sed -i '/docs/d' .gitignore
