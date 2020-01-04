@@ -2,6 +2,9 @@ import Axios, { AxiosResponse, AxiosError } from 'axios';
 import qs from 'qs';
 import { resolve } from 'url';
 
+import * as iuser from './interfaces/iuser';
+import * as imaniphest from './interfaces/imaniphest';
+
 /**
  *The class to create an instance to use the Phabricator api
  *
@@ -30,7 +33,7 @@ export class Condoit {
 	 * @returns {Promise<object>}
 	 * @memberof Condoit
 	 */
-	private makeRequest(endpoint: string, params: object): Promise<object> {
+	private makeRequest(endpoint: string, params: object): Promise<any> {
 		let baseUrlAxios = resolve(this.baseUrl, '/api');
 		return new Promise((resolve, reject) => {
 			Axios({
@@ -471,30 +474,12 @@ export class Condoit {
 		 ***Marked for deprecation. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.createtask/}
 		 *
-		 * @param {{
-		 * 			title: string;
-		 * 			description?: string;
-		 * 			ownerPHID?: string;
-		 * 			viewPolicy?: string;
-		 * 			editPolicy?: string;
-		 * 			ccPHIDs?: Array<string>;
-		 * 			priority?: number;
-		 * 			projectPHIDs?: Array<string>;
-		 * 			auxiliary: object;
-		 * 		}} options Only title is required. All other options are optional. 
-		 * @returns {Promise<object>}
+		 * @param {imaniphest.Createtask} options
+		 * @returns {Promise<imaniphest.RetCreatetask>}
 		 */
-		createtask: (options: {
-			title: string;
-			description?: string;
-			ownerPHID?: string;
-			viewPolicy?: string;
-			editPolicy?: string;
-			ccPHIDs?: Array<string>;
-			priority?: number;
-			projectPHIDs?: Array<string>;
-			auxiliary: object;
-		}): Promise<object> => {
+		createtask: (
+			options: imaniphest.Createtask
+		): Promise<imaniphest.RetCreatetask> => {
 			return this.makeRequest('maniphest.createtask', {
 				title: options?.title,
 				description: options?.description,
@@ -511,84 +496,13 @@ export class Condoit {
 		 *Edit a maniphest task. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.edit/}
 		 *
-		 * @param {([
-		 * 				{
-		 * 					type:
-		 * 						| 'parent'
-		 * 						| 'column'
-		 * 						| 'space'
-		 * 						| 'title'
-		 * 						| 'owner'
-		 * 						| 'status'
-		 * 						| 'priority'
-		 * 						| 'description'
-		 * 						| 'parents.add'
-		 * 						| 'parents.remove'
-		 * 						| 'parents.set'
-		 * 						| 'subtasks.add'
-		 * 						| 'subtasks.remove'
-		 * 						| 'subtasks.set'
-		 * 						| 'commits.add'
-		 * 						| 'commits.remove'
-		 * 						| 'commits.set'
-		 * 						| 'view'
-		 * 						| 'edit'
-		 * 						| 'projects.add'
-		 * 						| 'projects.remove'
-		 * 						| 'projects.set'
-		 * 						| 'subscribers.add'
-		 * 						| 'subscribers.remove'
-		 * 						| 'subscribers.set'
-		 * 						| 'subtype'
-		 * 						| 'commnet'
-		 * 						| 'mfa';
-		 * 					value: string | boolean;
-		 * 				}
-		 * 			])} transactions An array of transactions to apply. This can include any 
-		 * custom types also. 
-		 * @param {(number | string)} objectIdentifier ID or PHID of the task
-		 * @returns {Promise<object>}
+		 * @param {imaniphest.Edit} options
+		 * @returns {Promise<imaniphest.RetEdit>}
 		 */
-		edit: (
-			transactions: [
-				{
-					type:
-						| 'parent'
-						| 'column'
-						| 'space'
-						| 'title'
-						| 'owner'
-						| 'status'
-						| 'priority'
-						| 'description'
-						| 'parents.add'
-						| 'parents.remove'
-						| 'parents.set'
-						| 'subtasks.add'
-						| 'subtasks.remove'
-						| 'subtasks.set'
-						| 'commits.add'
-						| 'commits.remove'
-						| 'commits.set'
-						| 'view'
-						| 'edit'
-						| 'projects.add'
-						| 'projects.remove'
-						| 'projects.set'
-						| 'subscribers.add'
-						| 'subscribers.remove'
-						| 'subscribers.set'
-						| 'subtype'
-						| 'commnet'
-						| 'mfa';
-					value: string | boolean;
-				}
-			],
-			objectIdentifier: number | string
-		): Promise<object> => {
+		edit: (options: imaniphest.Edit): Promise<imaniphest.RetEdit> => {
 			return this.makeRequest('maniphest.edit', {
-				transactions: transactions,
-				objectIdentifier: objectIdentifier
+				transactions: options.transactions,
+				objectIdentifier: options.objectIdentifier
 			});
 		},
 
@@ -596,10 +510,12 @@ export class Condoit {
 		 ***Marked for deprecation** Retrieve Maniphest task transactions. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.gettasktransactions/}
 		 *
-		 * @param {Array<number>} ids An array of IDs 
-		 * @returns {Promise<object>}
+		 * @param {Array<number>} ids
+		 * @returns {Promise<imaniphest.RetGettasktransactions>}
 		 */
-		gettasktransactions: (ids: Array<number>): Promise<object> => {
+		gettasktransactions: (
+			ids: Array<number>
+		): Promise<imaniphest.RetGettasktransactions> => {
 			return this.makeRequest('maniphest.gettasktransactions', { ids: ids });
 		},
 
@@ -607,10 +523,10 @@ export class Condoit {
 		 ***Marked for deprecation** Retrieve information about a Maniphest task, given its ID.
      [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.info}
 		 *
-		 * @param {number} taskId Task ID
-		 * @returns {Promise<object>}
+		 * @param {number} taskId
+		 * @returns {Promise<imaniphest.RetInfo>}
 		 */
-		info: (taskId: number): Promise<object> => {
+		info: (taskId: number): Promise<imaniphest.RetInfo> => {
 			return this.makeRequest('maniphest.info', { task_id: taskId });
 		},
 
@@ -618,9 +534,9 @@ export class Condoit {
 		 *Returns information about the possible priorities for Maniphest tasks. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.priority.search/}
 		 *
-		 * @returns {Promise<object>}
+		 * @returns {Promise<imaniphest.RetPrioritySearch>}
 		 */
-		prioritySearch: (): Promise<object> => {
+		prioritySearch: (): Promise<imaniphest.RetPrioritySearch> => {
 			return this.makeRequest('maniphest.priority.search', {});
 		},
 
@@ -628,50 +544,10 @@ export class Condoit {
 		 ***Marked for deprecation** Execute complex searches for Maniphest tasks. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/user.whoami/}
 		 *
-		 * @param {({
-		 * 			ids?: Array<number>;
-		 * 			phids?: Array<string>;
-		 * 			ownerPHIDs?: Array<string>;
-		 * 			authorPHIDs?: Array<string>;
-		 * 			projectPHIDs?: Array<string>;
-		 * 			ccPHIDs?: Array<string>;
-		 * 			fullText?: string;
-		 * 			status?:
-		 * 				| 'status-any'
-		 * 				| 'status-open'
-		 * 				| 'status-closed'
-		 * 				| 'status-resolved'
-		 * 				| 'status-wontfix'
-		 * 				| 'status-invalid'
-		 * 				| 'status-spite'
-		 * 				| 'status-duplicate';
-		 * 			order?: 'order-priority' | 'order-created' | 'order-modified';
-		 * 			limit?: number;
-		 * 			offset?: number;
-		 * 		})} options
-		 * @returns {Promise<object>}
+		 * @param {imaniphest.Query} options
+		 * @returns {Promise<imaniphest.RetQuery>}
 		 */
-		query: (options: {
-			ids?: Array<number>;
-			phids?: Array<string>;
-			ownerPHIDs?: Array<string>;
-			authorPHIDs?: Array<string>;
-			projectPHIDs?: Array<string>;
-			ccPHIDs?: Array<string>;
-			fullText?: string;
-			status?:
-				| 'status-any'
-				| 'status-open'
-				| 'status-closed'
-				| 'status-resolved'
-				| 'status-wontfix'
-				| 'status-invalid'
-				| 'status-spite'
-				| 'status-duplicate';
-			order?: 'order-priority' | 'order-created' | 'order-modified';
-			limit?: number;
-			offset?: number;
-		}): Promise<object> => {
+		query: (options: imaniphest.Query): Promise<imaniphest.RetQuery> => {
 			return this.makeRequest('maniphest.query', {
 				ids: options?.ids,
 				phids: options?.phids,
@@ -691,10 +567,9 @@ export class Condoit {
 		 ***Marked for deprecation** Retrieve information about possible Maniphest task status values. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.querystatuses/}
 		 *
-		 * @returns {Promise<object>}
-		 * @memberof Condoit
+		 * @returns {Promise<imaniphest.RetQuerystatuses>}
 		 */
-		querystatuses: (): Promise<object> => {
+		querystatuses: (): Promise<imaniphest.RetQuerystatuses> => {
 			return this.makeRequest('maniphest.querystatuses', {});
 		},
 
@@ -702,102 +577,10 @@ export class Condoit {
 		 **Search Maniphest tasks
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.search/}
 		 *
-		 * @param {({
-		 * 			queryKey?: 'assigned' | 'authored' | 'subscribed' | 'open' | 'all';
-		 * 			constraints?: {
-		 * 				ids?: Array<number>;
-		 * 				phids?: Array<string>;
-		 * 				assigned?: Array<string>;
-		 * 				authorPHIDs?: Array<string>;
-		 * 				statuses?: [
-		 * 					'open' | 'resolved' | 'wontfix' | 'invalid' | 'duplicate' | 'spite'
-		 * 				];
-		 * 				priorities?: Array<number>;
-		 * 				subtypes?: Array<string>;
-		 * 				columnPHIDs?: Array<string>;
-		 * 				hasParents?: boolean;
-		 * 				hasSubtasks?: boolean;
-		 * 				parentIDs?: Array<number>;
-		 * 				subtaskIDs?: Array<number>;
-		 * 				createdStart?: number;
-		 * 				createdEnd?: number;
-		 * 				modifiedStart?: number;
-		 * 				modifiedEnd?: number;
-		 * 				closedStart?: number;
-		 * 				closedEnd?: number;
-		 * 				closerPHIDs?: Array<string>;
-		 * 				query?: string;
-		 * 				subscribers?: Array<string>;
-		 * 				projects?: Array<string>;
-		 * 			};
-		 * 			attachments?: {
-		 * 				columns?: boolean;
-		 * 				subscribers?: boolean;
-		 * 				projects?: boolean;
-		 * 			};
-		 * 			order?:
-		 * 				| 'priority'
-		 * 				| 'updated'
-		 * 				| 'outdated'
-		 * 				| 'newest'
-		 * 				| 'oldest'
-		 * 				| 'closed'
-		 * 				| 'title'
-		 * 				| 'relevance'
-		 * 				| [string];
-		 * 			before?: string;
-		 * 			after?: string;
-		 * 			limit?: number;
-		 * 		})} options
-		 * @returns {Promise<object>}
+		 * @param {imaniphest.Search} options
+		 * @returns {Promise<imaniphest.RetSearch>}
 		 */
-		search: (options: {
-			queryKey?: 'assigned' | 'authored' | 'subscribed' | 'open' | 'all';
-			constraints?: {
-				ids?: Array<number>;
-				phids?: Array<string>;
-				assigned?: Array<string>;
-				authorPHIDs?: Array<string>;
-				statuses?: [
-					'open' | 'resolved' | 'wontfix' | 'invalid' | 'duplicate' | 'spite'
-				];
-				priorities?: Array<number>;
-				subtypes?: Array<string>;
-				columnPHIDs?: Array<string>;
-				hasParents?: boolean;
-				hasSubtasks?: boolean;
-				parentIDs?: Array<number>;
-				subtaskIDs?: Array<number>;
-				createdStart?: number;
-				createdEnd?: number;
-				modifiedStart?: number;
-				modifiedEnd?: number;
-				closedStart?: number;
-				closedEnd?: number;
-				closerPHIDs?: Array<string>;
-				query?: string;
-				subscribers?: Array<string>;
-				projects?: Array<string>;
-			};
-			attachments?: {
-				columns?: boolean;
-				subscribers?: boolean;
-				projects?: boolean;
-			};
-			order?:
-				| 'priority'
-				| 'updated'
-				| 'outdated'
-				| 'newest'
-				| 'oldest'
-				| 'closed'
-				| 'title'
-				| 'relevance'
-				| [string];
-			before?: string;
-			after?: string;
-			limit?: number;
-		}): Promise<object> => {
+		search: (options: imaniphest.Search): Promise<imaniphest.RetSearch> => {
 			return this.makeRequest('maniphest.search', {
 				queryKey: options?.queryKey,
 				constraints: options?.constraints,
@@ -813,10 +596,9 @@ export class Condoit {
 		 *Returns information about the possible statuses for Maniphest tasks. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.status.search/}
 		 *
-		 * @returns {Promise<object>}
-		 * @memberof Condoit
+		 * @returns {Promise<imaniphest.RetStatusSearch>}
 		 */
-		statusSearch: (): Promise<object> => {
+		statusSearch: (): Promise<imaniphest.RetStatusSearch> => {
 			return this.makeRequest('maniphest.status.search', {});
 		},
 
@@ -824,38 +606,10 @@ export class Condoit {
 		 ***Marked for deprecation** Update an existing Maniphest task. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.update/}
 		 *
-		 * @param {{
-		 * 			id?: number;
-		 * 			phid?: string;
-		 * 			title?: string;
-		 * 			description?: string;
-		 * 			ownerPHID?: string;
-		 * 			viewPolicy?: string;
-		 * 			editPolicy?: string;
-		 * 			ccPHIDs?: Array<string>;
-		 * 			priority?: number;
-		 * 			projectPHIDs?: Array<string>;
-		 * 			auxiliary?: object;
-		 * 			status?: string;
-		 * 			comments?: string;
-		 * 		}} options
-		 * @returns {Promise<object>}
+		 * @param {imaniphest.Update} options
+		 * @returns {Promise<imaniphest.RetUpdate>}
 		 */
-		update: (options: {
-			id?: number;
-			phid?: string;
-			title?: string;
-			description?: string;
-			ownerPHID?: string;
-			viewPolicy?: string;
-			editPolicy?: string;
-			ccPHIDs?: Array<string>;
-			priority?: number;
-			projectPHIDs?: Array<string>;
-			auxiliary?: object;
-			status?: string;
-			comments?: string;
-		}): Promise<object> => {
+		update: (options: imaniphest.Update): Promise<imaniphest.RetUpdate> => {
 			return this.makeRequest('maniphest.update', {
 				id: options?.id,
 				phid: options?.phid,
@@ -1029,117 +783,23 @@ export class Condoit {
 		 *Edit user information. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/user.edit/}
 		 *
-		 * @param {([
-		 * 			{
-		 * 				type:
-		 * 					| 'disabled'
-		 * 					| 'approved'
-		 * 					| 'realName'
-		 * 					| 'title'
-		 * 					| 'icon'
-		 * 					| 'blurb'
-		 * 					| 'mfa';
-		 * 				value: boolean | string;
-		 * 			}
-		 * 		])} transactions Array of objects that apply various changes to the users information
-		 * @param {(number | string)} [objectIdentifier] ID, phid to identify unique user
+		 * @param {iuser.Edit} options
 		 * @returns {Promise<object>}
-		 * @memberof Condoit
 		 */
-		edit: (
-			transactions: [
-				{
-					type:
-						| 'disabled'
-						| 'approved'
-						| 'realName'
-						| 'title'
-						| 'icon'
-						| 'blurb'
-						| 'mfa';
-					value: boolean | string;
-				}
-			],
-			objectIdentifier?: number | string
-		): Promise<object> => {
+		edit: (options: iuser.Edit): Promise<iuser.RetEdit> => {
 			return this.makeRequest('user.edit', {
-				transactions: transactions,
-				objectIdentifier: objectIdentifier
+				transactions: options.transactions,
+				objectIdentifier: options.objectIdentifier
 			});
 		},
 
 		/**
-		 *Query users
+		 *Search users
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/user.search/}
 		 *
-		 * @param {({
-		 * 			queryKey?: 'active' | 'all' | 'approval';
-		 * 			constraints?: {
-		 * 				ids?: Array<number>;
-		 * 				phids?: Array<string>;
-		 * 				usernames?: Array<string>;
-		 * 				nameLike?: string;
-		 * 				isAdmin?: boolean;
-		 * 				isDisabled?: boolean;
-		 * 				isBot?: boolean;
-		 * 				isMailingList?: boolean;
-		 * 				needsApproval?: boolean;
-		 * 				mfa?: boolean;
-		 * 				createdStart?: number;
-		 * 				createdEnd?: number;
-		 * 				query?: string;
-		 * 			};
-		 * 			attachments?: { availability: boolean };
-		 * 			order?:
-		 * 				| 'newest'
-		 * 				| 'oldest'
-		 * 				| 'relevance'
-		 * 				| [
-		 * 						| 'id'
-		 * 						| 'username'
-		 * 						| 'rank'
-		 * 						| 'fulltext-created'
-		 * 						| 'fulltext-modified'
-		 * 				  ];
-		 * 			before?: string;
-		 * 			after?: string;
-		 * 			limit?: number;
-		 * 		})} options
 		 * @returns {Promise<object>}
 		 */
-		search: (options: {
-			queryKey?: 'active' | 'all' | 'approval';
-			constraints?: {
-				ids?: Array<number>;
-				phids?: Array<string>;
-				usernames?: Array<string>;
-				nameLike?: string;
-				isAdmin?: boolean;
-				isDisabled?: boolean;
-				isBot?: boolean;
-				isMailingList?: boolean;
-				needsApproval?: boolean;
-				mfa?: boolean;
-				createdStart?: number;
-				createdEnd?: number;
-				query?: string;
-			};
-			attachments?: { availability: boolean };
-			order?:
-				| 'newest'
-				| 'oldest'
-				| 'relevance'
-				| [
-						| 'id'
-						| 'username'
-						| 'rank'
-						| 'fulltext-created'
-						| 'fulltext-modified'
-				  ];
-			before?: string;
-			after?: string;
-			limit?: number;
-		}): Promise<object> => {
+		search: (options: iuser.Search): Promise<iuser.RetSearch> => {
 			return this.makeRequest('user.search', {
 				queryKey: options?.queryKey,
 				constraints: options?.constraints,
@@ -1155,10 +815,9 @@ export class Condoit {
 		 *Retrieve information about the logged-in user.
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/user.whoami/} 
 		 *
-		 * @returns {Promise<object>}
-		 * @memberof Condoit
+		 * @returns {Promise<iuser.RetWhoami>}
 		 */
-		whoami: (): Promise<object> => {
+		whoami: (): Promise<iuser.RetWhoami> => {
 			return this.makeRequest('user.whoami', {});
 		}
 	};
