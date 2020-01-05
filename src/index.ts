@@ -2,8 +2,13 @@ import Axios, { AxiosResponse, AxiosError } from 'axios';
 import qs from 'qs';
 import { resolve } from 'url';
 
-import * as iuser from './interfaces/iuser';
-import * as imaniphest from './interfaces/imaniphest';
+import * as iFile from './interfaces/iFile';
+import * as iFlag from './interfaces/iFlag';
+import * as iManiphest from './interfaces/iManiphest';
+import * as iSlowvote from './interfaces/iSlowvote';
+import * as iToken from './interfaces/iToken';
+import * as iTransactions from './interfaces/iTransactions';
+import * as iUser from './interfaces/iUser';
 
 /**
  *The class to create an instance to use the Phabricator api
@@ -375,7 +380,7 @@ export class Condoit {
 		 * @param {{ id?: number; phid?: string }} options
 		 * @returns {Promise<object>}
 		 */
-		info: (options: { id?: number; phid?: string }): Promise<object> => {
+		info: (options: { id?: number; phid?: string }): Promise<iFile.RetInfo> => {
 			return this.makeRequest('file.info', {
 				id: options?.id,
 				phid: options?.phid
@@ -400,16 +405,64 @@ export class Condoit {
 	};
 
 	public flag = {
-		delete: () => {
-			// TODO
+		/**
+		 *Clear or delete a flag or bookmark
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/flag.delete/}
+		 *
+		 * @param {{
+		 * 			id: number;
+		 * 			objectPHID: string;
+		 * 		}} options
+		 * @returns {Promise<iFlag.RetDelete>}
+		 */
+		delete: (options: {
+			id: number;
+			objectPHID: string;
+		}): Promise<iFlag.RetDelete> => {
+			return this.makeRequest('flag.delete', {
+				id: options?.id,
+				objectPHID: options?.objectPHID
+			});
 		},
 
-		edit: () => {
-			// TODO
+		/**
+		 *Create or modify a flag
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/flag.edit/}
+		 *
+		 * @param {{
+		 * 			objectPHID: string;
+		 * 			color: number;
+		 * 			note: string;
+		 * 		}} options
+		 * @returns {Promise<iFlag.RetEdit>}
+		 */
+		edit: (options: {
+			objectPHID: string;
+			color: number;
+			note: string;
+		}): Promise<iFlag.RetEdit> => {
+			return this.makeRequest('flag.edit', {
+				objectPHID: options?.objectPHID,
+				color: options?.color,
+				note: options?.note
+			});
 		},
 
-		query: () => {
-			// TODO
+		/**
+		 *Query flag markers. Flags can also be considered as bookmarks. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/flag.query/}
+		 *
+		 * @param {iFlag.Query} options
+		 * @returns {Promise<iFlag.RetQuery>}
+		 */
+		query: (options: iFlag.Query): Promise<iFlag.RetQuery> => {
+			return this.makeRequest('flag.query', {
+				ownerPHIDs: options?.ownerPHIDs,
+				types: options?.types,
+				objectPHIDs: options?.objectPHIDs,
+				offset: options?.offset,
+				limit: options?.limit
+			});
 		}
 	};
 
@@ -474,12 +527,12 @@ export class Condoit {
 		 ***Marked for deprecation. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.createtask/}
 		 *
-		 * @param {imaniphest.Createtask} options
-		 * @returns {Promise<imaniphest.RetCreatetask>}
+		 * @param {iManiphest.Createtask} options
+		 * @returns {Promise<iManiphest.RetCreatetask>}
 		 */
 		createtask: (
-			options: imaniphest.Createtask
-		): Promise<imaniphest.RetCreatetask> => {
+			options: iManiphest.Createtask
+		): Promise<iManiphest.RetCreatetask> => {
 			return this.makeRequest('maniphest.createtask', {
 				title: options?.title,
 				description: options?.description,
@@ -496,10 +549,10 @@ export class Condoit {
 		 *Edit a maniphest task. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.edit/}
 		 *
-		 * @param {imaniphest.Edit} options
-		 * @returns {Promise<imaniphest.RetEdit>}
+		 * @param {iManiphest.Edit} options
+		 * @returns {Promise<iManiphest.RetEdit>}
 		 */
-		edit: (options: imaniphest.Edit): Promise<imaniphest.RetEdit> => {
+		edit: (options: iManiphest.Edit): Promise<iManiphest.RetEdit> => {
 			return this.makeRequest('maniphest.edit', {
 				transactions: options.transactions,
 				objectIdentifier: options.objectIdentifier
@@ -511,11 +564,11 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.gettasktransactions/}
 		 *
 		 * @param {Array<number>} ids
-		 * @returns {Promise<imaniphest.RetGettasktransactions>}
+		 * @returns {Promise<iManiphest.RetGettasktransactions>}
 		 */
 		gettasktransactions: (
 			ids: Array<number>
-		): Promise<imaniphest.RetGettasktransactions> => {
+		): Promise<iManiphest.RetGettasktransactions> => {
 			return this.makeRequest('maniphest.gettasktransactions', { ids: ids });
 		},
 
@@ -524,9 +577,9 @@ export class Condoit {
      [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.info}
 		 *
 		 * @param {number} taskId
-		 * @returns {Promise<imaniphest.RetInfo>}
+		 * @returns {Promise<iManiphest.RetInfo>}
 		 */
-		info: (taskId: number): Promise<imaniphest.RetInfo> => {
+		info: (taskId: number): Promise<iManiphest.RetInfo> => {
 			return this.makeRequest('maniphest.info', { task_id: taskId });
 		},
 
@@ -534,9 +587,9 @@ export class Condoit {
 		 *Returns information about the possible priorities for Maniphest tasks. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.priority.search/}
 		 *
-		 * @returns {Promise<imaniphest.RetPrioritySearch>}
+		 * @returns {Promise<iManiphest.RetPrioritySearch>}
 		 */
-		prioritySearch: (): Promise<imaniphest.RetPrioritySearch> => {
+		prioritySearch: (): Promise<iManiphest.RetPrioritySearch> => {
 			return this.makeRequest('maniphest.priority.search', {});
 		},
 
@@ -544,10 +597,10 @@ export class Condoit {
 		 ***Marked for deprecation** Execute complex searches for Maniphest tasks. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/user.whoami/}
 		 *
-		 * @param {imaniphest.Query} options
-		 * @returns {Promise<imaniphest.RetQuery>}
+		 * @param {iManiphest.Query} options
+		 * @returns {Promise<iManiphest.RetQuery>}
 		 */
-		query: (options: imaniphest.Query): Promise<imaniphest.RetQuery> => {
+		query: (options: iManiphest.Query): Promise<iManiphest.RetQuery> => {
 			return this.makeRequest('maniphest.query', {
 				ids: options?.ids,
 				phids: options?.phids,
@@ -567,9 +620,9 @@ export class Condoit {
 		 ***Marked for deprecation** Retrieve information about possible Maniphest task status values. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.querystatuses/}
 		 *
-		 * @returns {Promise<imaniphest.RetQuerystatuses>}
+		 * @returns {Promise<iManiphest.RetQuerystatuses>}
 		 */
-		querystatuses: (): Promise<imaniphest.RetQuerystatuses> => {
+		querystatuses: (): Promise<iManiphest.RetQuerystatuses> => {
 			return this.makeRequest('maniphest.querystatuses', {});
 		},
 
@@ -577,10 +630,10 @@ export class Condoit {
 		 **Search Maniphest tasks
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.search/}
 		 *
-		 * @param {imaniphest.Search} options
-		 * @returns {Promise<imaniphest.RetSearch>}
+		 * @param {iManiphest.Search} options
+		 * @returns {Promise<iManiphest.RetSearch>}
 		 */
-		search: (options: imaniphest.Search): Promise<imaniphest.RetSearch> => {
+		search: (options: iManiphest.Search): Promise<iManiphest.RetSearch> => {
 			return this.makeRequest('maniphest.search', {
 				queryKey: options?.queryKey,
 				constraints: options?.constraints,
@@ -596,9 +649,9 @@ export class Condoit {
 		 *Returns information about the possible statuses for Maniphest tasks. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.status.search/}
 		 *
-		 * @returns {Promise<imaniphest.RetStatusSearch>}
+		 * @returns {Promise<iManiphest.RetStatusSearch>}
 		 */
-		statusSearch: (): Promise<imaniphest.RetStatusSearch> => {
+		statusSearch: (): Promise<iManiphest.RetStatusSearch> => {
 			return this.makeRequest('maniphest.status.search', {});
 		},
 
@@ -606,10 +659,10 @@ export class Condoit {
 		 ***Marked for deprecation** Update an existing Maniphest task. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.update/}
 		 *
-		 * @param {imaniphest.Update} options
-		 * @returns {Promise<imaniphest.RetUpdate>}
+		 * @param {iManiphest.Update} options
+		 * @returns {Promise<iManiphest.RetUpdate>}
 		 */
-		update: (options: imaniphest.Update): Promise<imaniphest.RetUpdate> => {
+		update: (options: iManiphest.Update): Promise<iManiphest.RetUpdate> => {
 			return this.makeRequest('maniphest.update', {
 				id: options?.id,
 				phid: options?.phid,
@@ -759,22 +812,59 @@ export class Condoit {
 	};
 
 	public token = {
-		give: () => {
-			// TODO give
+		/**
+		 *Give or change token
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/token.give/}
+		 *
+		 * @param {iToken.Give} options
+		 * @returns {Promise<iToken.RetGive>}
+		 */
+		give: (options: iToken.Give): Promise<iToken.RetGive> => {
+			let tokens = iToken.tokens;
+			return this.makeRequest('token.give', {
+				tokenPHID: tokens[options.token],
+				objectPHID: options.objectPHID
+			});
 		},
 
-		given: () => {
-			// TODO
+		/**
+		 *Query tokens given to objects. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/token.given/}
+		 *
+		 * @param {iToken.Given} options
+		 * @returns
+		 */
+		given: (options: iToken.Given): Promise<iToken.RetGiven> => {
+			return this.makeRequest('token.given', {
+				authorPHIDs: options?.authorPHIDs,
+				objectPHIDs: options?.objectPHIDs,
+				tokenPHIDs: options?.tokenPHIDs?.map((t) => iToken.tokens[t])
+			});
 		},
 
-		query: () => {
-			// TODO
+		query: (): Promise<iToken.RetQuery> => {
+			return this.makeRequest('token.query', {});
 		}
 	};
 
 	public transaction = {
-		search: () => {
-			// TODO search
+		/**
+		 *Read transactions and comments for an object. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/transaction.search/}
+		 *
+		 * @param {iTransactions.Search} options
+		 * @returns {Promise<iTransactions.RetSearch>}
+		 */
+		search: (
+			options: iTransactions.Search
+		): Promise<iTransactions.RetSearch> => {
+			return this.makeRequest('transaction.search', {
+				objectIdentifier: options.objectIdentifier,
+				constraints: options?.constraints,
+				before: options?.before,
+				after: options?.after,
+				limit: options?.limit
+			});
 		}
 	};
 
@@ -783,10 +873,10 @@ export class Condoit {
 		 *Edit user information. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/user.edit/}
 		 *
-		 * @param {iuser.Edit} options
+		 * @param {iUser.Edit} options
 		 * @returns {Promise<object>}
 		 */
-		edit: (options: iuser.Edit): Promise<iuser.RetEdit> => {
+		edit: (options: iUser.Edit): Promise<iUser.RetEdit> => {
 			return this.makeRequest('user.edit', {
 				transactions: options.transactions,
 				objectIdentifier: options.objectIdentifier
@@ -799,7 +889,7 @@ export class Condoit {
 		 *
 		 * @returns {Promise<object>}
 		 */
-		search: (options: iuser.Search): Promise<iuser.RetSearch> => {
+		search: (options: iUser.Search): Promise<iUser.RetSearch> => {
 			return this.makeRequest('user.search', {
 				queryKey: options?.queryKey,
 				constraints: options?.constraints,
@@ -815,9 +905,9 @@ export class Condoit {
 		 *Retrieve information about the logged-in user.
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/user.whoami/} 
 		 *
-		 * @returns {Promise<iuser.RetWhoami>}
+		 * @returns {Promise<iUser.RetWhoami>}
 		 */
-		whoami: (): Promise<iuser.RetWhoami> => {
+		whoami: (): Promise<iUser.RetWhoami> => {
 			return this.makeRequest('user.whoami', {});
 		}
 	};
