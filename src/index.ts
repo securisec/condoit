@@ -5,6 +5,9 @@ import { resolve } from 'url';
 import * as iFile from './interfaces/iFile';
 import * as iFlag from './interfaces/iFlag';
 import * as iManiphest from './interfaces/iManiphest';
+import * as iProject from './interfaces/iProject';
+import * as iRemarkup from './interfaces/iRemarkup';
+import * as iRepository from './interfaces/iRepository';
 import * as iSlowvote from './interfaces/iSlowvote';
 import * as iToken from './interfaces/iToken';
 import * as iTransactions from './interfaces/iTransactions';
@@ -380,7 +383,10 @@ export class Condoit {
 		 * @param {{ id?: number; phid?: string }} options
 		 * @returns {Promise<object>}
 		 */
-		info: (options: { id?: number; phid?: string }): Promise<iFile.RetInfo> => {
+		info: (options: {
+			id?: number;
+			phid?: string;
+		}): Promise<iFile.RetFileInfo> => {
 			return this.makeRequest('file.info', {
 				id: options?.id,
 				phid: options?.phid
@@ -413,12 +419,12 @@ export class Condoit {
 		 * 			id: number;
 		 * 			objectPHID: string;
 		 * 		}} options
-		 * @returns {Promise<iFlag.RetDelete>}
+		 * @returns {Promise<iFlag.RetFlagDelete>}
 		 */
 		delete: (options: {
 			id: number;
 			objectPHID: string;
-		}): Promise<iFlag.RetDelete> => {
+		}): Promise<iFlag.RetFlagDelete> => {
 			return this.makeRequest('flag.delete', {
 				id: options?.id,
 				objectPHID: options?.objectPHID
@@ -434,13 +440,13 @@ export class Condoit {
 		 * 			color: number;
 		 * 			note: string;
 		 * 		}} options
-		 * @returns {Promise<iFlag.RetEdit>}
+		 * @returns {Promise<iFlag.RetFlagEdit>}
 		 */
 		edit: (options: {
 			objectPHID: string;
 			color: number;
 			note: string;
-		}): Promise<iFlag.RetEdit> => {
+		}): Promise<iFlag.RetFlagEdit> => {
 			return this.makeRequest('flag.edit', {
 				objectPHID: options?.objectPHID,
 				color: options?.color,
@@ -452,10 +458,10 @@ export class Condoit {
 		 *Query flag markers. Flags can also be considered as bookmarks. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/flag.query/}
 		 *
-		 * @param {iFlag.Query} options
-		 * @returns {Promise<iFlag.RetQuery>}
+		 * @param {iFlag.FlagQuery} options
+		 * @returns {Promise<iFlag.RetFlagQuery>}
 		 */
-		query: (options: iFlag.Query): Promise<iFlag.RetQuery> => {
+		query: (options: iFlag.FlagQuery): Promise<iFlag.RetFlagQuery> => {
 			return this.makeRequest('flag.query', {
 				ownerPHIDs: options?.ownerPHIDs,
 				types: options?.types,
@@ -527,12 +533,12 @@ export class Condoit {
 		 ***Marked for deprecation. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.createtask/}
 		 *
-		 * @param {iManiphest.Createtask} options
-		 * @returns {Promise<iManiphest.RetCreatetask>}
+		 * @param {iManiphest.ManiphestCreatetask} options
+		 * @returns {Promise<iManiphest.RetManiphestCreatetask>}
 		 */
 		createtask: (
-			options: iManiphest.Createtask
-		): Promise<iManiphest.RetCreatetask> => {
+			options: iManiphest.ManiphestCreatetask
+		): Promise<iManiphest.RetManiphestCreatetask> => {
 			return this.makeRequest('maniphest.createtask', {
 				title: options?.title,
 				description: options?.description,
@@ -549,10 +555,12 @@ export class Condoit {
 		 *Edit a maniphest task. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.edit/}
 		 *
-		 * @param {iManiphest.Edit} options
-		 * @returns {Promise<iManiphest.RetEdit>}
+		 * @param {iManiphest.ManiphestEdit} options
+		 * @returns {Promise<iManiphest.RetManiphestEdit>}
 		 */
-		edit: (options: iManiphest.Edit): Promise<iManiphest.RetEdit> => {
+		edit: (
+			options: iManiphest.ManiphestEdit
+		): Promise<iManiphest.RetManiphestEdit> => {
 			return this.makeRequest('maniphest.edit', {
 				transactions: options.transactions,
 				objectIdentifier: options.objectIdentifier
@@ -564,11 +572,11 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.gettasktransactions/}
 		 *
 		 * @param {Array<number>} ids
-		 * @returns {Promise<iManiphest.RetGettasktransactions>}
+		 * @returns {Promise<iManiphest.RetManiphestGettasktransactions>}
 		 */
 		gettasktransactions: (
 			ids: Array<number>
-		): Promise<iManiphest.RetGettasktransactions> => {
+		): Promise<iManiphest.RetManiphestGettasktransactions> => {
 			return this.makeRequest('maniphest.gettasktransactions', { ids: ids });
 		},
 
@@ -577,9 +585,9 @@ export class Condoit {
      [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.info}
 		 *
 		 * @param {number} taskId
-		 * @returns {Promise<iManiphest.RetInfo>}
+		 * @returns {Promise<iManiphest.RetManiphestInfo>}
 		 */
-		info: (taskId: number): Promise<iManiphest.RetInfo> => {
+		info: (taskId: number): Promise<iManiphest.RetManiphestInfo> => {
 			return this.makeRequest('maniphest.info', { task_id: taskId });
 		},
 
@@ -587,9 +595,9 @@ export class Condoit {
 		 *Returns information about the possible priorities for Maniphest tasks. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.priority.search/}
 		 *
-		 * @returns {Promise<iManiphest.RetPrioritySearch>}
+		 * @returns {Promise<iManiphest.RetManiphestPrioritySearch>}
 		 */
-		prioritySearch: (): Promise<iManiphest.RetPrioritySearch> => {
+		prioritySearch: (): Promise<iManiphest.RetManiphestPrioritySearch> => {
 			return this.makeRequest('maniphest.priority.search', {});
 		},
 
@@ -597,10 +605,12 @@ export class Condoit {
 		 ***Marked for deprecation** Execute complex searches for Maniphest tasks. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/user.whoami/}
 		 *
-		 * @param {iManiphest.Query} options
-		 * @returns {Promise<iManiphest.RetQuery>}
+		 * @param {iManiphest.ManiphestQuery} options
+		 * @returns {Promise<iManiphest.RetManiphestQuery>}
 		 */
-		query: (options: iManiphest.Query): Promise<iManiphest.RetQuery> => {
+		query: (
+			options: iManiphest.ManiphestQuery
+		): Promise<iManiphest.RetManiphestQuery> => {
 			return this.makeRequest('maniphest.query', {
 				ids: options?.ids,
 				phids: options?.phids,
@@ -620,9 +630,9 @@ export class Condoit {
 		 ***Marked for deprecation** Retrieve information about possible Maniphest task status values. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.querystatuses/}
 		 *
-		 * @returns {Promise<iManiphest.RetQuerystatuses>}
+		 * @returns {Promise<iManiphest.RetManiphestQuerystatuses>}
 		 */
-		querystatuses: (): Promise<iManiphest.RetQuerystatuses> => {
+		querystatuses: (): Promise<iManiphest.RetManiphestQuerystatuses> => {
 			return this.makeRequest('maniphest.querystatuses', {});
 		},
 
@@ -630,10 +640,12 @@ export class Condoit {
 		 **Search Maniphest tasks
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.search/}
 		 *
-		 * @param {iManiphest.Search} options
-		 * @returns {Promise<iManiphest.RetSearch>}
+		 * @param {iManiphest.ManiphestSearch} options
+		 * @returns {Promise<iManiphest.RetManiphestSearch>}
 		 */
-		search: (options: iManiphest.Search): Promise<iManiphest.RetSearch> => {
+		search: (
+			options: iManiphest.ManiphestSearch
+		): Promise<iManiphest.RetManiphestSearch> => {
 			return this.makeRequest('maniphest.search', {
 				queryKey: options?.queryKey,
 				constraints: options?.constraints,
@@ -649,9 +661,9 @@ export class Condoit {
 		 *Returns information about the possible statuses for Maniphest tasks. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.status.search/}
 		 *
-		 * @returns {Promise<iManiphest.RetStatusSearch>}
+		 * @returns {Promise<iManiphest.RetManiphestStatusSearch>}
 		 */
-		statusSearch: (): Promise<iManiphest.RetStatusSearch> => {
+		statusSearch: (): Promise<iManiphest.RetManiphestStatusSearch> => {
 			return this.makeRequest('maniphest.status.search', {});
 		},
 
@@ -659,10 +671,12 @@ export class Condoit {
 		 ***Marked for deprecation** Update an existing Maniphest task. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.update/}
 		 *
-		 * @param {iManiphest.Update} options
-		 * @returns {Promise<iManiphest.RetUpdate>}
+		 * @param {iManiphest.ManiphestUpdate} options
+		 * @returns {Promise<iManiphest.RetManiphestUpdate>}
 		 */
-		update: (options: iManiphest.Update): Promise<iManiphest.RetUpdate> => {
+		update: (
+			options: iManiphest.ManiphestUpdate
+		): Promise<iManiphest.RetManiphestUpdate> => {
 			return this.makeRequest('maniphest.update', {
 				id: options?.id,
 				phid: options?.phid,
@@ -772,42 +786,149 @@ export class Condoit {
 	};
 
 	public project = {
-		column: () => {
-			// TODO
+		/**
+		 *Search projects.
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/project.column.search/}
+		 *
+		 * @param {iProject.ColumnSearch} options
+		 * @returns {Promise<iProject.RetColumnSearch>}
+		 */
+		columnSearch: (
+			options: iProject.ColumnSearch
+		): Promise<iProject.RetColumnSearch> => {
+			return this.makeRequest('project.column.search', {
+				queryKey: options?.queryKey,
+				constraints: options?.constraints,
+				order: options?.order,
+				before: options?.before,
+				after: options?.after,
+				limit: options?.limit
+			});
 		},
 
-		create: () => {
-			// TODO
+		/**
+		 *Edit or create a project. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/project.edit/}
+		 *
+		 * @param {iProject.ProjectEdit} options
+		 * @returns {Promise<iProject.RetProjectEdit>}
+		 */
+		edit: (options: iProject.ProjectEdit): Promise<iProject.RetProjectEdit> => {
+			return this.makeRequest('project.edit', {
+				transactions: options.transactions,
+				objectIdentifier: options?.objectIdentifier
+			});
 		},
 
-		edit: () => {
-			// TODO
+		/**
+		 ***Marked for deprecation. Execute searches for projects. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/project.query/}
+		 *
+		 * @param {iProject.ProjectQuery} [options]
+		 * @returns {Promise<iProject.RetProjectQuery>}
+		 */
+		query: (
+			options?: iProject.ProjectQuery
+		): Promise<iProject.RetProjectQuery> => {
+			return this.makeRequest('project.query', {
+				ids: options?.ids,
+				names: options?.names,
+				phids: options?.phids,
+				slugs: options?.slugs,
+				icons: options?.icons,
+				colors: options?.colors,
+				status: options?.status,
+				members: options?.members,
+				limit: options?.limit,
+				offset: options?.offset
+			});
 		},
 
-		query: () => {
-			// TODO
-		},
-
-		search: () => {
-			// TODO
+		/**
+		 *Search or query a project. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/project.search/}
+		 *
+		 * @param {iProject.ProjectSearch} [options]
+		 * @returns {Promise<iProject.RetProjectSearch>}
+		 */
+		search: (
+			options?: iProject.ProjectSearch
+		): Promise<iProject.RetProjectSearch> => {
+			return this.makeRequest('project.search', {
+				queryKey: options?.queryKey,
+				constraints: options?.constraints,
+				attachments: options?.attachments,
+				order: options?.order,
+				before: options?.before,
+				after: options?.after,
+				limit: options?.limit
+			});
 		}
 	};
 
 	public remarkup = {
-		process: () => {
-			// TODO
+		/**
+		 *Process text through remarkup in Phabricator context. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/repository.process/}
+		 *
+		 * @param {iRemarkup.RemarkupProcess} options
+		 * @returns {Promise<iRemarkup.RetRemarkupProcess>}
+		 */
+		process: (
+			options: iRemarkup.RemarkupProcess
+		): Promise<iRemarkup.RetRemarkupProcess> => {
+			return this.makeRequest('remarkup.process', {
+				context: options.context,
+				contents: options.contents
+			});
 		}
 	};
 
+	/**
+	 ***Marked for deprecation**. Query repositories. 
+	 [Docs]{@link https://secure.phabricator.com/conduit/method/repository.query/}
+	 *
+	 * @memberof Condoit
+	 */
 	public repository = {
-		query: () => {
-			// TODO
+		query: (
+			options: iRepository.RepositoryQuery
+		): Promise<iRepository.RetRepositoryQuery> => {
+			return this.makeRequest('repository.query', {
+				ids: options?.ids,
+				phids: options?.phids,
+				callsigns: options?.callsigns,
+				vcsTypes: options?.vcsTypes,
+				remoteURIs: options?.remoteURIs,
+				uuids: options?.uuids,
+				order: options?.order,
+				before: options?.before,
+				after: options?.after,
+				limit: options?.limit
+			});
 		}
 	};
 
 	public slowvote = {
-		pollSearch: () => {
-			// TODO
+		/**
+		 *Read information about polls. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/slowvote.poll.search/}
+		 *
+		 * @param {iSlowvote.PollSearch} options
+		 * @returns {Promise<iSlowvote.RetPollSearch>}
+		 */
+		pollSearch: (
+			options: iSlowvote.PollSearch
+		): Promise<iSlowvote.RetPollSearch> => {
+			return this.makeRequest('slowvote.poll.search', {
+				queryKey: options?.queryKey,
+				constraints: options?.constraints,
+				attachments: options?.attachments,
+				order: options?.order,
+				before: options?.before,
+				after: options?.after,
+				limit: options?.limit
+			});
 		}
 	};
 
@@ -816,10 +937,10 @@ export class Condoit {
 		 *Give or change token
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/token.give/}
 		 *
-		 * @param {iToken.Give} options
-		 * @returns {Promise<iToken.RetGive>}
+		 * @param {iToken.TokenGive} options
+		 * @returns {Promise<iToken.RetTokenGive>}
 		 */
-		give: (options: iToken.Give): Promise<iToken.RetGive> => {
+		give: (options: iToken.TokenGive): Promise<iToken.RetTokenGive> => {
 			let tokens = iToken.tokens;
 			return this.makeRequest('token.give', {
 				tokenPHID: tokens[options.token],
@@ -831,10 +952,10 @@ export class Condoit {
 		 *Query tokens given to objects. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/token.given/}
 		 *
-		 * @param {iToken.Given} options
+		 * @param {iToken.TokenGiven} options
 		 * @returns
 		 */
-		given: (options: iToken.Given): Promise<iToken.RetGiven> => {
+		given: (options: iToken.TokenGiven): Promise<iToken.RetTokenGiven> => {
 			return this.makeRequest('token.given', {
 				authorPHIDs: options?.authorPHIDs,
 				objectPHIDs: options?.objectPHIDs,
@@ -842,7 +963,7 @@ export class Condoit {
 			});
 		},
 
-		query: (): Promise<iToken.RetQuery> => {
+		query: (): Promise<iToken.RetTokenQuery> => {
 			return this.makeRequest('token.query', {});
 		}
 	};
@@ -852,12 +973,12 @@ export class Condoit {
 		 *Read transactions and comments for an object. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/transaction.search/}
 		 *
-		 * @param {iTransactions.Search} options
-		 * @returns {Promise<iTransactions.RetSearch>}
+		 * @param {iTransactions.TransactionsSearch} options
+		 * @returns {Promise<iTransactions.RetTransactionsSearch>}
 		 */
 		search: (
-			options: iTransactions.Search
-		): Promise<iTransactions.RetSearch> => {
+			options: iTransactions.TransactionsSearch
+		): Promise<iTransactions.RetTransactionsSearch> => {
 			return this.makeRequest('transaction.search', {
 				objectIdentifier: options.objectIdentifier,
 				constraints: options?.constraints,
@@ -873,10 +994,10 @@ export class Condoit {
 		 *Edit user information. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/user.edit/}
 		 *
-		 * @param {iUser.Edit} options
+		 * @param {iUser.UsersEdit} options
 		 * @returns {Promise<object>}
 		 */
-		edit: (options: iUser.Edit): Promise<iUser.RetEdit> => {
+		edit: (options: iUser.UsersEdit): Promise<iUser.RetEdit> => {
 			return this.makeRequest('user.edit', {
 				transactions: options.transactions,
 				objectIdentifier: options.objectIdentifier
@@ -889,7 +1010,7 @@ export class Condoit {
 		 *
 		 * @returns {Promise<object>}
 		 */
-		search: (options: iUser.Search): Promise<iUser.RetSearch> => {
+		search: (options: iUser.UsersSearch): Promise<iUser.RetUsersSearch> => {
 			return this.makeRequest('user.search', {
 				queryKey: options?.queryKey,
 				constraints: options?.constraints,
@@ -905,9 +1026,9 @@ export class Condoit {
 		 *Retrieve information about the logged-in user.
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/user.whoami/} 
 		 *
-		 * @returns {Promise<iUser.RetWhoami>}
+		 * @returns {Promise<iUser.RetUsersWhoami>}
 		 */
-		whoami: (): Promise<iUser.RetWhoami> => {
+		whoami: (): Promise<iUser.RetUsersWhoami> => {
 			return this.makeRequest('user.whoami', {});
 		}
 	};

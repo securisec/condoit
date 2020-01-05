@@ -1,4 +1,4 @@
-export interface Query {
+export interface FlagQuery {
 	ownerPHIDs: Array<string>;
 	types: Array<string>;
 	objectPHIDs: Array<string>;
@@ -6,7 +6,7 @@ export interface Query {
 	limit: number;
 }
 
-type retQueryResult = {
+type retFlagQueryResult = {
 	id: string;
 	ownerPHID: string;
 	type: string;
@@ -24,13 +24,13 @@ type retQueryResult = {
 	dateModified: string;
 };
 
-export interface RetQuery {
-	result: Array<retQueryResult>;
+export interface RetFlagQuery {
+	result: Array<retFlagQueryResult>;
 	error_code: string;
 	error_info: string;
 }
 
-type retEditResult = {
+type retFlagEditResult = {
 	id: string;
 	ownerPHID: string;
 	type: string;
@@ -48,13 +48,13 @@ type retEditResult = {
 	dateModified: string;
 };
 
-export interface RetEdit {
-	result: Array<retEditResult>;
+export interface RetFlagEdit {
+	result: Array<retFlagEditResult>;
 	error_code: string;
 	error_info: string;
 }
 
-export interface RetDelete {
+export interface RetFlagDelete {
 	result: {
 		id: string;
 		ownerPHID: string;

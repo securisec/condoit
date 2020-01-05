@@ -1,4 +1,4 @@
-export interface RetInfo {
+export interface RetFileInfo {
 	result: {
 		id: string;
 		phid: string;

@@ -1,4 +1,4 @@
-export interface Createtask {
+export interface ManiphestCreatetask {
 	title: string;
 	description?: string;
 	ownerPHID?: string;
@@ -10,7 +10,7 @@ export interface Createtask {
 	auxiliary: object;
 }
 
-export interface RetCreatetask {
+export interface RetManiphestCreatetask {
 	result: {
 		id: string | number;
 		phid: string;
@@ -36,7 +36,7 @@ export interface RetCreatetask {
 	error_info: any;
 }
 
-type editTransactions = {
+type ManiphestEditTransactions = {
 	type:
 		| 'parent'
 		| 'column'
@@ -69,12 +69,12 @@ type editTransactions = {
 	value: string | boolean;
 };
 
-export interface Edit {
-	transactions: Array<editTransactions>;
+export interface ManiphestEdit {
+	transactions: Array<ManiphestEditTransactions>;
 	objectIdentifier: number | string;
 }
 
-export interface RetEdit {
+export interface RetManiphestEdit {
 	result: {
 		object: { id: number; phid: string };
 		transactions: [{ phid: string }];
@@ -83,7 +83,7 @@ export interface RetEdit {
 	error_info: any;
 }
 
-type gettasktransactions = {
+type maniphestGettasktransactions = {
 	taskID: string;
 	transactionID: string;
 	transactionPHID: string;
@@ -95,15 +95,15 @@ type gettasktransactions = {
 	dateCreated: string;
 };
 
-export interface RetGettasktransactions {
+export interface RetManiphestGettasktransactions {
 	result: {
-		[id: string]: Array<gettasktransactions>;
+		[id: string]: Array<maniphestGettasktransactions>;
 	};
 	error_code: any;
 	error_info: any;
 }
 
-export interface RetInfo {
+export interface RetManiphestInfo {
 	result: {
 		id: string;
 		phid: string;
@@ -130,7 +130,7 @@ export interface RetInfo {
 	error_info: any;
 }
 
-type prioritysearchData = {
+type maniphestPrioritysearchData = {
 	name: string;
 	keywords: Array<string>;
 	short: string;
@@ -138,15 +138,15 @@ type prioritysearchData = {
 	value: number;
 };
 
-export interface RetPrioritySearch {
+export interface RetManiphestPrioritySearch {
 	result: {
-		data: Array<prioritysearchData>;
+		data: Array<maniphestPrioritysearchData>;
 	};
 	error_code: any;
 	error_info: any;
 }
 
-export interface Query {
+export interface ManiphestQuery {
 	ids?: Array<number>;
 	phids?: Array<string>;
 	ownerPHIDs?: Array<string>;
@@ -168,7 +168,7 @@ export interface Query {
 	offset?: number;
 }
 
-export interface RetQuery {
+export interface RetManiphestQuery {
 	result: {
 		[phid: string]: {
 			id: string;
@@ -196,7 +196,7 @@ export interface RetQuery {
 	error_info: any;
 }
 
-export interface RetQuerystatuses {
+export interface RetManiphestQuerystatuses {
 	result: {
 		defaultStatus: string;
 		defaultClosedStatus: string;
@@ -219,7 +219,7 @@ export interface RetQuerystatuses {
 	error_info: any;
 }
 
-export interface Search {
+export interface ManiphestSearch {
 	queryKey?: 'assigned' | 'authored' | 'subscribed' | 'open' | 'all';
 	constraints?: {
 		ids?: Array<number>;
@@ -267,7 +267,7 @@ export interface Search {
 	limit?: number;
 }
 
-type retSearchData = {
+type retManiphestSearchData = {
 	id: number;
 	type: string;
 	phid: string;
@@ -290,9 +290,9 @@ type retSearchData = {
 	attachments: object;
 };
 
-export interface RetSearch {
+export interface RetManiphestSearch {
 	result: {
-		data: Array<retSearchData>;
+		data: Array<retManiphestSearchData>;
 		maps: object;
 		query: { queryKey: string };
 		cursor: { limit: 100; after: any; before: any; order: any };
@@ -301,22 +301,22 @@ export interface RetSearch {
 	error_info: string;
 }
 
-type retStatusSearchData = {
+type retManiphestStatusSearchData = {
 	name: string;
 	value: string;
 	closed: boolean;
 	special: string;
 };
 
-export interface RetStatusSearch {
+export interface RetManiphestStatusSearch {
 	result: {
-		data: Array<retStatusSearchData>;
+		data: Array<retManiphestStatusSearchData>;
 	};
 	error_code: string;
 	error_info: string;
 }
 
-export interface Update {
+export interface ManiphestUpdate {
 	id?: number;
 	phid?: string;
 	title?: string;
@@ -332,7 +332,7 @@ export interface Update {
 	comments?: string;
 }
 
-export interface RetUpdate {
+export interface RetManiphestUpdate {
 	result: {
 		id: string;
 		phid: string;

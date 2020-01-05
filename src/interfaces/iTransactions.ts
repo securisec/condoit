@@ -1,4 +1,4 @@
-export interface Search {
+export interface TransactionsSearch {
 	objectIdentifier: string;
 	constraints: {
 		phids: Array<string>;
@@ -9,7 +9,7 @@ export interface Search {
 	limit: number;
 }
 
-type retSearchData = {
+type retTransactionsSearchData = {
 	id: number;
 	phid: string;
 	type: string;
@@ -22,9 +22,9 @@ type retSearchData = {
 	fields: object;
 };
 
-export interface RetSearch {
+export interface RetTransactionsSearch {
 	result: {
-		data: Array<retSearchData>;
+		data: Array<retTransactionsSearchData>;
 		cursor: { limit: number; after: string; before: string };
 	};
 	error_code: string;

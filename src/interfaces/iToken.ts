@@ -51,44 +51,44 @@ type validToken =
 	| 'Burninate'
 	| 'Pirate Logo';
 
-export interface Give {
+export interface TokenGive {
 	token: validToken;
 	objectPHID: string;
 }
 
-export interface RetGive {
+export interface RetTokenGive {
 	result: null;
 	error_code: null;
 	error_info: null;
 }
 
-export interface Given {
+export interface TokenGiven {
 	authorPHIDs?: Array<string>;
 	objectPHIDs?: Array<string>;
 	tokenPHIDs?: Array<validToken>;
 }
 
-type retGivenResult = {
+type retTokenGivenResult = {
 	authorPHID: string;
 	objectPHID: string;
 	tokenPHID: string;
 	dateCreated: string;
 };
 
-export interface RetGiven {
-	result: Array<retGivenResult>;
+export interface RetTokenGiven {
+	result: Array<retTokenGivenResult>;
 	error_code: null;
 	error_info: null;
 }
 
-type retQueryResult = {
+type retTokenQueryResult = {
 	id: number;
 	name: string;
 	phid: string;
 };
 
-export interface RetQuery {
-	result: Array<retQueryResult>;
+export interface RetTokenQuery {
+	result: Array<retTokenQueryResult>;
 	error_code: string;
 	error_info: string;
 }

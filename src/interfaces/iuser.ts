@@ -1,4 +1,4 @@
-type editTransactions = {
+type editUsersTransactions = {
 	type:
 		| 'disabled'
 		| 'approved'
@@ -10,22 +10,22 @@ type editTransactions = {
 	value: boolean | string;
 };
 
-export interface Edit {
-	transactions: Array<editTransactions>;
+export interface UsersEdit {
+	transactions: Array<editUsersTransactions>;
 	objectIdentifier?: number | string;
 }
 
-type editRetTransactions = { phid: string };
+type editRetUsersTransactions = { phid: string };
 export interface RetEdit {
 	result: {
 		object: { id: number; phid: string };
-		transactions: Array<editRetTransactions>;
+		transactions: Array<editRetUsersTransactions>;
 	};
 	error_code: any;
 	error_info: any;
 }
 
-type searchConstraints = {
+type UsersSearchConstraints = {
 	ids?: Array<number>;
 	phids?: Array<string>;
 	usernames?: Array<string>;
@@ -41,9 +41,9 @@ type searchConstraints = {
 	query?: string;
 };
 
-export interface Search {
+export interface UsersSearch {
 	queryKey?: 'active' | 'all' | 'approval';
-	constraints?: searchConstraints;
+	constraints?: UsersSearchConstraints;
 	attachments?: { availability: boolean };
 	order?:
 		| 'newest'
@@ -55,7 +55,7 @@ export interface Search {
 	limit?: number;
 }
 
-type retSearchData = {
+type retUsersSearchData = {
 	id: number;
 	type: string;
 	phid: string;
@@ -70,9 +70,9 @@ type retSearchData = {
 	attachments: object;
 };
 
-export interface RetSearch {
+export interface RetUsersSearch {
 	result: {
-		data: Array<retSearchData>;
+		data: Array<retUsersSearchData>;
 		maps: object;
 		query: { queryKey: string };
 		cursor: {
@@ -86,7 +86,7 @@ export interface RetSearch {
 	error_info: any;
 }
 
-export interface RetWhoami {
+export interface RetUsersWhoami {
 	result: {
 		phid: string;
 		userName: string;
