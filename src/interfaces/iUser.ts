@@ -15,16 +15,6 @@ export interface UsersEdit {
 	objectIdentifier?: number | string;
 }
 
-type editRetUsersTransactions = { phid: string };
-export interface RetEdit {
-	result: {
-		object: { id: number; phid: string };
-		transactions: Array<editRetUsersTransactions>;
-	};
-	error_code: any;
-	error_info: any;
-}
-
 type UsersSearchConstraints = {
 	ids?: Array<number>;
 	phids?: Array<string>;

@@ -15,17 +15,6 @@ export interface PortalEdit {
 	objectIdentifier?: number | string;
 }
 
-type retPortalEditTransactios = { phid: string };
-
-export interface RetPortalEdit {
-	result: {
-		object: { id: number; phid: string };
-		transactions: Array<retPortalEditTransactios>;
-	};
-	error_code: string;
-	error_info: string;
-}
-
 export interface PortalSearch {
 	queryKey?: 'all';
 	constraints?: {

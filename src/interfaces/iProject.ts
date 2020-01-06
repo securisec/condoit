@@ -67,17 +67,6 @@ export interface ProjectEdit {
 	objectIdentifier: number | string;
 }
 
-type retEditTransactions = { phid: string };
-
-export interface RetProjectEdit {
-	result: {
-		object: { id: number; phid: string };
-		transactions: Array<retEditTransactions>;
-	};
-	error_code: string;
-	error_info: string;
-}
-
 export interface ProjectQuery {
 	ids: Array<number>;
 	names: Array<string>;

@@ -5,6 +5,8 @@ import { resolve } from 'url';
 import * as iFile from './interfaces/iFile';
 import * as iFlag from './interfaces/iFlag';
 import * as iManiphest from './interfaces/iManiphest';
+import * as iOwners from './interfaces/iOwners';
+import * as iPassphrase from './interfaces/iPassphrase';
 import * as iPhame from './interfaces/iPhame';
 import * as iPhid from './interfaces/iPhid';
 import * as iPhriction from './interfaces/iPhriction';
@@ -16,6 +18,7 @@ import * as iSlowvote from './interfaces/iSlowvote';
 import * as iToken from './interfaces/iToken';
 import * as iTransactions from './interfaces/iTransactions';
 import * as iUser from './interfaces/iUser';
+import { RetTransactions } from './interfaces/iGlobal';
 
 /**
  *The class to create an instance to use the Phabricator api
@@ -560,11 +563,9 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.edit/}
 		 *
 		 * @param {iManiphest.ManiphestEdit} options
-		 * @returns {Promise<iManiphest.RetManiphestEdit>}
+		 * @returns {Promise<RetTransactions>}
 		 */
-		edit: (
-			options: iManiphest.ManiphestEdit
-		): Promise<iManiphest.RetManiphestEdit> => {
+		edit: (options: iManiphest.ManiphestEdit): Promise<RetTransactions> => {
 			return this.makeRequest('maniphest.edit', {
 				transactions: options.transactions,
 				objectIdentifier: options.objectIdentifier
@@ -704,42 +705,79 @@ export class Condoit {
 	};
 
 	public owners = {
-		edit: () => {
-			// TODO
+		/**
+		 *Create or edit an object in the Owners application. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/owners.edit/}
+		 *
+		 * @param {iOwners.OwnersEdit} options
+		 * @returns {Promise<RetTransactions>}
+		 */
+		edit: (options: iOwners.OwnersEdit): Promise<RetTransactions> => {
+			return this.makeRequest('owners.edit', {
+				transactions: options.transactions,
+				objectIdentifier: options?.objectIdentifier
+			});
 		},
 
-		search: () => {
-			// TODO
+		/**
+		 *Search the Owners application. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/owners.search/}
+		 *
+		 * @param {iOwners.OwnersSearch} [options]
+		 * @returns {Promise<iOwners.RetOwnersSearch>}
+		 */
+		search: (
+			options?: iOwners.OwnersSearch
+		): Promise<iOwners.RetOwnersSearch> => {
+			return this.makeRequest('owners.search', {
+				queryKey: options?.queryKey,
+				constraints: options?.constraints,
+				attachments: options?.attachments,
+				order: options?.order,
+				before: options?.before,
+				after: options?.after,
+				limit: options?.limit
+			});
 		}
 	};
 
 	public passphrase = {
-		query: () => {
-			// TODO
-		}
-	};
-
-	public paste = {
-		create: () => {
-			// TODO
-		},
-
-		edit: () => {
-			// TODO
-		},
-
-		query: () => {
-			// TODO
-		},
-
-		search: () => {
-			// TODO
+		/**
+		 *Query credentials. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/passphrase.query/}
+		 *
+		 * @param {iPassphrase.PassphraseQuery} [options]
+		 * @returns {Promise<iPassphrase.RetPassphraseQuery>}
+		 */
+		query: (
+			options?: iPassphrase.PassphraseQuery
+		): Promise<iPassphrase.RetPassphraseQuery> => {
+			return this.makeRequest('passphrase.query', {
+				ids: options?.ids,
+				phids: options?.phids,
+				needSecrets: options?.needSecrets,
+				needPublicKeys: options?.needPublicKeys,
+				order: options?.order,
+				before: options?.before,
+				after: options?.after,
+				limit: options?.limit
+			});
 		}
 	};
 
 	public phame = {
-		blogEdit: () => {
-			// TODO
+		/**
+		 *Edit or create a new Phame blog. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/phame.blog.edit/}
+		 *
+		 * @param {iPhame.PhameBlogEdit} options
+		 * @returns {Promise<RetTransactions>}
+		 */
+		blogEdit: (options: iPhame.PhameBlogEdit): Promise<RetTransactions> => {
+			return this.makeRequest('phame.blog.edit', {
+				transactions: options.transactions,
+				objectIdentifier: options?.objectIdentifier
+			});
 		},
 
 		/**
@@ -763,12 +801,39 @@ export class Condoit {
 			});
 		},
 
-		postEdit: () => {
-			// TODO
+		/**
+		 *Edit or create a new blog post. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/phame.post.edit/}
+		 *
+		 * @param {iPhame.PhamePostEdit} options
+		 * @returns {Promise<RetTransactions>}
+		 */
+		postEdit: (options: iPhame.PhamePostEdit): Promise<RetTransactions> => {
+			return this.makeRequest('phame.post.edit', {
+				transactions: options.transactions,
+				objectIdentifier: options?.objectIdentifier
+			});
 		},
 
-		postSearch: () => {
-			// TODO
+		/**
+		 *Search for Phame blog posts. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/phame.post.search/}
+		 *
+		 * @param {iPhame.PhamePostSearch} [options]
+		 * @returns {Promise<iPhame.RetPhamePostSearch>}
+		 */
+		postSearch: (
+			options?: iPhame.PhamePostSearch
+		): Promise<iPhame.RetPhamePostSearch> => {
+			return this.makeRequest('phame.post.search', {
+				queryKey: options?.queryKey,
+				constraints: options?.constraints,
+				attachments: options?.attachments,
+				order: options?.order,
+				before: options?.before,
+				after: options?.after,
+				limit: options?.limit
+			});
 		}
 	};
 
@@ -932,9 +997,9 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/portal.edit/}
 		 *
 		 * @param {iPortal.PortalEdit} options
-		 * @returns {Promise<iPortal.RetPortalEdit>}
+		 * @returns {Promise<RetTransactions>}
 		 */
-		edit: (options: iPortal.PortalEdit): Promise<iPortal.RetPortalEdit> => {
+		edit: (options: iPortal.PortalEdit): Promise<RetTransactions> => {
 			return this.makeRequest('portal.edit', {
 				transactions: options.transactions,
 				objectIdentifier: options?.objectIdentifier
@@ -989,9 +1054,9 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/project.edit/}
 		 *
 		 * @param {iProject.ProjectEdit} options
-		 * @returns {Promise<iProject.RetProjectEdit>}
+		 * @returns {Promise<RetTransactions>}
 		 */
-		edit: (options: iProject.ProjectEdit): Promise<iProject.RetProjectEdit> => {
+		edit: (options: iProject.ProjectEdit): Promise<RetTransactions> => {
 			return this.makeRequest('project.edit', {
 				transactions: options.transactions,
 				objectIdentifier: options?.objectIdentifier
@@ -1173,9 +1238,9 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/user.edit/}
 		 *
 		 * @param {iUser.UsersEdit} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<RetTransactions>}
 		 */
-		edit: (options: iUser.UsersEdit): Promise<iUser.RetEdit> => {
+		edit: (options: iUser.UsersEdit): Promise<RetTransactions> => {
 			return this.makeRequest('user.edit', {
 				transactions: options.transactions,
 				objectIdentifier: options.objectIdentifier

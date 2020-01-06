@@ -74,15 +74,6 @@ export interface ManiphestEdit {
 	objectIdentifier: number | string;
 }
 
-export interface RetManiphestEdit {
-	result: {
-		object: { id: number; phid: string };
-		transactions: [{ phid: string }];
-	};
-	error_code: any;
-	error_info: any;
-}
-
 type maniphestGettasktransactions = {
 	taskID: string;
 	transactionID: string;
