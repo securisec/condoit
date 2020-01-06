@@ -1,3 +1,7 @@
+[![](https://img.shields.io/badge/Docs-Docs-00a02e?logo=github&style=for-the-badge&color=0000ff)](https://securisec.github.io/condoit/)
+![](https://img.shields.io/npm/v/condoit?style=for-the-badge)
+
+
 # Condoit
 
 Condoit is a JS/TS Node library compitable for the [Phabricator Conduit](https://secure.phabricator.com/conduit/method/) api. All the methods available are named using the same convention as the Conduit endpoints. The library does offer intellisense for most methods. 
