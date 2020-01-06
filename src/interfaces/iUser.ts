@@ -57,7 +57,15 @@ type retUsersSearchData = {
 		dateModified: number;
 		policy: { view: string; edit: string };
 	};
-	attachments: object;
+	attachments: {
+		availability: {
+			value: string;
+			until: any;
+			name: string;
+			color: string;
+			eventPHID: string;
+		};
+	};
 };
 
 export interface RetUsersSearch {

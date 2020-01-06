@@ -4,6 +4,8 @@ import { resolve } from 'url';
 
 import * as iFile from './interfaces/iFile';
 import * as iFlag from './interfaces/iFlag';
+import * as iHarbormaster from './interfaces/iHarbormaster';
+import * as iMacro from './interfaces/iMacro';
 import * as iManiphest from './interfaces/iManiphest';
 import * as iOwners from './interfaces/iOwners';
 import * as iPassphrase from './interfaces/iPassphrase';
@@ -62,6 +64,29 @@ export class Condoit {
 				})
 				.catch((error: AxiosError) => reject(error));
 		});
+	}
+
+	private returnOptions(options: any) {
+		return {
+			queryKey: options?.queryKey,
+			constraints: options?.constraints,
+			order: options?.order,
+			before: options?.before,
+			after: options?.after,
+			limit: options?.limit
+		};
+	}
+
+	private returnOptionsAttachments(options: any) {
+		return {
+			queryKey: options?.queryKey,
+			constraints: options?.constraints,
+			attachments: options?.attachments,
+			order: options?.order,
+			before: options?.before,
+			after: options?.after,
+			limit: options?.limit
+		};
 	}
 
 	public almanac = {
@@ -479,62 +504,271 @@ export class Condoit {
 		}
 	};
 
+	/**
+	 *Harbormaster is the application used to track and manage CI/CD within Phabricator
+	 *
+	 * @memberof Condoit
+	 */
 	public harbormaster = {
-		artifact: () => {
-			// TODO
+		/**
+		 *Query Harbormaster for build artifacts. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/harbormaster.artifact.search/}
+		 *
+		 * @param {iHarbormaster.HarbormasterArtifactSearch} [options]
+		 * @returns {Promise<iHarbormaster.RetHarbormasterArtifactSearch>}
+		 */
+		artifactSearch: (
+			options?: iHarbormaster.HarbormasterArtifactSearch
+		): Promise<iHarbormaster.RetHarbormasterArtifactSearch> => {
+			return this.makeRequest(
+				'harbormaster.artifact.search',
+				this.returnOptions(options)
+			);
 		},
 
-		build: () => {
-			// TODO
+		/**
+		 *Search Harbormaster build information. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/harbormaster.build.search/}
+		 *
+		 * @param {iHarbormaster.HarbormasterBuildSearch} [options]
+		 * @returns {Promise<iHarbormaster.RetHarbormasterBuildSearch>}
+		 */
+		buildSearch: (
+			options?: iHarbormaster.HarbormasterBuildSearch
+		): Promise<iHarbormaster.RetHarbormasterBuildSearch> => {
+			return this.makeRequest(
+				'harbormaster.build.search',
+				this.returnOptions(options)
+			);
 		},
 
-		buildable: () => {
-			// TODO
+		/**
+		 *Endpoint for buildable artifacts and their statuses. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/harbormaster.buildable.search/}
+		 *
+		 * @param {iHarbormaster.HarbormasterBuildplanSearch} options
+		 * @returns {Promise<iHarbormaster.RetHarbormasterBuildplanSearch>}
+		 */
+		buildableSearch: (
+			options: iHarbormaster.HarbormasterBuildplanSearch
+		): Promise<iHarbormaster.RetHarbormasterBuildplanSearch> => {
+			return this.makeRequest(
+				'harbormaster.buildable.search',
+				this.returnOptions(options)
+			);
 		},
 
-		buildplan: () => {
-			// TODO
+		/**
+		 *Edit a Harbormaster buildplan. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/harbormaster.buildplan.edit/}
+		 *
+		 * @param {iHarbormaster.HarbormasterBuildplanEdit} options
+		 * @returns {Promise<RetTransactions>}
+		 */
+		buildplanEdit: (
+			options: iHarbormaster.HarbormasterBuildplanEdit
+		): Promise<RetTransactions> => {
+			return this.makeRequest('harbormaster.buildplan.edit', {
+				transactions: options.transactions,
+				objectIdentifier: options?.objectIdentifier
+			});
 		},
 
-		log: () => {
-			// TODO
+		/**
+		 *Query build plans in Harbormaster. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/harbormaster.buildplan.search/}
+		 *
+		 * @param {iHarbormaster.HarbormasterBuildableSearch} [options]
+		 * @returns {Promise<iHarbormaster.RetHarbormasterBuildableSearch>}
+		 */
+		buildplanSearch: (
+			options?: iHarbormaster.HarbormasterBuildplanSearch
+		): Promise<iHarbormaster.RetHarbormasterBuildplanSearch> => {
+			return this.makeRequest(
+				'harbormaster.buildplan.search',
+				this.returnOptions(options)
+			);
 		},
 
-		target: () => {
-			// TODO
+		/**
+		 *Search logs for builds. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/harbormaster.log.search/}
+		 *
+		 * @param {iHarbormaster.HarbormasterLogSearch} options
+		 * @returns {Promise<iHarbormaster.RetHarbormasterLogSearch>}
+		 */
+		logSearch: (
+			options: iHarbormaster.HarbormasterLogSearch
+		): Promise<iHarbormaster.RetHarbormasterLogSearch> => {
+			return this.makeRequest(
+				'harbormaster.log.search',
+				this.returnOptions(options)
+			);
 		},
 
-		createartifact: () => {
-			// TODO
+		/**
+		 *Search build targets. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/harbormaster.target.search/}
+		 *
+		 * @param {iHarbormaster.HarbormasterTargetSearch} options
+		 * @returns {Promise<iHarbormaster.RetHarbormasterTargetSearch>}
+		 */
+		targetSearch: (
+			options: iHarbormaster.HarbormasterTargetSearch
+		): Promise<iHarbormaster.RetHarbormasterTargetSearch> => {
+			return this.makeRequest(
+				'harbormaster.target.search',
+				this.returnOptions(options)
+			);
 		},
 
-		queryautotargets: () => {
-			// TODO
+		/**
+		 *Create a harbormaster build artifact. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/harbormaster.createartifact/}
+		 *
+		 * @param {iHarbormaster.HarbormasterCreateartifact} options
+		 * @returns {Promise<object>}
+		 */
+		createArtifact: (
+			options: iHarbormaster.HarbormasterCreateartifact
+		): Promise<object> => {
+			return this.makeRequest('harbormaster.create.artifact', {
+				buildTargetPHID: options.buildTargetPHID,
+				artifactKey: options.artifactKey,
+				artifactType: options.artifactType,
+				artifactData: options.artifactData
+			});
 		},
 
-		querybuildables: () => {
-			// TODO
+		/**
+		 *Load or create build autotargets.
+		 * [Docs]{@link https://secure.phabricator.com/conduit/method/harbormaster.queryautotargets/}
+		 *
+		 * @param {{
+		 * 			objectPHID: string;
+		 * 			targetKeys: Array<string>;
+		 * 		}} options
+		 * @returns {Promise<object>}
+		 */
+		queryAutotargets: (options: {
+			objectPHID: string;
+			targetKeys: Array<string>;
+		}): Promise<object> => {
+			return this.makeRequest('harbormaster.queryautotargets', {
+				objectPHID: options.objectPHID,
+				targetKeys: options.targetKeys
+			});
 		},
 
-		sendmessage: () => {
-			// TODO
+		/**
+		 * Query Harbormaster buildables.
+		 * [Docs]{@link https://secure.phabricator.com/conduit/method/harbormaster.querybuildables/}
+		 *
+		 * @param {iHarbormaster.HarbormasterQuerybuildables} [options]
+		 * @returns {Promise<object>}
+		 */
+		querybuildables: (
+			options?: iHarbormaster.HarbormasterQuerybuildables
+		): Promise<object> => {
+			return this.makeRequest('harbormaster.querybuildables', {
+				ids: options?.ids,
+				phids: options?.phids,
+				buildablePHIDs: options?.buildablePHIDs,
+				containerPHIDs: options?.containerPHIDs,
+				manualBuildables: options?.manualBuildables,
+				before: options?.before,
+				after: options?.after,
+				limit: options?.limit
+			});
+		},
+
+		/**
+		 *Send a message about the status of a build target to Harbormaster, 
+		 notifying the application of build results in an external system. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/harbormaster.sendmessage/}
+		 *
+		 * @param {iHarbormaster.HarbormasterSendmessage} options
+		 * @returns {Promise<object>}
+		 */
+		sendmessage: (
+			options: iHarbormaster.HarbormasterSendmessage
+		): Promise<object> => {
+			return this.makeRequest('harbormaster.sendmessage', {
+				buildTargetPHID: options.buildTargetPHID,
+				type: options.type,
+				unit: options?.unit,
+				lint: options?.lint
+			});
 		}
 	};
 
+	/**
+	 *The Macro application is used for image hosting.
+	 *
+	 * @memberof Condoit
+	 */
 	public macro = {
-		edit: () => {
-			// TODO
+		/**
+		 *Edit or add a new image to Macro application. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/macro.edit/}
+		 *
+		 * @param {iMacro.MarcoEdit} options
+		 * @returns {Promise<RetTransactions>}
+		 */
+		edit: (options: iMacro.MarcoEdit): Promise<RetTransactions> => {
+			return this.makeRequest('macro.edit', {
+				transactions: options.transactions,
+				objectIdentifier: options?.objectIdentifier
+			});
 		},
 
-		query: () => {
-			// TODO
+		/**
+		 *Query Macro application for images. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/macro.query/}
+		 *
+		 * @param {iMacro.MacroQuery} [options]
+		 * @returns {Promise<iMacro.RetMacroQuery>}
+		 */
+		query: (options?: iMacro.MacroQuery): Promise<iMacro.RetMacroQuery> => {
+			return this.makeRequest('macro.query', {
+				authodPHIDs: options?.authorPHIDs,
+				phids: options?.phids,
+				ids: options?.ids,
+				names: options?.names,
+				nameLike: options?.nameLike
+			});
 		},
 
-		creatememe: () => {
-			// TODO
+		/**
+		 *Create a meme from an existing image. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/phriction.creatememe/}
+		 *
+		 * @param {{
+		 * 			macroName: string;
+		 * 			upperText?: string;
+		 * 			lowerText?: string;
+		 * 		}} options
+		 * @returns {Promise<iMacro.RetMacroCreatememe>}
+		 */
+		creatememe: (options: {
+			macroName: string;
+			upperText?: string;
+			lowerText?: string;
+		}): Promise<iMacro.RetMacroCreatememe> => {
+			return this.makeRequest('macro.creatememe', {
+				macroName: options.macroName,
+				upperText: options?.upperText,
+				lowerText: options?.lowerText
+			});
 		}
 	};
 
+	/**
+	 *API endpoints for Maniphest which is Phabricators task management 
+	 system. 
+	 *
+	 * @memberof Condoit
+	 */
 	public maniphest = {
 		/**
 		 ***Marked for deprecation. 
@@ -655,15 +889,10 @@ export class Condoit {
 		search: (
 			options: iManiphest.ManiphestSearch
 		): Promise<iManiphest.RetManiphestSearch> => {
-			return this.makeRequest('maniphest.search', {
-				queryKey: options?.queryKey,
-				constraints: options?.constraints,
-				attachments: options?.attachments,
-				order: options?.order,
-				before: options?.before,
-				after: options?.after,
-				limit: options?.limit
-			});
+			return this.makeRequest(
+				'maniphest.search',
+				this.returnOptionsAttachments(options)
+			);
 		},
 
 		/**
@@ -704,6 +933,11 @@ export class Condoit {
 		}
 	};
 
+	/**
+	 *API endpoints for the Owners application.
+	 *
+	 * @memberof Condoit
+	 */
 	public owners = {
 		/**
 		 *Create or edit an object in the Owners application. 
@@ -729,18 +963,18 @@ export class Condoit {
 		search: (
 			options?: iOwners.OwnersSearch
 		): Promise<iOwners.RetOwnersSearch> => {
-			return this.makeRequest('owners.search', {
-				queryKey: options?.queryKey,
-				constraints: options?.constraints,
-				attachments: options?.attachments,
-				order: options?.order,
-				before: options?.before,
-				after: options?.after,
-				limit: options?.limit
-			});
+			return this.makeRequest(
+				'owners.search',
+				this.returnOptionsAttachments(options)
+			);
 		}
 	};
 
+	/**
+	 *API around Phabricators credential store.
+	 *
+	 * @memberof Condoit
+	 */
 	public passphrase = {
 		/**
 		 *Query credentials. 
@@ -765,6 +999,12 @@ export class Condoit {
 		}
 	};
 
+	/**
+	 *API around the Phame application which is the blogging 
+	 service provided by Phabricator. 
+	 *
+	 * @memberof Condoit
+	 */
 	public phame = {
 		/**
 		 *Edit or create a new Phame blog. 
@@ -790,15 +1030,10 @@ export class Condoit {
 		blogSearch: (
 			options?: iPhame.PhameBlogSearch
 		): Promise<iPhame.RetPhameBlogSearch> => {
-			return this.makeRequest('phame.blog.search', {
-				queryKey: options?.queryKey,
-				constraints: options?.constraints,
-				attachments: options?.attachments,
-				order: options?.order,
-				before: options?.before,
-				after: options?.after,
-				limit: options?.limit
-			});
+			return this.makeRequest(
+				'phame.blog.search',
+				this.returnOptionsAttachments(options)
+			);
 		},
 
 		/**
@@ -825,18 +1060,19 @@ export class Condoit {
 		postSearch: (
 			options?: iPhame.PhamePostSearch
 		): Promise<iPhame.RetPhamePostSearch> => {
-			return this.makeRequest('phame.post.search', {
-				queryKey: options?.queryKey,
-				constraints: options?.constraints,
-				attachments: options?.attachments,
-				order: options?.order,
-				before: options?.before,
-				after: options?.after,
-				limit: options?.limit
-			});
+			return this.makeRequest(
+				'phame.post.search',
+				this.returnOptionsAttachments(options)
+			);
 		}
 	};
 
+	/**
+	 *API around PHID which is the unique identifier used by Phabricator 
+	 across all applications. 
+	 *
+	 * @memberof Condoit
+	 */
 	public phid = {
 		/**
 		 *Look up objects by name. 
@@ -875,6 +1111,11 @@ export class Condoit {
 		}
 	};
 
+	/**
+	 *API around the Phriction application which is a wiki service.
+	 *
+	 * @memberof Condoit
+	 */
 	public phriction = {
 		/**
 		 *Search content in Phriction wiki. 
@@ -889,15 +1130,10 @@ export class Condoit {
 		contentSearch: (
 			options: iPhriction.PhrictionContentSearch
 		): Promise<iPhriction.RetPhrictionContentSearch> => {
-			return this.makeRequest('phriction.content.search', {
-				queryKey: options?.queryKey,
-				constraints: options?.constraints,
-				attachments: options?.attachments,
-				order: options?.order,
-				before: options?.before,
-				after: options?.after,
-				limit: options?.limit
-			});
+			return this.makeRequest(
+				'phriction.content.search',
+				this.returnOptionsAttachments(options)
+			);
 		},
 
 		/**
@@ -939,15 +1175,10 @@ export class Condoit {
 		documentSearch: (
 			options?: iPhriction.PhrictionDocumentSearch
 		): Promise<iPhriction.RetPhrictionDocumentSearch> => {
-			return this.makeRequest('phriction.document.search', {
-				queryKey: options?.queryKey,
-				constraints: options?.constraints,
-				attachments: options?.attachments,
-				order: options?.order,
-				before: options?.before,
-				after: options?.after,
-				limit: options?.limit
-			});
+			return this.makeRequest(
+				'phriction.document.search',
+				this.returnOptionsAttachments(options)
+			);
 		},
 
 		/**
@@ -1016,18 +1247,18 @@ export class Condoit {
 		search: (
 			options?: iPortal.PortalSearch
 		): Promise<iPortal.RetPortalSearch> => {
-			return this.makeRequest('portal.search', {
-				queryKey: options?.queryKey,
-				constraints: options?.constraints,
-				attachments: options?.attachments,
-				order: options?.order,
-				before: options?.before,
-				after: options?.after,
-				limit: options?.limit
-			});
+			return this.makeRequest(
+				'portal.search',
+				this.returnOptionsAttachments(options)
+			);
 		}
 	};
 
+	/**
+	 *API around the Project application in Phabricator.
+	 *
+	 * @memberof Condoit
+	 */
 	public project = {
 		/**
 		 *Search projects.
@@ -1039,14 +1270,10 @@ export class Condoit {
 		columnSearch: (
 			options: iProject.ColumnSearch
 		): Promise<iProject.RetColumnSearch> => {
-			return this.makeRequest('project.column.search', {
-				queryKey: options?.queryKey,
-				constraints: options?.constraints,
-				order: options?.order,
-				before: options?.before,
-				after: options?.after,
-				limit: options?.limit
-			});
+			return this.makeRequest(
+				'project.column.search',
+				this.returnOptions(options)
+			);
 		},
 
 		/**
@@ -1097,18 +1324,18 @@ export class Condoit {
 		search: (
 			options?: iProject.ProjectSearch
 		): Promise<iProject.RetProjectSearch> => {
-			return this.makeRequest('project.search', {
-				queryKey: options?.queryKey,
-				constraints: options?.constraints,
-				attachments: options?.attachments,
-				order: options?.order,
-				before: options?.before,
-				after: options?.after,
-				limit: options?.limit
-			});
+			return this.makeRequest(
+				'project.search',
+				this.returnOptionsAttachments(options)
+			);
 		}
 	};
 
+	/**
+	 *API around converting markdown to markup
+	 *
+	 * @memberof Condoit
+	 */
 	public remarkup = {
 		/**
 		 *Process text through remarkup in Phabricator context. 
@@ -1128,12 +1355,17 @@ export class Condoit {
 	};
 
 	/**
-	 ***Marked for deprecation**. Query repositories. 
-	 [Docs]{@link https://secure.phabricator.com/conduit/method/repository.query/}
+	 *API around getting information about repositories.
 	 *
 	 * @memberof Condoit
 	 */
 	public repository = {
+		/**
+		 ***Marked for deprecation**. Query repositories. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/repository.query/}
+		 *
+		 * @memberof Condoit
+		 */
 		query: (
 			options: iRepository.RepositoryQuery
 		): Promise<iRepository.RetRepositoryQuery> => {
@@ -1152,6 +1384,11 @@ export class Condoit {
 		}
 	};
 
+	/**
+	 *API endpoints around polls.
+	 *
+	 * @memberof Condoit
+	 */
 	public slowvote = {
 		/**
 		 *Read information about polls. 
@@ -1163,18 +1400,18 @@ export class Condoit {
 		pollSearch: (
 			options: iSlowvote.PollSearch
 		): Promise<iSlowvote.RetPollSearch> => {
-			return this.makeRequest('slowvote.poll.search', {
-				queryKey: options?.queryKey,
-				constraints: options?.constraints,
-				attachments: options?.attachments,
-				order: options?.order,
-				before: options?.before,
-				after: options?.after,
-				limit: options?.limit
-			});
+			return this.makeRequest(
+				'slowvote.poll.search',
+				this.returnOptionsAttachments(options)
+			);
 		}
 	};
 
+	/**
+	 *Tokens are badges/emojies that are applied to Phabricator applications.
+	 *
+	 * @memberof Condoit
+	 */
 	public token = {
 		/**
 		 *Give or change token
@@ -1211,6 +1448,12 @@ export class Condoit {
 		}
 	};
 
+	/**
+	 *API endpoints related to transaction management. Transactions are 
+	 objects applied to any Phabricator applicaiton. 
+	 *
+	 * @memberof Condoit
+	 */
 	public transaction = {
 		/**
 		 *Read transactions and comments for an object. 
@@ -1232,6 +1475,11 @@ export class Condoit {
 		}
 	};
 
+	/**
+	 *API endpoints related to user management.
+	 *
+	 * @memberof Condoit
+	 */
 	public user = {
 		/**
 		 *Edit user information. 
@@ -1254,15 +1502,10 @@ export class Condoit {
 		 * @returns {Promise<object>}
 		 */
 		search: (options: iUser.UsersSearch): Promise<iUser.RetUsersSearch> => {
-			return this.makeRequest('user.search', {
-				queryKey: options?.queryKey,
-				constraints: options?.constraints,
-				attachments: options?.attachments,
-				order: options?.order,
-				before: options?.before,
-				after: options?.after,
-				limit: options?.limit
-			});
+			return this.makeRequest(
+				'user.search',
+				this.returnOptionsAttachments(options)
+			);
 		},
 
 		/**
