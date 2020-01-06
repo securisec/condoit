@@ -5,6 +5,10 @@ import { resolve } from 'url';
 import * as iFile from './interfaces/iFile';
 import * as iFlag from './interfaces/iFlag';
 import * as iManiphest from './interfaces/iManiphest';
+import * as iPhame from './interfaces/iPhame';
+import * as iPhid from './interfaces/iPhid';
+import * as iPhriction from './interfaces/iPhriction';
+import * as iPortal from './interfaces/iPortal';
 import * as iProject from './interfaces/iProject';
 import * as iRemarkup from './interfaces/iRemarkup';
 import * as iRepository from './interfaces/iRepository';
@@ -574,10 +578,12 @@ export class Condoit {
 		 * @param {Array<number>} ids
 		 * @returns {Promise<iManiphest.RetManiphestGettasktransactions>}
 		 */
-		gettasktransactions: (
-			ids: Array<number>
-		): Promise<iManiphest.RetManiphestGettasktransactions> => {
-			return this.makeRequest('maniphest.gettasktransactions', { ids: ids });
+		gettasktransactions: (options: {
+			ids: Array<number>;
+		}): Promise<iManiphest.RetManiphestGettasktransactions> => {
+			return this.makeRequest('maniphest.gettasktransactions', {
+				ids: options.ids
+			});
 		},
 
 		/**
@@ -587,8 +593,10 @@ export class Condoit {
 		 * @param {number} taskId
 		 * @returns {Promise<iManiphest.RetManiphestInfo>}
 		 */
-		info: (taskId: number): Promise<iManiphest.RetManiphestInfo> => {
-			return this.makeRequest('maniphest.info', { task_id: taskId });
+		info: (options: {
+			taskId: number;
+		}): Promise<iManiphest.RetManiphestInfo> => {
+			return this.makeRequest('maniphest.info', { task_id: options.taskId });
 		},
 
 		/**
@@ -730,58 +738,228 @@ export class Condoit {
 	};
 
 	public phame = {
-		blog: () => {
+		blogEdit: () => {
 			// TODO
 		},
 
-		post: () => {
+		/**
+		 *Search Phame blogs. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/phame.blog.search/}
+		 *
+		 * @param {iPhame.PhameBlogSearch} [options]
+		 * @returns {Promise<iPhame.RetPhameBlogSearch>}
+		 */
+		blogSearch: (
+			options?: iPhame.PhameBlogSearch
+		): Promise<iPhame.RetPhameBlogSearch> => {
+			return this.makeRequest('phame.blog.search', {
+				queryKey: options?.queryKey,
+				constraints: options?.constraints,
+				attachments: options?.attachments,
+				order: options?.order,
+				before: options?.before,
+				after: options?.after,
+				limit: options?.limit
+			});
+		},
+
+		postEdit: () => {
+			// TODO
+		},
+
+		postSearch: () => {
 			// TODO
 		}
 	};
 
 	public phid = {
-		lookup: () => {
-			// TODO
+		/**
+		 *Look up objects by name. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/phid.lookup/}
+		 *
+		 * @param {{
+		 * 			names: Array<string>;
+		 * 		}} options
+		 * @returns {Promise<iPhid.RetPhidLookup>}
+		 * 
+		 * @example
+		 * conduit.phid.lookup({names: ["T1", "T2"]})
+		 */
+		lookup: (options: {
+			names: Array<string>;
+		}): Promise<iPhid.RetPhidLookup> => {
+			return this.makeRequest('phid.lookup', {
+				names: options.names
+			});
 		},
 
-		query: () => {
-			// TODO
+		/**
+		 *Retrieve information about arbitrary PHIDs. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/phid.query/}
+		 *
+		 * @param {{ phids: Array<string> }} options
+		 * @returns {Promise<iPhid.RetPhidQuery>}
+		 * 
+		 * @example
+		 * conduit.phid.query({phids: ['PHID-abcd']})
+		 */
+		query: (options: { phids: Array<string> }): Promise<iPhid.RetPhidQuery> => {
+			return this.makeRequest('phid.query', {
+				phids: options.phids
+			});
 		}
 	};
 
 	public phriction = {
-		content: () => {
-			// TODO
+		/**
+		 *Search content in Phriction wiki. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/phriction.content.search/}
+		 *
+		 * @param {iPhriction.PhrictionContentSearch} options
+		 * @returns {Promise<iPhriction.RetPhrictionContentSearch>}
+		 * 
+		 * @example
+		 * condoit.phriction.contentSearch({attachments: {content: true}})
+		 */
+		contentSearch: (
+			options: iPhriction.PhrictionContentSearch
+		): Promise<iPhriction.RetPhrictionContentSearch> => {
+			return this.makeRequest('phriction.content.search', {
+				queryKey: options?.queryKey,
+				constraints: options?.constraints,
+				attachments: options?.attachments,
+				order: options?.order,
+				before: options?.before,
+				after: options?.after,
+				limit: options?.limit
+			});
 		},
 
-		create: () => {
-			// TODO
+		/**
+		 *Create a new Phriction wiki document. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/phriction.create/}
+		 *
+		 * @param {{
+		 * 			slug: string;
+		 * 			title: string;
+		 * 			content: string;
+		 * 			description?: string;
+		 * 		}} options
+		 * @returns {Promise<iPhriction.RetPhrictionCreate>}
+		 * 
+		 * @example
+		 * condoit.phriction.create({slug: 'somepage', title: 'title', content: 'some content'})
+		 */
+		create: (options: {
+			slug: string;
+			title: string;
+			content: string;
+			description?: string;
+		}): Promise<iPhriction.RetPhrictionCreate> => {
+			return this.makeRequest('phriction.create', {
+				slug: options.slug,
+				title: options.title,
+				content: options.content,
+				description: options?.description
+			});
 		},
 
-		document: () => {
-			// TODO
+		/**
+		 *Search Phriction wiki documents. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/phriction.document.search/}
+		 *
+		 * @param {iPhriction.PhrictionDocumentSearch} [options]
+		 * @returns {Promise<iPhriction.RetPhrictionDocumentSearch>}
+		 */
+		documentSearch: (
+			options?: iPhriction.PhrictionDocumentSearch
+		): Promise<iPhriction.RetPhrictionDocumentSearch> => {
+			return this.makeRequest('phriction.document.search', {
+				queryKey: options?.queryKey,
+				constraints: options?.constraints,
+				attachments: options?.attachments,
+				order: options?.order,
+				before: options?.before,
+				after: options?.after,
+				limit: options?.limit
+			});
 		},
 
-		edit: () => {
-			// TODO
+		/**
+		 *Edit an existing Phriction wiki document. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/phriction.edit/}
+		 *
+		 * @param {{
+		 * 			slug: string;
+		 * 			title?: string;
+		 * 			content?: string;
+		 * 			description?: string;
+		 * 		}} options
+		 * @returns {Promise<iPhriction.RetPhrictionEdit>}
+		 * 
+		 * @example
+		 * condoit.phriction.edit({slug: '/', content: 'some new content'})
+		 */
+		edit: (options: {
+			slug: string;
+			title?: string;
+			content?: string;
+			description?: string;
+		}): Promise<iPhriction.RetPhrictionEdit> => {
+			return this.makeRequest('phriction.edit', {
+				slug: options.slug,
+				title: options?.title,
+				content: options?.content,
+				description: options?.description
+			});
 		},
 
-		history: () => {
-			// TODO
-		},
-
-		info: () => {
-			// TODO
+		/**
+		 ***Marked for deprecation** Get info for an existing document
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/phriction.info/}
+		 *
+		 * @param {{ slug: string }} options
+		 * @returns {Promise<iPhriction.RetPhrictionInfo>}
+		 */
+		info: (options: { slug: string }): Promise<iPhriction.RetPhrictionInfo> => {
+			return this.makeRequest('phriction.info', { slug: options.slug });
 		}
 	};
 
 	public portal = {
-		edit: () => {
-			// TODO
+		/**
+		 *Edit or create a new portal. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/portal.edit/}
+		 *
+		 * @param {iPortal.PortalEdit} options
+		 * @returns {Promise<iPortal.RetPortalEdit>}
+		 */
+		edit: (options: iPortal.PortalEdit): Promise<iPortal.RetPortalEdit> => {
+			return this.makeRequest('portal.edit', {
+				transactions: options.transactions,
+				objectIdentifier: options?.objectIdentifier
+			});
 		},
 
-		search: () => {
-			// TODO
+		/**
+		 *Search portals. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/portal.search/}
+		 *
+		 * @param {iPortal.PortalSearch} [options]
+		 * @returns {Promise<iPortal.RetPortalSearch>}
+		 */
+		search: (
+			options?: iPortal.PortalSearch
+		): Promise<iPortal.RetPortalSearch> => {
+			return this.makeRequest('portal.search', {
+				queryKey: options?.queryKey,
+				constraints: options?.constraints,
+				attachments: options?.attachments,
+				order: options?.order,
+				before: options?.before,
+				after: options?.after,
+				limit: options?.limit
+			});
 		}
 	};
 
