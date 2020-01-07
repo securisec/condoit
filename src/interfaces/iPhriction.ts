@@ -1,6 +1,6 @@
-import { ErrorCodes, RetSearchConstants } from './iGlobal';
+import { ErrorCodes, RetSearchConstants, BeforeAfterLimit } from './iGlobal';
 
-export interface PhrictionContentSearch {
+export interface PhrictionContentSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids: Array<number>;
@@ -12,9 +12,6 @@ export interface PhrictionContentSearch {
 		content: boolean;
 	};
 	order?: 'newest' | 'oldest';
-	before?: string;
-	after?: string;
-	limit?: number;
 }
 
 interface retPhrictionContentSearchData extends RetSearchConstants {
@@ -59,7 +56,7 @@ export interface RetPhrictionCreate extends ErrorCodes {
 	};
 }
 
-export interface PhrictionDocumentSearch {
+export interface PhrictionDocumentSearch extends BeforeAfterLimit {
 	queryKey?: 'active' | 'all';
 	constraints?: {
 		ids?: Array<number>;
@@ -78,9 +75,6 @@ export interface PhrictionDocumentSearch {
 		projects: boolean;
 	};
 	order?: 'newest' | 'oldest' | 'relevance' | 'hierarchy';
-	before?: string;
-	after?: string;
-	limit?: number;
 }
 
 interface retPhrictionDocumentSearchData extends RetSearchConstants {

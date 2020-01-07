@@ -14,10 +14,16 @@ interface ErrorCodes {
 	error_info: string;
 }
 
-export type RetSearchConstants = {
+export interface RetSearchConstants {
 	id: number;
 	type: string;
 	phid: string;
-};
+}
+
+export interface BeforeAfterLimit {
+	before?: string;
+	after?: string;
+	limit?: number;
+}
 
 export { ErrorCodes };

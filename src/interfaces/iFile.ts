@@ -1,4 +1,4 @@
-import { ErrorCodes, RetResultSearchConstants, RetSearchConstants } from './iGlobal';
+import { ErrorCodes, RetSearchConstants, BeforeAfterLimit } from './iGlobal';
 
 export interface RetFileInfo extends ErrorCodes {
 	result: {
@@ -19,7 +19,7 @@ export interface RetFileQuerychunks extends ErrorCodes {
 	result: Array<{ byteStart: string; byteEnd: string; complete: boolean }>;
 }
 
-export interface FileSearch {
+export interface FileSearch extends BeforeAfterLimit {
 	queryKey?: 'authored' | 'all';
 	constraints?: {
 		ids: Array<number>;
@@ -37,15 +37,9 @@ export interface FileSearch {
 		| 'oldest'
 		| 'relevance'
 		| ['id' | 'username' | 'rank' | 'fulltext-created' | 'fulltext-modified'];
-	before?: string;
-	after?: string;
-	limit?: number;
 }
 
-interface retFileSearchData {
-	id: number;
-	type: string;
-	phid: string;
+interface retFileSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		dataURI: string;

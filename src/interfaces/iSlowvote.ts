@@ -1,6 +1,6 @@
-import { ErrorCodes, RetSearchConstants } from './iGlobal';
+import { ErrorCodes, RetSearchConstants, BeforeAfterLimit } from './iGlobal';
 
-export interface PollSearch {
+export interface PollSearch extends BeforeAfterLimit {
 	queryKey: string;
 	constraints: {
 		ids: Array<number>;
@@ -15,9 +15,6 @@ export interface PollSearch {
 		projects: boolean;
 	};
 	order: any;
-	before: string;
-	after: string;
-	limit: number;
 }
 
 interface retPollSearchData extends RetSearchConstants {

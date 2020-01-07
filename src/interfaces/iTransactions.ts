@@ -1,14 +1,11 @@
-import { ErrorCodes } from './iGlobal';
+import { ErrorCodes, BeforeAfterLimit } from './iGlobal';
 
-export interface TransactionsSearch {
+export interface TransactionsSearch extends BeforeAfterLimit {
 	objectIdentifier: string;
 	constraints: {
 		phids: Array<string>;
 		authorPHIDs: Array<string>;
 	};
-	before: string;
-	after: string;
-	limit: number;
 }
 
 interface retTransactionsSearchData {
@@ -22,7 +19,7 @@ interface retTransactionsSearchData {
 	groupID: string;
 	comments: Array<string>;
 	fields: object;
-};
+}
 
 export interface RetTransactionsSearch extends ErrorCodes {
 	result: {

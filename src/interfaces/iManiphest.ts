@@ -1,4 +1,4 @@
-import { ErrorCodes, RetSearchConstants } from './iGlobal';
+import { ErrorCodes, RetSearchConstants, BeforeAfterLimit } from './iGlobal';
 
 export interface ManiphestCreatetask {
 	title: string;
@@ -200,7 +200,7 @@ export interface RetManiphestQuerystatuses extends ErrorCodes {
 	};
 }
 
-export interface ManiphestSearch {
+export interface ManiphestSearch extends BeforeAfterLimit {
 	queryKey?: 'assigned' | 'authored' | 'subscribed' | 'open' | 'all';
 	constraints?: {
 		ids?: Array<number>;
@@ -243,9 +243,6 @@ export interface ManiphestSearch {
 		| 'title'
 		| 'relevance'
 		| [string];
-	before?: string;
-	after?: string;
-	limit?: number;
 }
 
 interface retManiphestSearchData extends RetSearchConstants {

@@ -1,14 +1,11 @@
-import { ErrorCodes } from './iGlobal';
+import { ErrorCodes, BeforeAfterLimit } from './iGlobal';
 
-export interface PassphraseQuery {
+export interface PassphraseQuery extends BeforeAfterLimit {
 	ids?: Array<number>;
 	phids?: Array<string>;
 	needSecrets?: boolean;
 	needPublicKeys?: boolean;
 	order?: string;
-	before?: string;
-	after?: string;
-	limit?: number;
 }
 
 export interface RetPassphraseQuery extends ErrorCodes {

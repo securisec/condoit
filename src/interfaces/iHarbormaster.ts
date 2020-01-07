@@ -1,6 +1,6 @@
-import { RetSearchConstants, ErrorCodes } from './iGlobal';
+import { RetSearchConstants, ErrorCodes, BeforeAfterLimit } from './iGlobal';
 
-export interface HarbormasterArtifactSearch {
+export interface HarbormasterArtifactSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids?: Array<number>;
@@ -8,9 +8,6 @@ export interface HarbormasterArtifactSearch {
 		buildTargetPHIDs?: Array<string>;
 	};
 	order?: 'newest' | 'oldest';
-	before?: string;
-	after?: string;
-	limit?: number;
 }
 
 interface retHMArtifaceSearchData extends RetSearchConstants {
@@ -39,7 +36,7 @@ export interface RetHarbormasterArtifactSearch extends ErrorCodes {
 	};
 }
 
-export interface HarbormasterBuildSearch {
+export interface HarbormasterBuildSearch extends BeforeAfterLimit {
 	queryKey?: 'all' | 'initiated' | 'waiting' | 'active' | 'completed';
 	constraints?: {
 		ids?: Array<number>;
@@ -50,9 +47,6 @@ export interface HarbormasterBuildSearch {
 		initiators?: Array<string>;
 	};
 	order?: 'newest' | 'oldest';
-	before?: string;
-	after?: string;
-	limit?: number;
 }
 
 interface retHMBuildSearchData extends RetSearchConstants {
@@ -82,7 +76,7 @@ export interface RetHarbormasterBuildSearch extends ErrorCodes {
 	};
 }
 
-export interface HarbormasterBuildableSearch {
+export interface HarbormasterBuildableSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids?: Array<number>;
@@ -93,9 +87,6 @@ export interface HarbormasterBuildableSearch {
 		manual?: boolean;
 	};
 	order?: 'newest' | 'oldest';
-	before?: string;
-	after?: string;
-	limit?: number;
 }
 
 interface retHMBuildableSearchData extends RetSearchConstants {
@@ -124,7 +115,7 @@ export interface RetHarbormasterBuildableSearch extends ErrorCodes {
 	};
 }
 
-export interface HarbormasterBuildplanSearch {
+export interface HarbormasterBuildplanSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids?: Array<number>;
@@ -135,9 +126,6 @@ export interface HarbormasterBuildplanSearch {
 		projects?: Array<string>;
 	};
 	order?: 'newest' | 'oldest';
-	before?: string;
-	after?: string;
-	limit?: number;
 }
 
 interface retHMBuildplanSearchData extends RetSearchConstants {
@@ -196,7 +184,7 @@ export interface HarbormasterBuildplanEdit {
 	objectIdentifier: string | number;
 }
 
-export interface HarbormasterLogSearch {
+export interface HarbormasterLogSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids?: Array<number>;
@@ -204,9 +192,6 @@ export interface HarbormasterLogSearch {
 		buildTargetPHIDs?: Array<string>;
 	};
 	order?: 'newest' | 'oldest';
-	before?: string;
-	after?: string;
-	limit?: number;
 }
 
 interface retHMLogSearchData extends RetSearchConstants {
@@ -234,7 +219,7 @@ export interface RetHarbormasterLogSearch extends ErrorCodes {
 	};
 }
 
-export interface HarbormasterTargetSearch {
+export interface HarbormasterTargetSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids?: Array<number>;
@@ -242,9 +227,6 @@ export interface HarbormasterTargetSearch {
 		buildPHIDs?: Array<string>;
 	};
 	order?: 'newest' | 'oldest';
-	before?: string;
-	after?: string;
-	limit?: number;
 }
 
 interface retHMTargetSearchData extends RetSearchConstants {
@@ -289,15 +271,12 @@ export interface HarbormasterCreateartifact {
 	};
 }
 
-export interface HarbormasterQuerybuildables {
+export interface HarbormasterQuerybuildables extends BeforeAfterLimit {
 	ids?: Array<string>;
 	phids?: Array<string>;
 	buildablePHIDs?: Array<string>;
 	containerPHIDs?: Array<string>;
 	manualBuildables?: boolean;
-	before?: string;
-	after?: string;
-	limit?: number;
 }
 
 interface hmSendMessageUnit {

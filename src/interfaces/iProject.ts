@@ -1,4 +1,4 @@
-import { ErrorCodes, RetSearchConstants } from './iGlobal';
+import { ErrorCodes, RetSearchConstants, BeforeAfterLimit } from './iGlobal';
 
 export interface ColumnSearch {
 	queryKey?: string;
@@ -8,9 +8,6 @@ export interface ColumnSearch {
 		projects?: Array<string>;
 	};
 	order?: 'newest' | 'oldest';
-	before?: string;
-	after?: string;
-	limit?: number;
 }
 
 interface prjectRetColumnSearchData extends RetSearchConstants {
@@ -57,7 +54,7 @@ interface projectEditTransactionsType {
 		| 'subtype'
 		| 'mfa';
 	value: string | boolean;
-};
+}
 
 export interface ProjectEdit {
 	transactions: Array<projectEditTransactionsType>;
@@ -103,7 +100,7 @@ export interface RetProjectQuery extends ErrorCodes {
 	};
 }
 
-export interface ProjectSearch {
+export interface ProjectSearch extends BeforeAfterLimit {
 	queryKey?: 'joined' | 'watching' | 'active' | 'all';
 	constraints?: {
 		ids?: Array<number>;
@@ -164,9 +161,6 @@ export interface ProjectSearch {
 		| 'name'
 		| 'milestoneNumber'
 		| 'status';
-	before?: string;
-	after?: string;
-	limit?: number;
 }
 
 interface retProjectSearchData extends RetSearchConstants {

@@ -1,4 +1,4 @@
-import { ErrorCodes, RetSearchConstants } from './iGlobal';
+import { ErrorCodes, RetSearchConstants, BeforeAfterLimit } from './iGlobal';
 
 interface phameBlogEditTransactionsType {
 	type:
@@ -19,14 +19,14 @@ interface phameBlogEditTransactionsType {
 		| 'subscribers.set'
 		| 'mfa';
 	value: string | boolean;
-};
+}
 
 export interface PhameBlogEdit {
 	transactions: Array<phameBlogEditTransactionsType>;
 	objectIdentifier?: string | number;
 }
 
-export interface PhameBlogSearch {
+export interface PhameBlogSearch extends BeforeAfterLimit {
 	queryKey?: 'active' | 'archived' | 'all';
 	constraints?: {
 		ids?: Array<number>;
@@ -40,9 +40,6 @@ export interface PhameBlogSearch {
 		projects?: boolean;
 	};
 	order?: 'newest' | 'oldest' | 'relevance';
-	before?: string;
-	after?: string;
-	limit?: number;
 }
 
 interface retPhameBlogSearchData extends RetSearchConstants {
@@ -64,7 +61,7 @@ interface retPhameBlogSearchData extends RetSearchConstants {
 	};
 }
 
-export interface RetPhameBlogSearch extends ErrorCodes {
+export interface RetPhameBlogSearch extends ErrorCodes, BeforeAfterLimit {
 	result: {
 		data: Array<retPhameBlogSearchData>;
 		maps: object;
@@ -88,9 +85,6 @@ export interface PhamePostSearch {
 		projects?: boolean;
 	};
 	order?: 'newest' | 'oldest' | 'relevance' | 'datePublished';
-	before?: string;
-	after?: string;
-	limit?: number;
 }
 
 interface retPhamePostSearchData extends RetSearchConstants {
@@ -140,7 +134,7 @@ interface phamePostEditTransactionsType {
 		| 'comment'
 		| 'mfa';
 	value: string | boolean;
-};
+}
 
 export interface PhamePostEdit {
 	transactions: Array<phamePostEditTransactionsType>;

@@ -3,6 +3,9 @@ import qs from 'qs';
 import { resolve } from 'url';
 import { writeFile, readFileSync } from 'fs';
 
+import * as iDrydock from './interfaces/iDrydock';
+import * as iEdge from './interfaces/iEdge';
+import * as iFeed from './interfaces/iFeed';
 import * as iFile from './interfaces/iFile';
 import * as iFlag from './interfaces/iFlag';
 import * as iHarbormaster from './interfaces/iHarbormaster';
@@ -91,27 +94,51 @@ export class Condoit {
 	}
 
 	public almanac = {
-		binding: () => {
+		bindingEdit: () => {
 			// TODO
 		},
 
-		device: () => {
+		bindingSearch: () => {
 			// TODO
 		},
 
-		interface: () => {
+		deviceEdit: () => {
 			// TODO
 		},
 
-		namespace: () => {
+		deviceSearch: () => {
 			// TODO
 		},
 
-		network: () => {
+		interfaceEdit: () => {
 			// TODO
 		},
 
-		service: () => {
+		interfaceSearch: () => {
+			// TODO
+		},
+
+		namespaceEdit: () => {
+			// TODO
+		},
+
+		namespaceSearch: () => {
+			// TODO
+		},
+
+		networkEdit: () => {
+			// TODO
+		},
+
+		networkSearch: () => {
+			// TODO
+		},
+
+		serviceEdit: () => {
+			// TODO
+		},
+
+		serviceSearch: () => {
 			// TODO
 		}
 	};
@@ -367,36 +394,146 @@ export class Condoit {
 	};
 
 	public drydock = {
-		authorization: () => {
-			// TODO
+		/**
+		 *Retrieve information about Drydock authorizations. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/drydock.authorization.search/}
+		 *
+		 * @param {iDrydock.DrydockAlmanacSearch} options
+		 * @returns {Promise<iDrydock.RetHarbormasterArtifactSearch>}
+		 */
+		authorizationSearch: (
+			options: iDrydock.DrydockAlmanacSearch
+		): Promise<iDrydock.RetDDAlmanacSearch> => {
+			return this.makeRequest(
+				'drydock.authorization.search',
+				this.returnOptions(options)
+			);
 		},
 
-		blueprint: () => {
-			// TODO
+		/**
+		 *Apply transactions to create or edit a blueprint. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/drydock.blueprint.edit/}
+		 *
+		 * @param {iDrydock.DrydockBlueprintEdit} options
+		 * @returns {Promise<RetTransactions>}
+		 */
+		blueprintEdit: (
+			options: iDrydock.DrydockBlueprintEdit
+		): Promise<RetTransactions> => {
+			return this.makeRequest('drydock.blueprint.edit', {
+				transactions: options.transactions,
+				objectIdentifier: options?.objectIdentifier
+			});
 		},
 
-		lease: () => {
-			// TODO
+		/**
+		 *Retrieve information about Drydock blueprints. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/drydock.blueprint.search/}
+		 *
+		 * @param {iDrydock.DrydockBlueprintSearch} options
+		 * @returns {Promise<iDrydock.RetDDBlueprintSearch>}
+		 */
+		blueprintSearch: (
+			options: iDrydock.DrydockBlueprintSearch
+		): Promise<iDrydock.RetDDBlueprintSearch> => {
+			return this.makeRequest(
+				'drydock.blueprint.search',
+				this.returnOptionsAttachments(options)
+			);
 		},
 
-		resource: () => {
-			// TODO
+		/**
+		 *Retrieve information about Drydock leases. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/drydock.lease.search/}
+		 *
+		 * @param {iDrydock.DrydockLeaseSearch} options
+		 * @returns {Promise<iDrydock.RetDDLeaseSearch>}
+		 */
+		leaseSearch: (
+			options: iDrydock.DrydockLeaseSearch
+		): Promise<iDrydock.RetDDLeaseSearch> => {
+			return this.makeRequest(
+				'drydock.lease.search',
+				this.returnOptions(options)
+			);
+		},
+
+		/**
+		 *Retrieve information about Drydock resources. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/drydock.resource.search/}
+		 *
+		 * @param {iDrydock.DrydockResourceSearch} options
+		 * @returns {Promise<iDrydock.RetDDResourceSearch>}
+		 */
+		resourceSearch: (
+			options: iDrydock.DrydockResourceSearch
+		): Promise<iDrydock.RetDDResourceSearch> => {
+			return this.makeRequest(
+				'drydock.resource.search',
+				this.returnOptions(options)
+			);
 		}
 	};
 
 	public edge = {
-		search: () => {
-			// TODO
+		/**
+		 *Read edge relationships between objects. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/edge.search/}
+		 *
+		 * @param {iEdge.EdgeSearch} options
+		 * @returns {Promise<object>}
+		 */
+		search: (options: iEdge.EdgeSearch): Promise<object> => {
+			return this.makeRequest('edge.search', {
+				sourcePHIDs: options.sourcePHIDs,
+				types: options.types,
+				destinationPHIDs: options?.destinationPHIDs,
+				before: options?.before,
+				after: options?.after,
+				limit: options?.limit
+			});
 		}
 	};
 
 	public feed = {
-		publish: () => {
-			// TODO
+		/**
+		 *Publish a story to the feed. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/feed.publish/}
+		 *
+		 * @param {{
+		 * 			type: string;
+		 * 			data: object;
+		 * 			time?: number;
+		 * 		}} options
+		 * @returns {Promise<object>}
+		 */
+		publish: (options: {
+			type: string;
+			data: object;
+			time?: number;
+		}): Promise<object> => {
+			return this.makeRequest('feed.publish', {
+				type: options.type,
+				data: options.data,
+				time: options?.time
+			});
 		},
 
-		query: () => {
-			// TODO
+		/**
+		 *Query the feed for stories. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/feed.query/}
+		 *
+		 * @param {iFeed.FeedQuery} [options]
+		 * @returns {Promise<iFeed.RetFeedQuery>}
+		 */
+		query: (options: iFeed.FeedQuery): Promise<iFeed.RetFeedQuery> => {
+			return this.makeRequest('feed.query', {
+				filterPHIDs: options?.filterPHIDs,
+				limit: options?.limit,
+				before: options?.before,
+				after: options?.after,
+				view: options?.view
+			});
 		}
 	};
 
@@ -613,7 +750,7 @@ export class Condoit {
 		 * @returns {Promise<iHarbormaster.RetHarbormasterArtifactSearch>}
 		 */
 		artifactSearch: (
-			options?: iHarbormaster.HarbormasterArtifactSearch
+			options: iHarbormaster.HarbormasterArtifactSearch
 		): Promise<iHarbormaster.RetHarbormasterArtifactSearch> => {
 			return this.makeRequest(
 				'harbormaster.artifact.search',
@@ -629,7 +766,7 @@ export class Condoit {
 		 * @returns {Promise<iHarbormaster.RetHarbormasterBuildSearch>}
 		 */
 		buildSearch: (
-			options?: iHarbormaster.HarbormasterBuildSearch
+			options: iHarbormaster.HarbormasterBuildSearch
 		): Promise<iHarbormaster.RetHarbormasterBuildSearch> => {
 			return this.makeRequest(
 				'harbormaster.build.search',
@@ -677,7 +814,7 @@ export class Condoit {
 		 * @returns {Promise<iHarbormaster.RetHarbormasterBuildableSearch>}
 		 */
 		buildplanSearch: (
-			options?: iHarbormaster.HarbormasterBuildplanSearch
+			options: iHarbormaster.HarbormasterBuildplanSearch
 		): Promise<iHarbormaster.RetHarbormasterBuildplanSearch> => {
 			return this.makeRequest(
 				'harbormaster.buildplan.search',
@@ -763,7 +900,7 @@ export class Condoit {
 		 * @returns {Promise<object>}
 		 */
 		querybuildables: (
-			options?: iHarbormaster.HarbormasterQuerybuildables
+			options: iHarbormaster.HarbormasterQuerybuildables
 		): Promise<object> => {
 			return this.makeRequest('harbormaster.querybuildables', {
 				ids: options?.ids,
@@ -824,7 +961,7 @@ export class Condoit {
 		 * @param {iMacro.MacroQuery} [options]
 		 * @returns {Promise<iMacro.RetMacroQuery>}
 		 */
-		query: (options?: iMacro.MacroQuery): Promise<iMacro.RetMacroQuery> => {
+		query: (options: iMacro.MacroQuery): Promise<iMacro.RetMacroQuery> => {
 			return this.makeRequest('macro.query', {
 				authodPHIDs: options?.authorPHIDs,
 				phids: options?.phids,
@@ -1056,7 +1193,7 @@ export class Condoit {
 		 * @returns {Promise<iOwners.RetOwnersSearch>}
 		 */
 		search: (
-			options?: iOwners.OwnersSearch
+			options: iOwners.OwnersSearch
 		): Promise<iOwners.RetOwnersSearch> => {
 			return this.makeRequest(
 				'owners.search',
@@ -1079,7 +1216,7 @@ export class Condoit {
 		 * @returns {Promise<iPassphrase.RetPassphraseQuery>}
 		 */
 		query: (
-			options?: iPassphrase.PassphraseQuery
+			options: iPassphrase.PassphraseQuery
 		): Promise<iPassphrase.RetPassphraseQuery> => {
 			return this.makeRequest('passphrase.query', {
 				ids: options?.ids,
@@ -1123,7 +1260,7 @@ export class Condoit {
 		 * @returns {Promise<iPhame.RetPhameBlogSearch>}
 		 */
 		blogSearch: (
-			options?: iPhame.PhameBlogSearch
+			options: iPhame.PhameBlogSearch
 		): Promise<iPhame.RetPhameBlogSearch> => {
 			return this.makeRequest(
 				'phame.blog.search',
@@ -1153,7 +1290,7 @@ export class Condoit {
 		 * @returns {Promise<iPhame.RetPhamePostSearch>}
 		 */
 		postSearch: (
-			options?: iPhame.PhamePostSearch
+			options: iPhame.PhamePostSearch
 		): Promise<iPhame.RetPhamePostSearch> => {
 			return this.makeRequest(
 				'phame.post.search',
@@ -1268,7 +1405,7 @@ export class Condoit {
 		 * @returns {Promise<iPhriction.RetPhrictionDocumentSearch>}
 		 */
 		documentSearch: (
-			options?: iPhriction.PhrictionDocumentSearch
+			options: iPhriction.PhrictionDocumentSearch
 		): Promise<iPhriction.RetPhrictionDocumentSearch> => {
 			return this.makeRequest(
 				'phriction.document.search',
@@ -1340,7 +1477,7 @@ export class Condoit {
 		 * @returns {Promise<iPortal.RetPortalSearch>}
 		 */
 		search: (
-			options?: iPortal.PortalSearch
+			options: iPortal.PortalSearch
 		): Promise<iPortal.RetPortalSearch> => {
 			return this.makeRequest(
 				'portal.search',
@@ -1393,7 +1530,7 @@ export class Condoit {
 		 * @returns {Promise<iProject.RetProjectQuery>}
 		 */
 		query: (
-			options?: iProject.ProjectQuery
+			options: iProject.ProjectQuery
 		): Promise<iProject.RetProjectQuery> => {
 			return this.makeRequest('project.query', {
 				ids: options?.ids,
@@ -1417,7 +1554,7 @@ export class Condoit {
 		 * @returns {Promise<iProject.RetProjectSearch>}
 		 */
 		search: (
-			options?: iProject.ProjectSearch
+			options: iProject.ProjectSearch
 		): Promise<iProject.RetProjectSearch> => {
 			return this.makeRequest(
 				'project.search',

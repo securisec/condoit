@@ -1,6 +1,6 @@
-import { ErrorCodes } from './iGlobal';
+import { ErrorCodes, BeforeAfterLimit } from './iGlobal';
 
-export interface RepositoryQuery {
+export interface RepositoryQuery extends BeforeAfterLimit{
 	ids: Array<number>;
 	phids: Array<string>;
 	callsigns: Array<string>;
@@ -8,9 +8,6 @@ export interface RepositoryQuery {
 	remoteURIs: Array<string>;
 	uuids: Array<string>;
 	order: string;
-	before: string;
-	after: string;
-	limit: number;
 }
 
 interface retRepositoryQueryResult {

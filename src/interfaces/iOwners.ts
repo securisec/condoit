@@ -1,4 +1,4 @@
-import { ErrorCodes } from './iGlobal';
+import { ErrorCodes, BeforeAfterLimit } from './iGlobal';
 
 interface ownerSearchTransactions {
 	type:
@@ -15,14 +15,14 @@ interface ownerSearchTransactions {
 		| 'edit'
 		| 'mfa';
 	value: string | boolean;
-};
+}
 
 export interface OwnersEdit {
 	transactions: Array<ownerSearchTransactions>;
 	objectIdentifier?: number | string;
 }
 
-export interface OwnersSearch {
+export interface OwnersSearch extends BeforeAfterLimit {
 	queryKey?: 'authority' | 'active' | 'all';
 	constraints?: {
 		ids?: Array<number>;
@@ -38,12 +38,11 @@ export interface OwnersSearch {
 		paths?: boolean;
 	};
 	order?: 'newest' | 'oldest' | 'name' | 'relevance';
-	before?: string;
-	after?: string;
-	limit?: number;
 }
 
-interface retOwnersSearchDataOwners { ownerPHID: string };
+interface retOwnersSearchDataOwners {
+	ownerPHID: string;
+}
 
 export interface RetOwnersSearch extends ErrorCodes {
 	result: {

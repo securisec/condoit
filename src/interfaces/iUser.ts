@@ -1,4 +1,4 @@
-import { ErrorCodes, RetSearchConstants } from './iGlobal';
+import { ErrorCodes, RetSearchConstants, BeforeAfterLimit } from './iGlobal';
 
 interface editUsersTransactions {
 	type:
@@ -33,7 +33,7 @@ interface UsersSearchConstraints {
 	query?: string;
 }
 
-export interface UsersSearch {
+export interface UsersSearch extends BeforeAfterLimit {
 	queryKey?: 'active' | 'all' | 'approval';
 	constraints?: UsersSearchConstraints;
 	attachments?: { availability: boolean };
@@ -42,9 +42,6 @@ export interface UsersSearch {
 		| 'oldest'
 		| 'relevance'
 		| ['id' | 'username' | 'rank' | 'fulltext-created' | 'fulltext-modified'];
-	before?: string;
-	after?: string;
-	limit?: number;
 }
 
 interface retUsersSearchData extends RetSearchConstants {

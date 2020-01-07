@@ -1,4 +1,4 @@
-import { ErrorCodes, RetSearchConstants } from './iGlobal';
+import { ErrorCodes, RetSearchConstants, BeforeAfterLimit } from './iGlobal';
 
 interface portalEditTransactionType {
 	type:
@@ -10,14 +10,14 @@ interface portalEditTransactionType {
 		| 'projects.set'
 		| 'mfa';
 	value: string | boolean;
-};
+}
 
 export interface PortalEdit {
 	transactions: Array<portalEditTransactionType>;
 	objectIdentifier?: number | string;
 }
 
-export interface PortalSearch {
+export interface PortalSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids: Array<number>;
@@ -27,9 +27,6 @@ export interface PortalSearch {
 	};
 	order?: 'newest' | 'oldest' | 'relevance';
 	attachments?: { projects: boolean };
-	before?: string;
-	after?: string;
-	limit?: number;
 }
 
 interface retPortalSearchData extends RetSearchConstants {
