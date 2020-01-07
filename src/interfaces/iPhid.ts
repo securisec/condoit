@@ -1,3 +1,5 @@
+import { ErrorCodes } from './iGlobal';
+
 export interface RetPhidLookup {
 	[phid: string]: {
 		phid: string;
@@ -10,7 +12,7 @@ export interface RetPhidLookup {
 	};
 }
 
-export interface RetPhidQuery {
+export interface RetPhidQuery extends ErrorCodes {
 	result: {
 		[phid: string]: {
 			phid: string;
@@ -22,6 +24,4 @@ export interface RetPhidQuery {
 			status: string;
 		};
 	};
-	error_code: string;
-	error_info: string;
 }

@@ -1,3 +1,5 @@
+import { ErrorCodes } from './iGlobal';
+
 export interface RepositoryQuery {
 	ids: Array<number>;
 	phids: Array<string>;
@@ -11,7 +13,7 @@ export interface RepositoryQuery {
 	limit: number;
 }
 
-type retRepositoryQueryResult = {
+interface retRepositoryQueryResult {
 	id: string;
 	name: string;
 	phid: string;
@@ -28,8 +30,6 @@ type retRepositoryQueryResult = {
 	staging: { supported: boolean; prefix: string; uri: string };
 };
 
-export interface RetRepositoryQuery {
+export interface RetRepositoryQuery extends ErrorCodes {
 	result: Array<retRepositoryQueryResult>;
-	error_code: string;
-	error_info: string;
 }

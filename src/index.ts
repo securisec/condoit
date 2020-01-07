@@ -1,6 +1,7 @@
 import Axios, { AxiosResponse, AxiosError } from 'axios';
 import qs from 'qs';
 import { resolve } from 'url';
+import { writeFile, readFileSync } from 'fs';
 
 import * as iFile from './interfaces/iFile';
 import * as iFlag from './interfaces/iFlag';
@@ -400,12 +401,56 @@ export class Condoit {
 	};
 
 	public file = {
-		allocate: () => {
-			// TODO
+		/**
+		 *Allocate space to upload a file. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/file.allocate/}
+		 *
+		 * @param {iFile.FileAllocate} options
+		 * @returns {Promise<iFile.RetFileAllocate>}
+		 */
+		allocate: (options: iFile.FileAllocate): Promise<iFile.RetFileAllocate> => {
+			return this.makeRequest('file.allocate', {
+				name: options.name,
+				contentLength: options.contentLength,
+				contentHash: options?.contentHash,
+				viewPolicy: options?.viewPolicy,
+				deleteAfterEpoch: options?.deleteAfterEpoch
+			});
 		},
 
-		download: () => {
-			// TODO
+		/**
+		 *Down a stored file. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/file.download/}
+		 *
+		 * @param {{phid: string}} options
+		 * @returns {Promise<string>} Base64 encoded file as string. 
+		 */
+		download: (options: {
+			phid: string;
+			path: string;
+			encoding: string;
+		}): Promise<string | object> => {
+			return new Promise((resolve, reject) => {
+				this.makeRequest('file.download', { phid: options.phid })
+					.then((res) => {
+						let data = res.result;
+						if (data) {
+							let saveData = new Buffer(data, 'base64');
+							writeFile(
+								options.path,
+								saveData,
+								options?.encoding ?? 'utf8',
+								(err) => {
+									if (err) reject(err);
+									resolve({ downloadedFile: options.path });
+								}
+							);
+						} else {
+							reject(res);
+						}
+					})
+					.catch((error) => reject(error));
+			});
 		},
 
 		/**
@@ -425,20 +470,70 @@ export class Condoit {
 			});
 		},
 
-		querychunks: () => {
-			// TODO
+		/**
+		 *Get information about file chunks. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/file.querychunks/}
+		 *
+		 * @param {{
+		 * 			filePHID: string;
+		 * 		}} options
+		 * @returns {Promise<iFile.RetFileQuerychunks>}
+		 */
+		querychunks: (options: {
+			filePHID: string;
+		}): Promise<iFile.RetFileQuerychunks> => {
+			return this.makeRequest('file.querychunks', {
+				filePHID: options.filePHID
+			});
 		},
 
-		search: () => {
-			// TODO
+		/**
+		 *Search for files. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/file.search/}
+		 *
+		 * @param {iFile.FileSearch} options
+		 * @returns {Promise<iFile.RetFileSearch>}
+		 */
+		search: (options: iFile.FileSearch): Promise<iFile.RetFileSearch> => {
+			return this.makeRequest(
+				'file.search',
+				this.returnOptionsAttachments(options)
+			);
 		},
 
-		upload: () => {
-			// TODO
+		/**
+		 *Upload a file. The Phabricator API makes the name optional, but this 
+		 method requires it. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/file.upload/}
+		 *
+		 * @param {iFile.FileUpload} options
+		 * @returns {Promise<iFile.RetFileUpload>}
+		 */
+		upload: (options: iFile.FileUpload): Promise<iFile.RetFileUpload> => {
+			return this.makeRequest('file.upload', {
+				data_base64: new Buffer(readFileSync(options.filePath)).toString(
+					'base64'
+				),
+				name: options.name,
+				viewPolicy: options?.viewPolicy,
+				canCDN: options?.canCDN
+			});
 		},
 
-		uploadchunk: () => {
-			// TODO
+		/**
+		 *Upload a chunk of file data to the server. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/file.uploadchunk/}
+		 *
+		 * @param {iFile.FileUploadchunk} options
+		 * @returns {Promise<object>}
+		 */
+		uploadchunk: (options: iFile.FileUploadchunk): Promise<null> => {
+			return this.makeRequest('file.uploadchunk', {
+				filePHID: options.filePHID,
+				byteStart: options.byteStart,
+				data: options.data,
+				dataEncoding: options.dataEncoding
+			});
 		}
 	};
 

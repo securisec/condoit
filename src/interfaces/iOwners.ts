@@ -1,4 +1,6 @@
-type ownerSearchTransactions = {
+import { ErrorCodes } from './iGlobal';
+
+interface ownerSearchTransactions {
 	type:
 		| 'name'
 		| 'owners'
@@ -41,9 +43,9 @@ export interface OwnersSearch {
 	limit?: number;
 }
 
-type retOwnersSearchDataOwners = { ownerPHID: string };
+interface retOwnersSearchDataOwners { ownerPHID: string };
 
-export interface RetOwnersSearch {
+export interface RetOwnersSearch extends ErrorCodes {
 	result: {
 		data: [
 			{
@@ -72,6 +74,4 @@ export interface RetOwnersSearch {
 		query: { queryKey: string };
 		cursor: { limit: number; after: string; before: string; order: string };
 	};
-	error_code: string;
-	error_info: string;
 }

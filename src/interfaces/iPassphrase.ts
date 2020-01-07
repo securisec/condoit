@@ -1,3 +1,5 @@
+import { ErrorCodes } from './iGlobal';
+
 export interface PassphraseQuery {
 	ids?: Array<number>;
 	phids?: Array<string>;
@@ -9,7 +11,7 @@ export interface PassphraseQuery {
 	limit?: number;
 }
 
-export interface RetPassphraseQuery {
+export interface RetPassphraseQuery extends ErrorCodes {
 	result: {
 		data: {
 			[phid: string]: {
@@ -29,6 +31,4 @@ export interface RetPassphraseQuery {
 		};
 		cursor: { limit: number; after: string; before: string };
 	};
-	error_code: string;
-	error_info: string;
 }

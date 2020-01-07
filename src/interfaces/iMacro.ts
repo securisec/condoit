@@ -1,4 +1,6 @@
-type macroEditTransactions = {
+import { ErrorCodes } from './iGlobal';
+
+interface macroEditTransactions {
 	type:
 		| 'name'
 		| 'filePHID'
@@ -23,7 +25,7 @@ export interface MacroQuery {
 	nameLike: string;
 }
 
-export interface RetMacroQuery {
+export interface RetMacroQuery extends ErrorCodes {
 	result: {
 		[name: string]: {
 			uri: string;
@@ -33,14 +35,10 @@ export interface RetMacroQuery {
 			filePHID: string;
 		};
 	};
-	error_code: string;
-	error_info: string;
 }
 
-export interface RetMacroCreatememe {
+export interface RetMacroCreatememe extends ErrorCodes {
 	result: {
 		uri: string;
 	};
-	error_code: string;
-	error_info: string;
 }

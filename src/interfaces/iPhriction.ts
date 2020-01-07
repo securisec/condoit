@@ -1,3 +1,5 @@
+import { ErrorCodes, RetSearchConstants } from './iGlobal';
+
 export interface PhrictionContentSearch {
 	queryKey?: 'all';
 	constraints?: {
@@ -15,10 +17,7 @@ export interface PhrictionContentSearch {
 	limit?: number;
 }
 
-type retPhrictionContentSearchData = {
-	id: number;
-	type: string;
-	phid: string;
+interface retPhrictionContentSearchData extends RetSearchConstants {
 	fields: {
 		documentPHID: string;
 		version: number;
@@ -34,20 +33,18 @@ type retPhrictionContentSearchData = {
 			content: { raw: string };
 		};
 	};
-};
+}
 
-export interface RetPhrictionContentSearch {
+export interface RetPhrictionContentSearch extends ErrorCodes {
 	result: {
 		data: Array<retPhrictionContentSearchData>;
 		maps: object;
 		query: { queryKey: string };
 		cursor: { limit: number; after: string; before: string; order: string };
 	};
-	error_code: string;
-	error_info: string;
 }
 
-export interface RetPhrictionCreate {
+export interface RetPhrictionCreate extends ErrorCodes {
 	result: {
 		phid: string;
 		uri: string;
@@ -60,8 +57,6 @@ export interface RetPhrictionCreate {
 		description: string;
 		dateCreated: number;
 	};
-	error_code: string;
-	error_info: string;
 }
 
 export interface PhrictionDocumentSearch {
@@ -88,10 +83,7 @@ export interface PhrictionDocumentSearch {
 	limit?: number;
 }
 
-type retPhrictionDocumentSearchData = {
-	id: number;
-	type: string;
-	phid: string;
+interface retPhrictionDocumentSearchData extends RetSearchConstants {
 	fields: {
 		path: string;
 		status: { value: string };
@@ -112,20 +104,18 @@ type retPhrictionDocumentSearchData = {
 			viewerIsSubscribed: false;
 		};
 	};
-};
+}
 
-export interface RetPhrictionDocumentSearch {
+export interface RetPhrictionDocumentSearch extends ErrorCodes {
 	result: {
 		data: Array<retPhrictionDocumentSearchData>;
 		maps: object;
 		query: { queryKey: string };
 		cursor: { limit: number; after: string; before: string; order: string };
 	};
-	error_code: string;
-	error_info: string;
 }
 
-export interface RetPhrictionEdit {
+export interface RetPhrictionEdit extends ErrorCodes {
 	result: {
 		phid: string;
 		uri: string;
@@ -138,11 +128,9 @@ export interface RetPhrictionEdit {
 		description: string;
 		dateCreated: number;
 	};
-	error_code: string;
-	error_info: string;
 }
 
-export interface RetPhrictionInfo {
+export interface RetPhrictionInfo extends ErrorCodes {
 	result: {
 		phid: string;
 		uri: string;
@@ -155,6 +143,4 @@ export interface RetPhrictionInfo {
 		description: string;
 		dateCreated: string;
 	};
-	error_code: string;
-	error_info: string;
 }

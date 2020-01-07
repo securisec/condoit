@@ -1,3 +1,5 @@
+import { ErrorCodes } from './iGlobal';
+
 export interface FlagQuery {
 	ownerPHIDs: Array<string>;
 	types: Array<string>;
@@ -6,7 +8,7 @@ export interface FlagQuery {
 	limit: number;
 }
 
-type retFlagQueryResult = {
+interface retFlagQueryResult {
 	id: string;
 	ownerPHID: string;
 	type: string;
@@ -24,13 +26,11 @@ type retFlagQueryResult = {
 	dateModified: string;
 };
 
-export interface RetFlagQuery {
+export interface RetFlagQuery extends ErrorCodes {
 	result: Array<retFlagQueryResult>;
-	error_code: string;
-	error_info: string;
 }
 
-type retFlagEditResult = {
+interface retFlagEditResult {
 	id: string;
 	ownerPHID: string;
 	type: string;
@@ -48,13 +48,11 @@ type retFlagEditResult = {
 	dateModified: string;
 };
 
-export interface RetFlagEdit {
+export interface RetFlagEdit extends ErrorCodes {
 	result: Array<retFlagEditResult>;
-	error_code: string;
-	error_info: string;
 }
 
-export interface RetFlagDelete {
+export interface RetFlagDelete extends ErrorCodes {
 	result: {
 		id: string;
 		ownerPHID: string;
@@ -72,6 +70,4 @@ export interface RetFlagDelete {
 		dateCreated: string;
 		dateModified: string;
 	};
-	error_code: string;
-	error_info: string;
 }

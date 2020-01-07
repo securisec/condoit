@@ -1,4 +1,6 @@
-type editUsersTransactions = {
+import { ErrorCodes, RetSearchConstants } from './iGlobal';
+
+interface editUsersTransactions {
 	type:
 		| 'disabled'
 		| 'approved'
@@ -8,14 +10,14 @@ type editUsersTransactions = {
 		| 'blurb'
 		| 'mfa';
 	value: boolean | string;
-};
+}
 
 export interface UsersEdit {
 	transactions: Array<editUsersTransactions>;
 	objectIdentifier?: number | string;
 }
 
-type UsersSearchConstraints = {
+interface UsersSearchConstraints {
 	ids?: Array<number>;
 	phids?: Array<string>;
 	usernames?: Array<string>;
@@ -29,7 +31,7 @@ type UsersSearchConstraints = {
 	createdStart?: number;
 	createdEnd?: number;
 	query?: string;
-};
+}
 
 export interface UsersSearch {
 	queryKey?: 'active' | 'all' | 'approval';
@@ -45,10 +47,7 @@ export interface UsersSearch {
 	limit?: number;
 }
 
-type retUsersSearchData = {
-	id: number;
-	type: string;
-	phid: string;
+interface retUsersSearchData extends RetSearchConstants {
 	fields: {
 		username: string;
 		realName: string;
@@ -66,9 +65,9 @@ type retUsersSearchData = {
 			eventPHID: string;
 		};
 	};
-};
+}
 
-export interface RetUsersSearch {
+export interface RetUsersSearch extends ErrorCodes {
 	result: {
 		data: Array<retUsersSearchData>;
 		maps: object;
@@ -80,11 +79,9 @@ export interface RetUsersSearch {
 			order: any;
 		};
 	};
-	error_code: any;
-	error_info: any;
 }
 
-export interface RetUsersWhoami {
+export interface RetUsersWhoami extends ErrorCodes {
 	result: {
 		phid: string;
 		userName: string;
@@ -94,6 +91,4 @@ export interface RetUsersWhoami {
 		roles: Array<string>;
 		primaryEmail: string;
 	};
-	error_code: string;
-	error_info: string;
 }

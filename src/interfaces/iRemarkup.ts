@@ -1,3 +1,5 @@
+import { ErrorCodes } from './iGlobal';
+
 export interface RemarkupProcess {
 	context:
 		| 'phriction'
@@ -9,10 +11,10 @@ export interface RemarkupProcess {
 	contents: Array<string>;
 }
 
-type retRemarkupProcessResult = { content: string };
+interface retRemarkupProcessResult {
+	content: string;
+}
 
-export interface RetRemarkupProcess {
+export interface RetRemarkupProcess extends ErrorCodes {
 	result: Array<retRemarkupProcessResult>;
-	error_code: null;
-	error_info: null;
 }

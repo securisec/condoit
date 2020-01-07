@@ -1,3 +1,5 @@
+import { ErrorCodes, RetSearchConstants } from './iGlobal';
+
 export interface ColumnSearch {
 	queryKey?: string;
 	constraints?: {
@@ -11,10 +13,7 @@ export interface ColumnSearch {
 	limit?: number;
 }
 
-type prjectRetColumnSearchData = {
-	id: number;
-	type: string;
-	phid: string;
+interface prjectRetColumnSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		proxyPHID: string;
@@ -28,20 +27,18 @@ type prjectRetColumnSearchData = {
 		policy: { view: string };
 	};
 	attachments: object;
-};
+}
 
-export interface RetColumnSearch {
+export interface RetColumnSearch extends ErrorCodes {
 	result: {
 		data: Array<prjectRetColumnSearchData>;
 		maps: object;
 		query: { queryKey: string };
 		cursor: { limit: number; after: string; before: string; order: string };
 	};
-	error_code: string;
-	error_info: string;
 }
 
-type projectEditTransactionsType = {
+interface projectEditTransactionsType {
 	type:
 		| 'parent'
 		| 'milestone'
@@ -85,7 +82,7 @@ export interface ProjectQuery {
 	offset: number;
 }
 
-export interface RetProjectQuery {
+export interface RetProjectQuery extends ErrorCodes {
 	result: {
 		data: {
 			[phid: string]: {
@@ -104,8 +101,6 @@ export interface RetProjectQuery {
 		slugMap: Array<string>;
 		cursor: { limit: number; after: string; before: string };
 	};
-	error_code: string;
-	error_info: string;
 }
 
 export interface ProjectSearch {
@@ -174,10 +169,7 @@ export interface ProjectSearch {
 	limit?: number;
 }
 
-type retProjectSearchData = {
-	id: number;
-	type: string;
-	phid: string;
+interface retProjectSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		slug: string;
@@ -194,15 +186,13 @@ type retProjectSearchData = {
 		description: string;
 	};
 	attachments: object;
-};
+}
 
-export interface RetProjectSearch {
+export interface RetProjectSearch extends ErrorCodes {
 	result: {
 		data: Array<retProjectSearchData>;
 		maps: { slugMap: object };
 		query: { queryKey: string };
 		cursor: { limit: number; after: string; before: string; order: string };
 	};
-	error_code: string;
-	error_info: string;
 }

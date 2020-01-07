@@ -1,3 +1,5 @@
+import { RetSearchConstants, ErrorCodes } from './iGlobal';
+
 export interface HarbormasterArtifactSearch {
 	queryKey?: 'all';
 	constraints?: {
@@ -11,10 +13,7 @@ export interface HarbormasterArtifactSearch {
 	limit?: number;
 }
 
-type retHMArtifaceSearchData = {
-	id: number;
-	type: string;
-	phid: string;
+interface retHMArtifaceSearchData extends RetSearchConstants {
 	fields: {
 		buildTargetPHID: string;
 		artifactType: string;
@@ -24,9 +23,9 @@ type retHMArtifaceSearchData = {
 		dateModified: number;
 		policy: { view: string; edit: string };
 	};
-};
+}
 
-export interface RetHarbormasterArtifactSearch {
+export interface RetHarbormasterArtifactSearch extends ErrorCodes {
 	result: {
 		data: Array<retHMArtifaceSearchData>;
 		maps: object;
@@ -38,8 +37,6 @@ export interface RetHarbormasterArtifactSearch {
 			order: any;
 		};
 	};
-	error_code: any;
-	error_info: any;
 }
 
 export interface HarbormasterBuildSearch {
@@ -58,10 +55,7 @@ export interface HarbormasterBuildSearch {
 	limit?: number;
 }
 
-type retHMBuildSearchData = {
-	id: number;
-	type: string;
-	phid: string;
+interface retHMBuildSearchData extends RetSearchConstants {
 	fields: {
 		buildablePHID: string;
 		buildPlanPHID: string;
@@ -72,9 +66,9 @@ type retHMBuildSearchData = {
 		dateModified: number;
 		policy: { view: string; edit: string };
 	};
-};
+}
 
-export interface RetHarbormasterBuildSearch {
+export interface RetHarbormasterBuildSearch extends ErrorCodes {
 	result: {
 		data: Array<retHMBuildSearchData>;
 		maps: object;
@@ -86,8 +80,6 @@ export interface RetHarbormasterBuildSearch {
 			order: any;
 		};
 	};
-	error_code: any;
-	error_info: any;
 }
 
 export interface HarbormasterBuildableSearch {
@@ -106,10 +98,7 @@ export interface HarbormasterBuildableSearch {
 	limit?: number;
 }
 
-type retHMBuildableSearchData = {
-	id: number;
-	type: string;
-	phid: string;
+interface retHMBuildableSearchData extends RetSearchConstants {
 	fields: {
 		objectPHID: string;
 		containerPHID: string;
@@ -119,9 +108,9 @@ type retHMBuildableSearchData = {
 		dateModified: number;
 		policy: { view: string; edit: string };
 	};
-};
+}
 
-export interface RetHarbormasterBuildableSearch {
+export interface RetHarbormasterBuildableSearch extends ErrorCodes {
 	result: {
 		data: Array<retHMBuildableSearchData>;
 		maps: object;
@@ -133,8 +122,6 @@ export interface RetHarbormasterBuildableSearch {
 			order: any;
 		};
 	};
-	error_code: any;
-	error_info: any;
 }
 
 export interface HarbormasterBuildplanSearch {
@@ -153,10 +140,7 @@ export interface HarbormasterBuildplanSearch {
 	limit?: number;
 }
 
-type retHMBuildplanSearchData = {
-	id: number;
-	type: string;
-	phid: string;
+interface retHMBuildplanSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		status: object;
@@ -171,9 +155,9 @@ type retHMBuildplanSearchData = {
 		dateModified: number;
 		policy: { view: string; edit: string };
 	};
-};
+}
 
-export interface RetHarbormasterBuildplanSearch {
+export interface RetHarbormasterBuildplanSearch extends ErrorCodes {
 	result: {
 		data: Array<retHMBuildplanSearchData>;
 		maps: object;
@@ -185,11 +169,9 @@ export interface RetHarbormasterBuildplanSearch {
 			order: any;
 		};
 	};
-	error_code: any;
-	error_info: any;
 }
 
-type hmBuildplanEditTransactions = {
+interface hmBuildplanEditTransactions {
 	type:
 		| 'name'
 		| 'behavior.hold-drafts'
@@ -207,7 +189,7 @@ type hmBuildplanEditTransactions = {
 		| 'subscribers.set'
 		| 'mfa';
 	value: string | boolean;
-};
+}
 
 export interface HarbormasterBuildplanEdit {
 	transactions: Array<hmBuildplanEditTransactions>;
@@ -227,10 +209,7 @@ export interface HarbormasterLogSearch {
 	limit?: number;
 }
 
-type retHMLogSearchData = {
-	id: number;
-	type: string;
-	phid: string;
+interface retHMLogSearchData extends RetSearchConstants {
 	fields: {
 		buildTargetPHID: string;
 		byteLength: number;
@@ -239,9 +218,9 @@ type retHMLogSearchData = {
 		dateModified: number;
 		policy: { view: string; edit: string };
 	};
-};
+}
 
-export interface RetHarbormasterLogSearch {
+export interface RetHarbormasterLogSearch extends ErrorCodes {
 	result: {
 		data: Array<retHMLogSearchData>;
 		maps: object;
@@ -253,8 +232,6 @@ export interface RetHarbormasterLogSearch {
 			order: any;
 		};
 	};
-	error_code: any;
-	error_info: any;
 }
 
 export interface HarbormasterTargetSearch {
@@ -270,10 +247,7 @@ export interface HarbormasterTargetSearch {
 	limit?: number;
 }
 
-type retHMTargetSearchData = {
-	id: number;
-	type: string;
-	phid: string;
+interface retHMTargetSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		buildPHID: string;
@@ -286,9 +260,9 @@ type retHMTargetSearchData = {
 		dateModified: number;
 		policy: { view: string; edit: string };
 	};
-};
+}
 
-export interface RetHarbormasterTargetSearch {
+export interface RetHarbormasterTargetSearch extends ErrorCodes {
 	result: {
 		data: Array<retHMTargetSearchData>;
 		maps: object;
@@ -300,8 +274,6 @@ export interface RetHarbormasterTargetSearch {
 			order: any;
 		};
 	};
-	error_code: any;
-	error_info: any;
 }
 
 export interface HarbormasterCreateartifact {
@@ -328,7 +300,7 @@ export interface HarbormasterQuerybuildables {
 	limit?: number;
 }
 
-type hmSendMessageUnit = {
+interface hmSendMessageUnit {
 	name: string;
 	result: 'pass' | 'fail' | 'skip' | 'broken' | 'unsound';
 	namespace?: string;
@@ -338,9 +310,9 @@ type hmSendMessageUnit = {
 	coverage?: object;
 	details?: string;
 	format?: string;
-};
+}
 
-type hmSendMessageLint = {
+interface hmSendMessageLint {
 	name: string;
 	code: string;
 	severity: 'advice' | 'autofix' | 'warning' | 'error' | 'disabled';
@@ -348,7 +320,7 @@ type hmSendMessageLint = {
 	line?: number;
 	char?: number;
 	description?: string;
-};
+}
 
 export interface HarbormasterSendmessage {
 	buildTargetPHID: string;

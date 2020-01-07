@@ -1,4 +1,6 @@
-type portalEditTransactionType = {
+import { ErrorCodes, RetSearchConstants } from './iGlobal';
+
+interface portalEditTransactionType {
 	type:
 		| 'name'
 		| 'view'
@@ -30,25 +32,20 @@ export interface PortalSearch {
 	limit?: number;
 }
 
-type retPortalSearchData = {
-	id: number;
-	type: string;
-	phid: string;
+interface retPortalSearchData extends RetSearchConstants {
 	fields: {
 		dateCreated: number;
 		dateModified: number;
 		policy: { view: string; edit: string };
 	};
 	attachments: object;
-};
+}
 
-export interface RetPortalSearch {
+export interface RetPortalSearch extends ErrorCodes {
 	result: {
 		data: Array<retPortalSearchData>;
 		maps: object;
 		query: { queryKey: string };
 		cursor: { limit: number; after: string; before: string; order: string };
 	};
-	error_code: string;
-	error_info: string;
 }

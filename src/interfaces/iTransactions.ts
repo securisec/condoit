@@ -1,3 +1,5 @@
+import { ErrorCodes } from './iGlobal';
+
 export interface TransactionsSearch {
 	objectIdentifier: string;
 	constraints: {
@@ -9,7 +11,7 @@ export interface TransactionsSearch {
 	limit: number;
 }
 
-type retTransactionsSearchData = {
+interface retTransactionsSearchData {
 	id: number;
 	phid: string;
 	type: string;
@@ -22,11 +24,9 @@ type retTransactionsSearchData = {
 	fields: object;
 };
 
-export interface RetTransactionsSearch {
+export interface RetTransactionsSearch extends ErrorCodes {
 	result: {
 		data: Array<retTransactionsSearchData>;
 		cursor: { limit: number; after: string; before: string };
 	};
-	error_code: string;
-	error_info: string;
 }

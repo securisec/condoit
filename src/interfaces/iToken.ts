@@ -1,3 +1,5 @@
+import { ErrorCodes } from './iGlobal';
+
 export const tokens = {
 	'100': 'PHID-TOKN-emoji-1',
 	Like: 'PHID-TOKN-like-1',
@@ -56,10 +58,8 @@ export interface TokenGive {
 	objectPHID: string;
 }
 
-export interface RetTokenGive {
+export interface RetTokenGive extends ErrorCodes {
 	result: null;
-	error_code: null;
-	error_info: null;
 }
 
 export interface TokenGiven {
@@ -75,10 +75,8 @@ type retTokenGivenResult = {
 	dateCreated: string;
 };
 
-export interface RetTokenGiven {
+export interface RetTokenGiven extends ErrorCodes {
 	result: Array<retTokenGivenResult>;
-	error_code: null;
-	error_info: null;
 }
 
 type retTokenQueryResult = {
@@ -87,8 +85,6 @@ type retTokenQueryResult = {
 	phid: string;
 };
 
-export interface RetTokenQuery {
+export interface RetTokenQuery extends ErrorCodes {
 	result: Array<retTokenQueryResult>;
-	error_code: string;
-	error_info: string;
 }

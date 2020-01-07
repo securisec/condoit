@@ -1,4 +1,6 @@
-type phameBlogEditTransactionsType = {
+import { ErrorCodes, RetSearchConstants } from './iGlobal';
+
+interface phameBlogEditTransactionsType {
 	type:
 		| 'name'
 		| 'subtitle'
@@ -43,10 +45,7 @@ export interface PhameBlogSearch {
 	limit?: number;
 }
 
-type retPhameBlogSearchData = {
-	id: number;
-	type: string;
-	phid: string;
+interface retPhameBlogSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		description: string;
@@ -63,17 +62,15 @@ type retPhameBlogSearchData = {
 			viewerIsSubscribed: boolean;
 		};
 	};
-};
+}
 
-export interface RetPhameBlogSearch {
+export interface RetPhameBlogSearch extends ErrorCodes {
 	result: {
 		data: Array<retPhameBlogSearchData>;
 		maps: object;
 		query: { queryKey: string };
 		cursor: { limit: number; after: string; before: string; order: string };
 	};
-	error_code: string;
-	error_info: string;
 }
 
 export interface PhamePostSearch {
@@ -96,10 +93,7 @@ export interface PhamePostSearch {
 	limit?: number;
 }
 
-type retPhamePostSearchData = {
-	id: number;
-	type: string;
-	phid: string;
+interface retPhamePostSearchData extends RetSearchConstants {
 	fields: {
 		title: string;
 		slug: string;
@@ -119,20 +113,18 @@ type retPhamePostSearchData = {
 		};
 		projects: { projectPHIDs: Array<string> };
 	};
-};
+}
 
-export interface RetPhamePostSearch {
+export interface RetPhamePostSearch extends ErrorCodes {
 	result: {
 		data: Array<retPhamePostSearchData>;
 		maps: object;
 		query: { queryKey: string };
 		cursor: { limit: number; after: string; before: string; order: string };
 	};
-	error_code: string;
-	error_info: string;
 }
 
-type phamePostEditTransactionsType = {
+interface phamePostEditTransactionsType {
 	type:
 		| 'blog'
 		| 'title'

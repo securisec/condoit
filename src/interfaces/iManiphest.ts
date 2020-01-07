@@ -1,3 +1,5 @@
+import { ErrorCodes, RetSearchConstants } from './iGlobal';
+
 export interface ManiphestCreatetask {
 	title: string;
 	description?: string;
@@ -10,7 +12,7 @@ export interface ManiphestCreatetask {
 	auxiliary: object;
 }
 
-export interface RetManiphestCreatetask {
+export interface RetManiphestCreatetask extends ErrorCodes {
 	result: {
 		id: string | number;
 		phid: string;
@@ -32,11 +34,9 @@ export interface RetManiphestCreatetask {
 		dateModified: string | number;
 		dependsOnTaskPHIDs: Array<string>;
 	};
-	error_code: any;
-	error_info: any;
 }
 
-type ManiphestEditTransactions = {
+interface ManiphestEditTransactions {
 	type:
 		| 'parent'
 		| 'column'
@@ -67,14 +67,14 @@ type ManiphestEditTransactions = {
 		| 'commnet'
 		| 'mfa';
 	value: string | boolean;
-};
+}
 
 export interface ManiphestEdit {
 	transactions: Array<ManiphestEditTransactions>;
 	objectIdentifier: number | string;
 }
 
-type maniphestGettasktransactions = {
+interface maniphestGettasktransactions {
 	taskID: string;
 	transactionID: string;
 	transactionPHID: string;
@@ -84,17 +84,15 @@ type maniphestGettasktransactions = {
 	comments: string;
 	authorPHID: string;
 	dateCreated: string;
-};
+}
 
-export interface RetManiphestGettasktransactions {
+export interface RetManiphestGettasktransactions extends ErrorCodes {
 	result: {
 		[id: string]: Array<maniphestGettasktransactions>;
 	};
-	error_code: any;
-	error_info: any;
 }
 
-export interface RetManiphestInfo {
+export interface RetManiphestInfo extends ErrorCodes {
 	result: {
 		id: string;
 		phid: string;
@@ -117,24 +115,20 @@ export interface RetManiphestInfo {
 		dateModified: string;
 		dependsOnTaskPHIDs: Array<string>;
 	};
-	error_code: any;
-	error_info: any;
 }
 
-type maniphestPrioritysearchData = {
+interface maniphestPrioritysearchData {
 	name: string;
 	keywords: Array<string>;
 	short: string;
 	color: string;
 	value: number;
-};
+}
 
-export interface RetManiphestPrioritySearch {
+export interface RetManiphestPrioritySearch extends ErrorCodes {
 	result: {
 		data: Array<maniphestPrioritysearchData>;
 	};
-	error_code: any;
-	error_info: any;
 }
 
 export interface ManiphestQuery {
@@ -159,7 +153,7 @@ export interface ManiphestQuery {
 	offset?: number;
 }
 
-export interface RetManiphestQuery {
+export interface RetManiphestQuery extends ErrorCodes {
 	result: {
 		[phid: string]: {
 			id: string;
@@ -183,11 +177,9 @@ export interface RetManiphestQuery {
 			dependsOnTaskPHIDs: Array<string>;
 		};
 	};
-	error_code: any;
-	error_info: any;
 }
 
-export interface RetManiphestQuerystatuses {
+export interface RetManiphestQuerystatuses extends ErrorCodes {
 	result: {
 		defaultStatus: string;
 		defaultClosedStatus: string;
@@ -206,8 +198,6 @@ export interface RetManiphestQuerystatuses {
 			spite: string;
 		};
 	};
-	error_code: any;
-	error_info: any;
 }
 
 export interface ManiphestSearch {
@@ -258,10 +248,7 @@ export interface ManiphestSearch {
 	limit?: number;
 }
 
-type retManiphestSearchData = {
-	id: number;
-	type: string;
-	phid: string;
+interface retManiphestSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		description: { raw: string };
@@ -279,32 +266,28 @@ type retManiphestSearchData = {
 		policy: { view: string };
 	};
 	attachments: object;
-};
+}
 
-export interface RetManiphestSearch {
+export interface RetManiphestSearch extends ErrorCodes {
 	result: {
 		data: Array<retManiphestSearchData>;
 		maps: object;
 		query: { queryKey: string };
-		cursor: { limit: 100; after: any; before: any; order: any };
+		cursor: { limit: number; after: string; before: string; order: string };
 	};
-	error_code: string;
-	error_info: string;
 }
 
-type retManiphestStatusSearchData = {
+interface retManiphestStatusSearchData {
 	name: string;
 	value: string;
 	closed: boolean;
 	special: string;
-};
+}
 
-export interface RetManiphestStatusSearch {
+export interface RetManiphestStatusSearch extends ErrorCodes {
 	result: {
 		data: Array<retManiphestStatusSearchData>;
 	};
-	error_code: string;
-	error_info: string;
 }
 
 export interface ManiphestUpdate {
@@ -323,7 +306,7 @@ export interface ManiphestUpdate {
 	comments?: string;
 }
 
-export interface RetManiphestUpdate {
+export interface RetManiphestUpdate extends ErrorCodes {
 	result: {
 		id: string;
 		phid: string;
@@ -345,6 +328,4 @@ export interface RetManiphestUpdate {
 		dateModified: string;
 		dependsOnTaskPHIDs: Array<string>;
 	};
-	error_code: string;
-	error_info: string;
 }

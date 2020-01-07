@@ -1,3 +1,5 @@
+import { ErrorCodes, RetSearchConstants } from './iGlobal';
+
 export interface PollSearch {
 	queryKey: string;
 	constraints: {
@@ -18,10 +20,7 @@ export interface PollSearch {
 	limit: number;
 }
 
-type retPollSearchData = {
-	id: number;
-	type: string;
-	phid: string;
+interface retPollSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		authorPHID: string;
@@ -31,15 +30,13 @@ type retPollSearchData = {
 		policy: { view: string };
 	};
 	attachments: object;
-};
+}
 
-export interface RetPollSearch {
+export interface RetPollSearch extends ErrorCodes {
 	result: {
 		data: Array<retPollSearchData>;
 		maps: object;
 		query: { queryKey: string };
 		cursor: { limit: number; after: string; before: string; order: string };
 	};
-	error_code: string;
-	error_info: string;
 }
