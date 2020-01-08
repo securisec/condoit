@@ -1,11 +1,11 @@
-interface retTransactions {
+interface transactionsObject {
 	phid: string;
 }
 
-export interface RetTransactions extends ErrorCodes {
+export interface Transactions extends ErrorCodes {
 	result: {
 		object: { id: number; phid: string };
-		transactions: Array<retTransactions>;
+		transactions: Array<transactionsObject>;
 	};
 }
 

@@ -53,7 +53,7 @@ interface projectEditTransactionsType {
 		| 'join'
 		| 'subtype'
 		| 'mfa';
-	value: string | boolean;
+	value: any;
 }
 
 export interface ProjectEdit {

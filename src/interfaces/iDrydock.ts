@@ -167,7 +167,7 @@ interface blueprintEditTrans {
 		| 'custom.blueprintPHIDs'
 		| 'custom.allocator.limit'
 		| 'mfa';
-	value: string | boolean;
+	value: any;
 }
 
 export interface DrydockBlueprintEdit {

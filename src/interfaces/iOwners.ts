@@ -14,7 +14,7 @@ interface ownerSearchTransactions {
 		| 'view'
 		| 'edit'
 		| 'mfa';
-	value: string | boolean;
+	value: any;
 }
 
 export interface OwnersEdit {

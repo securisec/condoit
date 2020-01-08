@@ -9,7 +9,7 @@ interface portalEditTransactionType {
 		| 'projects.remove'
 		| 'projects.set'
 		| 'mfa';
-	value: string | boolean;
+	value: any;
 }
 
 export interface PortalEdit {

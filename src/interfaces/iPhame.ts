@@ -18,7 +18,7 @@ interface phameBlogEditTransactionsType {
 		| 'subscribers.remove'
 		| 'subscribers.set'
 		| 'mfa';
-	value: string | boolean;
+	value: any;
 }
 
 export interface PhameBlogEdit {
@@ -133,7 +133,7 @@ interface phamePostEditTransactionsType {
 		| 'subscribers.set'
 		| 'comment'
 		| 'mfa';
-	value: string | boolean;
+	value: any;
 }
 
 export interface PhamePostEdit {

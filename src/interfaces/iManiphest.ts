@@ -66,7 +66,7 @@ interface ManiphestEditTransactions {
 		| 'subtype'
 		| 'commnet'
 		| 'mfa';
-	value: string | boolean;
+	value: any;
 }
 
 export interface ManiphestEdit {

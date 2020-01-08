@@ -176,7 +176,7 @@ interface hmBuildplanEditTransactions {
 		| 'subscribers.remove'
 		| 'subscribers.set'
 		| 'mfa';
-	value: string | boolean;
+	value: any;
 }
 
 export interface HarbormasterBuildplanEdit {

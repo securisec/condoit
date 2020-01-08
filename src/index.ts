@@ -3,6 +3,9 @@ import qs from 'qs';
 import { resolve } from 'url';
 import { writeFile, readFileSync } from 'fs';
 
+import * as iAlmanac from './interfaces/iAlmanac';
+import * as iAuth from './interfaces/iAuth';
+import * as iBadge from './interfaces/iBadge';
 import * as iDrydock from './interfaces/iDrydock';
 import * as iEdge from './interfaces/iEdge';
 import * as iFeed from './interfaces/iFeed';
@@ -24,7 +27,7 @@ import * as iSlowvote from './interfaces/iSlowvote';
 import * as iToken from './interfaces/iToken';
 import * as iTransactions from './interfaces/iTransactions';
 import * as iUser from './interfaces/iUser';
-import { RetTransactions } from './interfaces/iGlobal';
+import { Transactions } from './interfaces/iGlobal';
 
 /**
  *The class to create an instance to use the Phabricator api
@@ -93,79 +96,293 @@ export class Condoit {
 		};
 	}
 
+	private transactionOptions(options: any) {
+		return {
+			transactions: options.transactions,
+			objectIdentifier: options?.objectIdentifier
+		};
+	}
+
 	public almanac = {
-		bindingEdit: () => {
-			// TODO
+		/**
+		 *Apply transactions to create a new binding or edit an existing one. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/almanac.binding.edit/}
+		 *
+		 * @param {iAlmanac.AlmanacBindingEdit} options
+		 * @returns {Promise<Transactions>}
+		 */
+		bindingEdit: (
+			options: iAlmanac.AlmanacBindingEdit
+		): Promise<Transactions> => {
+			return this.makeRequest(
+				'almanac.binding.edit',
+				this.transactionOptions(options)
+			);
 		},
 
-		bindingSearch: () => {
-			// TODO
+		/**
+		 *Read information about Almanac bindings. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/almanac.binding.search/}
+		 *
+		 * @param {iAlmanac.AlmanacBindingSearch} options
+		 * @returns {Promise<iAlmanac.RetAlmanacBindingSearch>}
+		 */
+		bindingSearch: (
+			options: iAlmanac.AlmanacBindingSearch
+		): Promise<iAlmanac.RetAlmanacBindingSearch> => {
+			return this.makeRequest(
+				'almanac.binding.search',
+				this.returnOptionsAttachments(options)
+			);
 		},
 
-		deviceEdit: () => {
-			// TODO
+		/**
+		 *Apply transactions to create a new device or edit an existing one. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/almanac.device.edit/}
+		 *
+		 * @param {iAlmanac.AlmanacDeviceEdit} options
+		 * @returns {Promise<Transactions>}
+		 */
+		deviceEdit: (
+			options: iAlmanac.AlmanacDeviceEdit
+		): Promise<Transactions> => {
+			return this.makeRequest(
+				'almanac.device.edit',
+				this.transactionOptions(options)
+			);
 		},
 
-		deviceSearch: () => {
-			// TODO
+		/**
+		 *Read information about Almanac devices. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/almanac.device.search/}
+		 *
+		 * @param {iAlmanac.AlmanacDeviceSearch} options
+		 * @returns {Promise<iAlmanac.RetAlmanacDeviceSearch>}
+		 */
+		deviceSearch: (
+			options: iAlmanac.AlmanacDeviceSearch
+		): Promise<iAlmanac.RetAlmanacDeviceSearch> => {
+			return this.makeRequest(
+				'almanac.device.search',
+				this.returnOptionsAttachments(options)
+			);
 		},
 
-		interfaceEdit: () => {
-			// TODO
+		/**
+		 *Apply transactions to create a new interface or edit an existing one. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/almanac.interface.edit/}
+		 *
+		 * @param {iAlmanac.AlmanacInterfaceEdit} options
+		 * @returns {Promise<Transactions>}
+		 */
+		interfaceEdit: (
+			options: iAlmanac.AlmanacInterfaceEdit
+		): Promise<Transactions> => {
+			return this.makeRequest(
+				'almanac.interface.edit',
+				this.transactionOptions(options)
+			);
 		},
 
-		interfaceSearch: () => {
-			// TODO
+		/**
+		 *Read information about Almanac interfaces. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/almanac.interface.search/}
+		 *
+		 * @param {iAlmanac.AlmanacInterfaceSearch} options
+		 * @returns {Promise<iAlmanac.RetAlmanacInterfaceSearch>}
+		 */
+		interfaceSearch: (
+			options: iAlmanac.AlmanacInterfaceSearch
+		): Promise<iAlmanac.RetAlmanacInterfaceSearch> => {
+			return this.makeRequest(
+				'almanac.interface.search',
+				this.returnOptions(options)
+			);
 		},
 
 		namespaceEdit: () => {
 			// TODO
+			throw Error('Not implemented');
 		},
 
-		namespaceSearch: () => {
-			// TODO
+		/**
+		 *Read information about Almanac namespaces. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/almanac.namespace.search/}
+		 *
+		 * @param {iAlmanac.AlmanacNamespaceSearch} options
+		 * @returns {Promise<iAlmanac.RetAlmanacNamespaceSearch>}
+		 */
+		namespaceSearch: (
+			options: iAlmanac.AlmanacNamespaceSearch
+		): Promise<iAlmanac.RetAlmanacNamespaceSearch> => {
+			return this.makeRequest(
+				'almanac.namespace.search',
+				this.returnOptionsAttachments(options)
+			);
 		},
 
-		networkEdit: () => {
-			// TODO
+		/**
+		 *Apply transactions to create a new network or edit an existing one. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/almanac.network.edit/}
+		 *
+		 * @param {iAlmanac.AlmanacNetworkEdit} options
+		 * @returns {Promise<Transactions>}
+		 */
+		networkEdit: (
+			options: iAlmanac.AlmanacNetworkEdit
+		): Promise<Transactions> => {
+			return this.makeRequest(
+				'almanac.network.edit',
+				this.transactionOptions(options)
+			);
 		},
 
-		networkSearch: () => {
-			// TODO
+		/**
+		 *Read information about Almanac bindings. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/almanac.network.search/}
+		 *
+		 * @param {iAlmanac.AlmanacNetworkSearch} options
+		 * @returns {Promise<iAlmanac.RetAlmanacNetworkSearch>}
+		 */
+		networkSearch: (
+			options: iAlmanac.AlmanacNetworkSearch
+		): Promise<iAlmanac.RetAlmanacNetworkSearch> => {
+			return this.makeRequest(
+				'almanac.network.search',
+				this.returnOptions(options)
+			);
 		},
 
-		serviceEdit: () => {
-			// TODO
+		/**
+		 *Apply transactions to create a new service or edit an existing one. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/almanac.service.edit/}
+		 *
+		 * @param {iAlmanac.AlmanacServiceEdit} options
+		 * @returns {Promise<Transactions>}
+		 */
+		serviceEdit: (
+			options: iAlmanac.AlmanacServiceEdit
+		): Promise<Transactions> => {
+			return this.makeRequest(
+				'almanac.service.edit',
+				this.transactionOptions(options)
+			);
 		},
 
-		serviceSearch: () => {
-			// TODO
+		/**
+		 *Read information about Almanac services. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/almanac.service.search/}
+		 *
+		 * @param {iAlmanac.AlmanacServiceSearch} options
+		 * @returns {Promise<iAlmanac.RetAlmanacServiceSearch>}
+		 */
+		serviceSearch: (
+			options: iAlmanac.AlmanacServiceSearch
+		): Promise<iAlmanac.RetAlmanacServiceSearch> => {
+			return this.makeRequest(
+				'almanac.service.search',
+				this.returnOptionsAttachments(options)
+			);
 		}
 	};
 
 	public audit = {
-		query: () => {
-			// TODO
+		/**
+		 ***Marked for deprecation** Query audit requests. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/audit.query/}
+		 *
+		 * @param {({
+		 * 			authorPHIDs?: Array<string>;
+		 * 			commitPHIDs?: Array<string>;
+		 * 			status?:
+		 * 				| 'audit-status-any'
+		 * 				| 'audit-status-open'
+		 * 				| 'audit-status-concern'
+		 * 				| 'audit-status-accepted'
+		 * 				| 'audit-status-partial';
+		 * 			offset?: number;
+		 * 			limit?: number;
+		 * 		})} options
+		 * @returns
+		 */
+		query: (options: {
+			authorPHIDs?: Array<string>;
+			commitPHIDs?: Array<string>;
+			status?:
+				| 'audit-status-any'
+				| 'audit-status-open'
+				| 'audit-status-concern'
+				| 'audit-status-accepted'
+				| 'audit-status-partial';
+			offset?: number;
+			limit?: number;
+		}) => {
+			return this.makeRequest('audit.query', {
+				authodPHIDs: options?.authorPHIDs,
+				commitPHIDs: options?.commitPHIDs,
+				status: options?.status,
+				offset: options?.offset,
+				limit: options?.limit
+			});
 		}
 	};
 
 	public auth = {
-		logout: () => {
-			// TODO
+		/**
+		 *Logout of all sessions. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/auth.logout/}
+		 *
+		 * @returns {Promise<void>}
+		 */
+		logout: (): Promise<void> => {
+			return this.makeRequest('auth.logout', {});
 		},
 
-		querypublickeys: () => {
-			// TODO
+		/**
+		 *Query public keys. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/auth.querypublickeys/}
+		 *
+		 * @param {iAuth.AuthQuerypublickeys} options
+		 * @returns {Promise<iAuth.RetAuthQuerypublickeys>}
+		 */
+		querypublickeys: (
+			options: iAuth.AuthQuerypublickeys
+		): Promise<iAuth.RetAuthQuerypublickeys> => {
+			return this.makeRequest('auth.querypublickeys', {
+				ids: options?.ids,
+				phids: options?.phids,
+				objectPHIDs: options?.objectPHIDs,
+				before: options?.before,
+				after: options?.after,
+				limit: options?.limit
+			});
 		}
 	};
 
 	public badge = {
-		edit: () => {
-			// TODO
+		/**
+		 *Create or edit a Badge. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/badge.edit/}
+		 *
+		 * @param {iBadge.BadgeEdit} options
+		 * @returns {Promise<Transactions>}
+		 */
+		edit: (options: iBadge.BadgeEdit): Promise<Transactions> => {
+			return this.makeRequest('badge.edit', this.transactionOptions(options));
 		},
 
-		search: () => {
-			// TODO
+		/**
+		 *Read information about badges. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/badge.search/}
+		 *
+		 * @param {iBadge.BadgeSearch} options
+		 * @returns {Promise<iBadge.RetBadgeSearch>}
+		 */
+		search: (options: iBadge.BadgeSearch): Promise<iBadge.RetBadgeSearch> => {
+			return this.makeRequest(
+				'badge.search',
+				this.returnOptionsAttachments(options)
+			);
 		}
 	};
 
@@ -415,15 +632,15 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/drydock.blueprint.edit/}
 		 *
 		 * @param {iDrydock.DrydockBlueprintEdit} options
-		 * @returns {Promise<RetTransactions>}
+		 * @returns {Promise<Transactions>}
 		 */
 		blueprintEdit: (
 			options: iDrydock.DrydockBlueprintEdit
-		): Promise<RetTransactions> => {
-			return this.makeRequest('drydock.blueprint.edit', {
-				transactions: options.transactions,
-				objectIdentifier: options?.objectIdentifier
-			});
+		): Promise<Transactions> => {
+			return this.makeRequest(
+				'drydock.blueprint.edit',
+				this.transactionOptions(options)
+			);
 		},
 
 		/**
@@ -795,15 +1012,15 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/harbormaster.buildplan.edit/}
 		 *
 		 * @param {iHarbormaster.HarbormasterBuildplanEdit} options
-		 * @returns {Promise<RetTransactions>}
+		 * @returns {Promise<Transactions>}
 		 */
 		buildplanEdit: (
 			options: iHarbormaster.HarbormasterBuildplanEdit
-		): Promise<RetTransactions> => {
-			return this.makeRequest('harbormaster.buildplan.edit', {
-				transactions: options.transactions,
-				objectIdentifier: options?.objectIdentifier
-			});
+		): Promise<Transactions> => {
+			return this.makeRequest(
+				'harbormaster.buildplan.edit',
+				this.transactionOptions(options)
+			);
 		},
 
 		/**
@@ -945,13 +1162,10 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/macro.edit/}
 		 *
 		 * @param {iMacro.MarcoEdit} options
-		 * @returns {Promise<RetTransactions>}
+		 * @returns {Promise<Transactions>}
 		 */
-		edit: (options: iMacro.MarcoEdit): Promise<RetTransactions> => {
-			return this.makeRequest('macro.edit', {
-				transactions: options.transactions,
-				objectIdentifier: options?.objectIdentifier
-			});
+		edit: (options: iMacro.MarcoEdit): Promise<Transactions> => {
+			return this.makeRequest('macro.edit', this.transactionOptions(options));
 		},
 
 		/**
@@ -1029,9 +1243,9 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/maniphest.edit/}
 		 *
 		 * @param {iManiphest.ManiphestEdit} options
-		 * @returns {Promise<RetTransactions>}
+		 * @returns {Promise<Transactions>}
 		 */
-		edit: (options: iManiphest.ManiphestEdit): Promise<RetTransactions> => {
+		edit: (options: iManiphest.ManiphestEdit): Promise<Transactions> => {
 			return this.makeRequest('maniphest.edit', {
 				transactions: options.transactions,
 				objectIdentifier: options.objectIdentifier
@@ -1176,13 +1390,10 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/owners.edit/}
 		 *
 		 * @param {iOwners.OwnersEdit} options
-		 * @returns {Promise<RetTransactions>}
+		 * @returns {Promise<Transactions>}
 		 */
-		edit: (options: iOwners.OwnersEdit): Promise<RetTransactions> => {
-			return this.makeRequest('owners.edit', {
-				transactions: options.transactions,
-				objectIdentifier: options?.objectIdentifier
-			});
+		edit: (options: iOwners.OwnersEdit): Promise<Transactions> => {
+			return this.makeRequest('owners.edit', this.transactionOptions(options));
 		},
 
 		/**
@@ -1243,13 +1454,13 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/phame.blog.edit/}
 		 *
 		 * @param {iPhame.PhameBlogEdit} options
-		 * @returns {Promise<RetTransactions>}
+		 * @returns {Promise<Transactions>}
 		 */
-		blogEdit: (options: iPhame.PhameBlogEdit): Promise<RetTransactions> => {
-			return this.makeRequest('phame.blog.edit', {
-				transactions: options.transactions,
-				objectIdentifier: options?.objectIdentifier
-			});
+		blogEdit: (options: iPhame.PhameBlogEdit): Promise<Transactions> => {
+			return this.makeRequest(
+				'phame.blog.edit',
+				this.transactionOptions(options)
+			);
 		},
 
 		/**
@@ -1273,13 +1484,13 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/phame.post.edit/}
 		 *
 		 * @param {iPhame.PhamePostEdit} options
-		 * @returns {Promise<RetTransactions>}
+		 * @returns {Promise<Transactions>}
 		 */
-		postEdit: (options: iPhame.PhamePostEdit): Promise<RetTransactions> => {
-			return this.makeRequest('phame.post.edit', {
-				transactions: options.transactions,
-				objectIdentifier: options?.objectIdentifier
-			});
+		postEdit: (options: iPhame.PhamePostEdit): Promise<Transactions> => {
+			return this.makeRequest(
+				'phame.post.edit',
+				this.transactionOptions(options)
+			);
 		},
 
 		/**
@@ -1460,13 +1671,10 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/portal.edit/}
 		 *
 		 * @param {iPortal.PortalEdit} options
-		 * @returns {Promise<RetTransactions>}
+		 * @returns {Promise<Transactions>}
 		 */
-		edit: (options: iPortal.PortalEdit): Promise<RetTransactions> => {
-			return this.makeRequest('portal.edit', {
-				transactions: options.transactions,
-				objectIdentifier: options?.objectIdentifier
-			});
+		edit: (options: iPortal.PortalEdit): Promise<Transactions> => {
+			return this.makeRequest('portal.edit', this.transactionOptions(options));
 		},
 
 		/**
@@ -1513,13 +1721,10 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/project.edit/}
 		 *
 		 * @param {iProject.ProjectEdit} options
-		 * @returns {Promise<RetTransactions>}
+		 * @returns {Promise<Transactions>}
 		 */
-		edit: (options: iProject.ProjectEdit): Promise<RetTransactions> => {
-			return this.makeRequest('project.edit', {
-				transactions: options.transactions,
-				objectIdentifier: options?.objectIdentifier
-			});
+		edit: (options: iProject.ProjectEdit): Promise<Transactions> => {
+			return this.makeRequest('project.edit', this.transactionOptions(options));
 		},
 
 		/**
@@ -1718,9 +1923,9 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/user.edit/}
 		 *
 		 * @param {iUser.UsersEdit} options
-		 * @returns {Promise<RetTransactions>}
+		 * @returns {Promise<Transactions>}
 		 */
-		edit: (options: iUser.UsersEdit): Promise<RetTransactions> => {
+		edit: (options: iUser.UsersEdit): Promise<Transactions> => {
 			return this.makeRequest('user.edit', {
 				transactions: options.transactions,
 				objectIdentifier: options.objectIdentifier
