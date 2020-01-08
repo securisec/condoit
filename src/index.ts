@@ -6,6 +6,10 @@ import { writeFile, readFileSync } from 'fs';
 import * as iAlmanac from './interfaces/iAlmanac';
 import * as iAuth from './interfaces/iAuth';
 import * as iBadge from './interfaces/iBadge';
+import * as iConduit from './interfaces/iConduit';
+import * as iConpherence from './interfaces/iConpherence';
+import * as iCountdown from './interfaces/iCountdown';
+import * as iDifferential from './interfaces/iDifferential';
 import * as iDrydock from './interfaces/iDrydock';
 import * as iEdge from './interfaces/iEdge';
 import * as iFeed from './interfaces/iFeed';
@@ -103,6 +107,11 @@ export class Condoit {
 		};
 	}
 
+	/**
+	 *Service Directory
+	 *
+	 * @memberof Condoit
+	 */
 	public almanac = {
 		/**
 		 *Apply transactions to create a new binding or edit an existing one. 
@@ -201,7 +210,6 @@ export class Condoit {
 		},
 
 		namespaceEdit: () => {
-			// TODO
 			throw Error('Not implemented');
 		},
 
@@ -286,6 +294,11 @@ export class Condoit {
 		}
 	};
 
+	/**
+	 *Browse and audit commits
+	 *
+	 * @memberof Condoit
+	 */
 	public audit = {
 		/**
 		 ***Marked for deprecation** Query audit requests. 
@@ -327,6 +340,11 @@ export class Condoit {
 		}
 	};
 
+	/**
+	 *Login/Registration
+	 *
+	 * @memberof Condoit
+	 */
 	public auth = {
 		/**
 		 *Logout of all sessions. 
@@ -359,6 +377,11 @@ export class Condoit {
 		}
 	};
 
+	/**
+	 *Achievements and Notoriety
+	 *
+	 * @memberof Condoit
+	 */
 	public badge = {
 		/**
 		 *Create or edit a Badge. 
@@ -386,132 +409,535 @@ export class Condoit {
 		}
 	};
 
+	/**
+	 *Developer API
+	 *
+	 * @memberof Condoit
+	 */
 	public conduit = {
-		connect: () => {
-			// TODO
+		/**
+		 *Connect a session based client. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/conduit.connect/}
+		 *
+		 * @param {iConduit.ConduitConnect} options
+		 * @returns {Promise<any>}
+		 */
+		connect: (options: iConduit.ConduitConnect): Promise<any> => {
+			return this.makeRequest('conduit.connect', {
+				client: options.client,
+				clientVersion: options.clientVersion,
+				user: options?.user,
+				authToken: options?.authToken,
+				authSignature: options?.authSignature
+			});
 		},
 
-		getcapabilities: () => {
-			// TODO
+		/**
+		 *List capabilities, wire formats, and authentication protocols available on this server. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/conduit.capabilities/}
+		 *
+		 * @returns {Promise<iConduit.RetConduitCapabilities>}
+		 */
+		getcapabilities: (): Promise<iConduit.RetConduitCapabilities> => {
+			return this.makeRequest('conduit.getcapabilities', {});
 		},
 
-		getcertificate: () => {
-			// TODO
+		/**
+		 *Retreive certificate information for a user. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/conduit.getcertificate/}
+		 *
+		 * @param {{token: string, host: string}} options
+		 * @returns {Promise<any>}
+		 */
+		getcertificate: (options: {
+			token: string;
+			host: string;
+		}): Promise<any> => {
+			return this.makeRequest('conduit.getcertificate', {
+				token: options.token,
+				host: options.host
+			});
 		},
 
-		ping: () => {
-			// TODO
+		/**
+		 *Basic ping for monitoring or a health-check. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/conduit.ping/}
+		 *
+		 * @returns {Promise<iConduit.RetConduitPing>}
+		 */
+		ping: (): Promise<iConduit.RetConduitPing> => {
+			return this.makeRequest('conduit.ping', {});
 		},
 
-		query: () => {
-			// TODO
+		/**
+		 *Returns the parameters of the Conduit methods. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/conduit.query/}
+		 *
+		 * @returns {Promise<object>}
+		 */
+		query: (): Promise<object> => {
+			return this.makeRequest('conduit.query', {});
 		}
 	};
 
+	/**
+	 *Chat with others.
+	 *
+	 * @memberof Condoit
+	 */
 	public conpherence = {
-		createthread: () => {
-			// TODO
+		/**
+		 ***Marked for deprecation** Create a new conpherence thread. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/conpherence.createthread/}
+		 *
+		 * @param {iConpherence.ConperhenceCreatethread} options
+		 * @returns {Promise<iConpherence.RetConperhenceCreatethread>}
+		 */
+		createthread: (
+			options: iConpherence.ConperhenceCreatethread
+		): Promise<iConpherence.RetConperhenceCreatethread> => {
+			return this.makeRequest('conpherence.createthread', {
+				title: options.title,
+				topic: options?.topic,
+				message: options?.message,
+				participantPHIDs: options.participantPHIDs
+			});
 		},
 
-		edit: () => {
-			// TODO
+		/**
+		 *Apply transactions to create a new room or edit an existing one. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/conpherence.edit/}
+		 *
+		 * @param {iConpherence.ConperhenceEdit} options
+		 * @returns {Promise<Transactions>}
+		 */
+		edit: (options: iConpherence.ConperhenceEdit): Promise<Transactions> => {
+			return this.makeRequest(
+				'conpherence.edit',
+				this.transactionOptions(options)
+			);
 		},
 
-		querythread: () => {
-			// TODO
+		/**
+		 *Query for Conpherence threads for the logged in user. You can query by 
+		 IDs or PHIDs for specific Conpherence threads. Otherwise, specify limit 
+		 and offset to query the most recently updated Conpherences for the logged in user. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/conpherence.querythread/}
+		 *
+		 * @param {iConpherence.ConpherenceQuerythread} options
+		 * @returns {Promise<iConpherence.RetConpherenceQuerythread>}
+		 */
+		querythread: (
+			options: iConpherence.ConpherenceQuerythread
+		): Promise<iConpherence.RetConpherenceQuerythread> => {
+			return this.makeRequest('conpherence.querythread', {
+				ids: options?.ids,
+				phids: options?.phids,
+				offset: options?.offset,
+				limit: options?.limit
+			});
 		},
 
-		querytransaction: () => {
-			// TODO
+		/**
+		 *Query for transactions for the logged in user within a specific 
+		 Conpherence room. You can specify the room by ID or PHID. Otherwise, 
+		 specify limit and offset to query the most recent transactions within 
+		 the Conpherence room for the logged in user. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/conpherence.querytransaction/}
+		 *
+		 * @param {iConpherence.ConpherenceQuerytransaction} options
+		 * @returns {Promise<iConpherence.RetConpherenceQuerytransaction>}
+		 */
+		querytransaction: (
+			options: iConpherence.ConpherenceQuerytransaction
+		): Promise<iConpherence.RetConpherenceQuerytransaction> => {
+			return this.makeRequest('conpherence.querytransaction', {
+				roomID: options?.roomID,
+				roomPHID: options?.roomPHID,
+				offset: options?.offset,
+				limit: options?.limit
+			});
 		},
 
-		updatethread: () => {
-			// TODO
+		/**
+		 ***Marked for deprecation** Update an existing conpherence room. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/conpherence.updatethread/}
+		 *
+		 * @param {iConpherence.ConperhenceUpdatethread} options
+		 * @returns {Promise<object>}
+		 */
+		updatethread: (
+			options: iConpherence.ConperhenceUpdatethread
+		): Promise<object> => {
+			return this.makeRequest('conpherence.updatethread', {
+				id: options?.id,
+				phid: options?.phid,
+				title: options?.title,
+				message: options?.message,
+				addParticipantPHIDs: options?.addParticipantPHIDs,
+				removeParticipantPHIDs: options?.removeParticipantPHIDs
+			});
 		}
 	};
 
+	/**
+	 *Countdown to Events.
+	 *
+	 * @memberof Condoit
+	 */
 	public countdown = {
-		edit: () => {
-			// TODO
+		/**
+		 *Read information about countdowns. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/countdown.search/}
+		 *
+		 * @param {iCountdown.CountdownServiceSearch} options
+		 * @returns {Promise<iCountdown.RetCountdownServiceSearch>}
+		 */
+		search: (
+			options: iCountdown.CountdownServiceSearch
+		): Promise<iCountdown.RetCountdownServiceSearch> => {
+			return this.makeRequest(
+				'countdown.search',
+				this.returnOptionsAttachments(options)
+			);
 		},
 
-		search: () => {
-			// TODO
+		/**
+		 *Apply transactions to create a new countdown or edit an existing one. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/countdown.edit/}
+		 *
+		 * @param {iCountdown.CountdownEdit} options
+		 * @returns {Promise<Transactions>}
+		 */
+		edit: (options: iCountdown.CountdownEdit): Promise<Transactions> => {
+			return this.makeRequest(
+				'countdown.edit',
+				this.transactionOptions(options)
+			);
 		}
 	};
 
 	public dashboard = {
-		panel: () => {
-			// TODO
+		panelEdit: () => {
+			throw Error('Not implemented');
 		}
 	};
 
+	/**
+	 *Pre-commit review
+	 *
+	 * @memberof Condoit
+	 */
 	public differential = {
-		close: () => {
-			// TODO
+		/**
+		 ***Marked for deprecation** Close a differential revision. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.close/}
+		 *
+		 * @param {{revisionID: number}} options
+		 * @returns {Promise<object>}
+		 */
+		close: (options: { revisionID: number }): Promise<object> => {
+			return this.makeRequest('differential.close', {
+				revisionID: options.revisionID
+			});
 		},
 
-		createcomment: () => {
-			// TODO
+		/**
+		 ***Marked for deprecation** Add a comment to a differential revision. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.createcomment/}
+		 *
+		 * @param {iDifferential.DiffComment} options
+		 * @returns {Promise<object>}
+		 */
+		createcomment: (options: iDifferential.DiffComment): Promise<object> => {
+			return this.makeRequest('differential.createcomment', {
+				revision_id: options.revision_id,
+				message: options?.message,
+				action: options?.action,
+				silent: options?.silent,
+				attach_inlines: options?.attach_inlines
+			});
 		},
 
-		creatediff: () => {
-			// TODO
+		/**
+		 *Create a new Differential diff. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.creatediff/}
+		 *
+		 * @param {iDifferential.DiffCreatediff} options
+		 * @returns {Promise<object>}
+		 */
+		creatediff: (options: iDifferential.DiffCreatediff): Promise<object> => {
+			return this.makeRequest('differential.creatediff', {
+				changes: options.changes,
+				sourceMachine: options.sourceMachine,
+				sourcePath: options.sourcePath,
+				branch: options.branch,
+				bookmark: options?.bookmark,
+				sourceControlSystem: options.sourceControlSystem,
+				sourceControlBaseRevision: options.sourceControlBaseRevision,
+				creationMethod: options.creationMethod,
+				lintStatus: options.lintStatus,
+				unitStatus: options.unitStatus,
+				repositoryPHID: options?.repositoryPHID
+			});
 		},
 
-		createinline: () => {
-			// TODO
+		/**
+		 *Add an inline comment to a Differential revision. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.createinline/}
+		 *
+		 * @param {iDifferential.DiffCreateinline} options
+		 * @returns {Promise<string>}
+		 */
+		createinline: (
+			options: iDifferential.DiffCreateinline
+		): Promise<string> => {
+			return this.makeRequest('differential.createinline', {
+				revisionID: options?.revisionID,
+				diffID: options?.diffID,
+				filePath: options.filePath,
+				isNewFile: options?.isNewFile,
+				lineNumber: options?.lineNumber,
+				lineLength: options?.lineLength,
+				content: options?.content
+			});
 		},
 
-		createrawdiff: () => {
-			// TODO
+		/**
+		 *Create a new Differential diff from a raw diff source. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.createrawdiff/}
+		 *
+		 * @param {iDifferential.DiffCreaterawdiff} options
+		 * @returns {Promise<object>}
+		 */
+		createrawdiff: (
+			options: iDifferential.DiffCreaterawdiff
+		): Promise<object> => {
+			return this.makeRequest('differential.createrawdiff', {
+				diff: options.diff,
+				repositoryPHID: options?.repositoryPHID,
+				viewPolicy: options?.viewPolicy
+			});
 		},
 
-		createrevision: () => {
-			// TODO
+		/**
+		 ***Marked for deprecation** Create a new differential revision. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.createrevision/}
+		 *
+		 * @param {{
+		 * 			diffid: string;
+		 * 			fields: object;
+		 * 		}} options
+		 * @returns {Promise<object>}
+		 */
+		createrevision: (options: {
+			diffid: string;
+			fields: object;
+		}): Promise<object> => {
+			return this.makeRequest('differential.createrevision', {
+				diffid: options.diffid,
+				fields: options.fields
+			});
 		},
 
-		diff: () => {
-			// TODO
+		/**
+		 *Read information about diffs. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.diff.search/}
+		 *
+		 * @param {iDifferential.DiffDiffSearch} options
+		 * @returns {Promise<iDifferential.RetDiffDiffSearch>}
+		 */
+		diffSearch: (
+			options: iDifferential.DiffDiffSearch
+		): Promise<iDifferential.RetDiffDiffSearch> => {
+			return this.makeRequest(
+				'differential.diff.search',
+				this.returnOptionsAttachments(options)
+			);
 		},
 
-		getcommitmessage: () => {
-			// TODO
+		/**
+		 *Retrieve Differential commit messages or message templates. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.getcommitmessage/}
+		 *
+		 * @param {iDifferential.DiffGetcommitmessage} options
+		 * @returns {Promise<object>}
+		 */
+		getcommitmessage: (
+			options: iDifferential.DiffGetcommitmessage
+		): Promise<object> => {
+			return this.makeRequest('differential.getcommitmessage', {
+				revision_id: options?.revision_id,
+				edit: options?.edit,
+				fields: options?.fields
+			});
 		},
 
-		getcommitpaths: () => {
-			// TODO
+		/**
+		 *Query which paths should be included when committing a Differential revision. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.getcommitpaths/}
+		 *
+		 * @param {{revision_id: number}} options
+		 * @returns {Promise<object>}
+		 */
+		getcommitpaths: (options: { revision_id: number }): Promise<object> => {
+			return this.makeRequest('differential.getcommitpaths', {
+				revision_id: options.revision_id
+			});
 		},
 
-		getrawdiff: () => {
-			// TODO
+		/**
+		 *Retreive a raw diff. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.getrawdiff/}
+		 *
+		 * @param {{diffID: string}} options
+		 * @returns {Promise<object>}
+		 */
+		getrawdiff: (options: { diffID: string }): Promise<object> => {
+			return this.makeRequest('differential.getrawdiff', {
+				diffID: options.diffID
+			});
 		},
 
-		parsecommitmessage: () => {
-			// TODO
+		/**
+		 *Parse commit messages for Differential fields. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.parsecommitmessage/}
+		 *
+		 * @param {{corpus: string, partial?: boolean}} options
+		 * @returns {Promise<object>}
+		 */
+		parsecommitmessage: (options: {
+			corpus: string;
+			partial?: boolean;
+		}): Promise<object> => {
+			return this.makeRequest('differential.parsecommitmessage', {
+				corpus: options.corpus,
+				partial: options?.partial
+			});
 		},
 
-		query: () => {
-			// TODO
+		/**
+		 ***Marked for deprecation** Query Differential revisions which match certain criteria. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.query/}
+		 *
+		 * @param {iDifferential.DiffQuery} options
+		 * @returns {Promise<object>}
+		 */
+		query: (options: iDifferential.DiffQuery): Promise<object> => {
+			return this.makeRequest('differential.query', {
+				authors: options?.authors,
+				ccs: options?.ccs,
+				reviewers: options?.reviewers,
+				paths: options?.paths,
+				commitHashes: options?.commitHashes,
+				status: options?.status,
+				order: options?.order,
+				limit: options?.limit,
+				offset: options?.offset,
+				ids: options?.ids,
+				phids: options?.phids,
+				subscribers: options?.subscribers,
+				responsibleUsers: options?.responsibleUsers,
+				branches: options?.branches
+			});
 		},
 
-		querydiffs: () => {
-			// TODO
+		/**
+		 ***Marked for deprecation** Query differential diffs which match certain criteria. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.querydiffs/}
+		 *
+		 * @param {{ids?: Array<number>, revisionIDs?: Array<number>}} options
+		 * @returns {Promise<object>}
+		 */
+		querydiffs: (options: {
+			ids?: Array<number>;
+			revisionIDs?: Array<number>;
+		}): Promise<object> => {
+			return this.makeRequest('differential.querydiffs', {
+				ids: options?.ids,
+				revisionIDs: options?.revisionIDs
+			});
 		},
 
-		revision: () => {
-			// TODO
+		/**
+		 *Apply transactions to create or update a revision. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.revision.edit/}
+		 *
+		 * @param {iDifferential.DiffRevisionEdit} options
+		 * @returns {Promise<Transactions>}
+		 */
+		revisionEdit: (
+			options: iDifferential.DiffRevisionEdit
+		): Promise<Transactions> => {
+			return this.makeRequest(
+				'differential.revision.edit',
+				this.transactionOptions(options)
+			);
 		},
 
-		setdiffproperty: () => {
-			// TODO
+		/**
+		 *Read information about revisions. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.revision.search/}
+		 *
+		 * @param {iDifferential.DiffRevisionSearch} options
+		 * @returns {Promise<iDifferential.RetDiffRevisionSearch>}
+		 */
+		revisionSearch: (
+			options: iDifferential.DiffRevisionSearch
+		): Promise<iDifferential.RetDiffRevisionSearch> => {
+			return this.makeRequest(
+				'differential.revision.search',
+				this.returnOptionsAttachments(options)
+			);
 		},
 
-		updaterevision: () => {
-			// TODO
+		/**
+		 *Attach properties to Differential diffs. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.setdiffproperty/}
+		 *
+		 * @param {{
+		 * 			diff_id: string;
+		 * 			name: string;
+		 * 			data: string;
+		 * 		}} options
+		 * @returns {Promise<object>}
+		 */
+		setdiffproperty: (options: {
+			diff_id: string;
+			name: string;
+			data: string;
+		}): Promise<object> => {
+			return this.makeRequest('differential.setdiffproperty', {
+				diff_id: options.diff_id,
+				data: options.data,
+				name: options.name
+			});
+		},
+
+		/**
+		 ***Marked for deprecation** Update a differential revision. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.updaterevision/}
+		 *
+		 * @param {iDifferential.DiffUpdateRevision} options
+		 * @returns {Promise<object>}
+		 */
+		updaterevision: (
+			options: iDifferential.DiffUpdateRevision
+		): Promise<object> => {
+			return this.makeRequest('differential.updaterevision', {
+				od: options.id,
+				diffid: options.diffid,
+				message: options.message,
+				fields: options.fields
+			});
 		}
 	};
 
+	/**
+	 *Host and Browse Repositories
+	 *
+	 * @memberof Condoit
+	 */
 	public diffusion = {
 		blame: () => {
 			// TODO
@@ -610,6 +1036,11 @@ export class Condoit {
 		}
 	};
 
+	/**
+	 *Allocate software resources.
+	 *
+	 * @memberof Condoit
+	 */
 	public drydock = {
 		/**
 		 *Retrieve information about Drydock authorizations. 
@@ -692,6 +1123,11 @@ export class Condoit {
 		}
 	};
 
+	/**
+	 *Edge relationships between objects.
+	 *
+	 * @memberof Condoit
+	 */
 	public edge = {
 		/**
 		 *Read edge relationships between objects. 
@@ -712,6 +1148,11 @@ export class Condoit {
 		}
 	};
 
+	/**
+	 *Review recent activity.
+	 *
+	 * @memberof Condoit
+	 */
 	public feed = {
 		/**
 		 *Publish a story to the feed. 
@@ -754,6 +1195,11 @@ export class Condoit {
 		}
 	};
 
+	/**
+	 *Store and Share files.
+	 *
+	 * @memberof Condoit
+	 */
 	public file = {
 		/**
 		 *Allocate space to upload a file. 
@@ -891,6 +1337,11 @@ export class Condoit {
 		}
 	};
 
+	/**
+	 *Personal bookmarks.
+	 *
+	 * @memberof Condoit
+	 */
 	public flag = {
 		/**
 		 *Clear or delete a flag or bookmark
