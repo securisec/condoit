@@ -4,12 +4,14 @@ import { resolve } from 'url';
 import { writeFile, readFileSync } from 'fs';
 
 import * as iAlmanac from './interfaces/iAlmanac';
+import * as iAudit from './interfaces/iAudit';
 import * as iAuth from './interfaces/iAuth';
 import * as iBadge from './interfaces/iBadge';
 import * as iConduit from './interfaces/iConduit';
 import * as iConpherence from './interfaces/iConpherence';
 import * as iCountdown from './interfaces/iCountdown';
 import * as iDifferential from './interfaces/iDifferential';
+import * as iDiffusion from './interfaces/iDiffusion';
 import * as iDrydock from './interfaces/iDrydock';
 import * as iEdge from './interfaces/iEdge';
 import * as iFeed from './interfaces/iFeed';
@@ -295,41 +297,13 @@ export class Condoit {
 	};
 
 	/**
-	 *Browse and audit commits
+	 ***Marked for deprecation** Query audit requests. 
+	 [Docs]{@link https://secure.phabricator.com/conduit/method/audit.query/}
 	 *
 	 * @memberof Condoit
 	 */
 	public audit = {
-		/**
-		 ***Marked for deprecation** Query audit requests. 
-		 [Docs]{@link https://secure.phabricator.com/conduit/method/audit.query/}
-		 *
-		 * @param {({
-		 * 			authorPHIDs?: Array<string>;
-		 * 			commitPHIDs?: Array<string>;
-		 * 			status?:
-		 * 				| 'audit-status-any'
-		 * 				| 'audit-status-open'
-		 * 				| 'audit-status-concern'
-		 * 				| 'audit-status-accepted'
-		 * 				| 'audit-status-partial';
-		 * 			offset?: number;
-		 * 			limit?: number;
-		 * 		})} options
-		 * @returns
-		 */
-		query: (options: {
-			authorPHIDs?: Array<string>;
-			commitPHIDs?: Array<string>;
-			status?:
-				| 'audit-status-any'
-				| 'audit-status-open'
-				| 'audit-status-concern'
-				| 'audit-status-accepted'
-				| 'audit-status-partial';
-			offset?: number;
-			limit?: number;
-		}) => {
+		query: (options: iAudit.AuditQuery): Promise<iAudit.RetAuditQuery> => {
 			return this.makeRequest('audit.query', {
 				authodPHIDs: options?.authorPHIDs,
 				commitPHIDs: options?.commitPHIDs,
@@ -939,44 +913,208 @@ export class Condoit {
 	 * @memberof Condoit
 	 */
 	public diffusion = {
-		blame: () => {
-			// TODO
+		/**
+		 *Get blame information for a list of paths. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.blame/}
+		 *
+		 * @param {iDiffusion.DiffusionBlame} options
+		 * @returns {Promise<object>}
+		 */
+		blame: (options: iDiffusion.DiffusionBlame): Promise<object> => {
+			return this.makeRequest('diffusion.blame', {
+				paths: options.paths,
+				commit: options.commit,
+				timeout: options?.timeout,
+				repository: options?.repository,
+				branch: options?.branch
+			});
 		},
 
-		branchquery: () => {
-			// TODO
+		/**
+		 *Determine what branches exist for a repository. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.branchquery/}
+		 *
+		 * @param {iDiffusion.DiffusionBranchQuery} options
+		 * @returns {Promise<Array<iDiffusion.RetDiffusionBranchquery>>}
+		 */
+		branchquery: (
+			options: iDiffusion.DiffusionBranchQuery
+		): Promise<Array<iDiffusion.RetDiffusionBranchquery>> => {
+			return this.makeRequest('diffusion.branchquery', {
+				closed: options?.closed,
+				limit: options?.limit,
+				offset: options?.offset,
+				contains: options?.contains,
+				pattern: options?.pattern,
+				repository: options?.repository,
+				branch: options?.branch
+			});
 		},
 
-		browsequery: () => {
-			// TODO
+		/**
+		 *File(s) information for a repository at an (optional) path and (optional) commit. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.browsequery/}
+		 *
+		 * @param {iDiffusion.DiffusionBrowsequery} options
+		 * @returns {Promise<iDiffusion.RetDiffusionBrowsequery>}
+		 */
+		browsequery: (
+			options: iDiffusion.DiffusionBrowsequery
+		): Promise<iDiffusion.RetDiffusionBrowsequery> => {
+			return this.makeRequest('diffusion.browsequery', {
+				path: options?.path,
+				commit: options?.commit,
+				needValidityOnly: options?.needValidityOnly,
+				limit: options?.limit,
+				offset: options?.offset,
+				repository: options?.repository,
+				branch: options?.branch
+			});
 		},
 
-		commit: () => {
-			// TODO
+		/**
+		 *Apply transactions to edit an existing commit. This method can not create new commits. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.commit.edit/}
+		 *
+		 * @param {iDiffusion.DiffusionCommitEdit} options
+		 * @returns {Promise<Transactions>}
+		 */
+		commitEdit: (
+			options: iDiffusion.DiffusionCommitEdit
+		): Promise<Transactions> => {
+			return this.makeRequest(
+				'diffusion.commit.edit',
+				this.transactionOptions(options)
+			);
 		},
 
-		commitparentsquery: () => {
-			// TODO
+		/**
+		 *Read information about commits. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.commit.search/}
+		 *
+		 * @param {iDiffusion.DiffusionCommitSearch} options
+		 * @returns {Promise<iDiffusion.RetDiffusionCommitSearch>}
+		 */
+		commitSearch: (
+			options: iDiffusion.DiffusionCommitSearch
+		): Promise<iDiffusion.RetDiffusionCommitSearch> => {
+			return this.makeRequest(
+				'diffusion.commit.search',
+				this.returnOptionsAttachments(options)
+			);
 		},
 
-		diffquery: () => {
-			// TODO
+		/**
+		 *Get the commit identifiers for a commit's parent or parents. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.commitparentsquery/}
+		 *
+		 * @param {iDiffusion.DiffusionCommitparentsquery} options
+		 * @returns {Promise<object>}
+		 */
+		commitparentsquery: (
+			options: iDiffusion.DiffusionCommitparentsquery
+		): Promise<object> => {
+			return this.makeRequest('diffusion.commitparentsquery', {
+				commit: options.commit,
+				repository: options?.repository,
+				branch: options?.branch
+			});
 		},
 
-		existsquery: () => {
-			// TODO
+		/**
+		 *Get diff information from a repository for a specific path at an (optional) commit. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.diffquery/}
+		 *
+		 * @param {iDiffusion.DiffusionDiffQuery} options
+		 * @returns {Promise<iDiffusion.RetDiffusionDiffquery>}
+		 */
+		diffquery: (
+			options: iDiffusion.DiffusionDiffQuery
+		): Promise<iDiffusion.RetDiffusionDiffquery> => {
+			return this.makeRequest('diffusion.diffquery', {
+				path: options?.path,
+				commit: options?.commit,
+				repository: options.repository,
+				branch: options?.branch
+			});
 		},
 
-		filecontentquery: () => {
-			// TODO
+		/**
+		 *Determine if code exists in a version control system. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.existsquery/}
+		 *
+		 * @param {iDiffusion.DiffusionExistsquery} options
+		 * @returns {Promise<any>}
+		 */
+		existsquery: (options: iDiffusion.DiffusionExistsquery): Promise<any> => {
+			return this.makeRequest('diffusion.existsquery', {
+				commit: options.commit,
+				repository: options?.repository,
+				branch: options?.branch
+			});
 		},
 
-		findsymbols: () => {
-			// TODO
+		/**
+		 *Retreive file content from a repository. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.filecontentquery/}
+		 *
+		 * @param {iDiffusion.DiffusionFilecontentquery} options
+		 * @returns {Promise<iDiffusion.RetDiffusionFilecontentquery>}
+		 */
+		filecontentquery: (
+			options: iDiffusion.DiffusionFilecontentquery
+		): Promise<iDiffusion.RetDiffusionFilecontentquery> => {
+			return this.makeRequest('diffusion.filecontentquery', {
+				path: options.path,
+				commit: options?.commit,
+				timeout: options?.timeout,
+				byteLimit: options?.byteLimit,
+				repository: options.repository,
+				branch: options?.branch
+			});
 		},
 
-		historyquery: () => {
-			// TODO
+		/**
+		 *Retrieve Diffusion symbol information. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.findsymbols/}
+		 *
+		 * @param {iDiffusion.DiffusionFindsymbols} options
+		 * @returns {Promise<object>}
+		 */
+		findsymbols: (
+			options: iDiffusion.DiffusionFindsymbols
+		): Promise<object> => {
+			return this.makeRequest('diffusion.findsymbols', {
+				name: options?.name,
+				namePrefix: options?.namePrefix,
+				context: options?.context,
+				language: options?.language,
+				type: options?.type,
+				repositoryPHID: options?.repositoryPHID
+			});
+		},
+
+		/**
+		 *Returns history information for a repository at a specific commit and path. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.historyquery/}
+		 *
+		 * @param {iDiffusion.DiffusionHistoryquery} options
+		 * @returns {Promise<iDiffusion.RetDiffusionHistoryquery>}
+		 */
+		historyquery: (
+			options: iDiffusion.DiffusionHistoryquery
+		): Promise<iDiffusion.RetDiffusionHistoryquery> => {
+			return this.makeRequest('diffusion.historyquery', {
+				commit: options.commit,
+				against: options?.against,
+				path: options?.path,
+				offset: options?.offset,
+				limit: options?.limit,
+				needDirectChanges: options?.needDirectChanges,
+				needChildChanges: options?.needChildChanges,
+				repository: options?.repository,
+				branch: options?.branch
+			});
 		},
 
 		lastmodifiedquery: () => {
