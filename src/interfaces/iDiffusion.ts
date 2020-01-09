@@ -1,11 +1,14 @@
 import { BeforeAfterLimit, RetSearchConstants, ErrorCodes } from './iGlobal';
 
-export interface DiffusionBlame {
-	paths: Array<string>;
-	commit: string;
-	timeout?: number;
-	repository?: string;
+interface BranchCommitRepo {
 	branch?: string;
+	commit?: string;
+	repository: string;
+}
+
+export interface DiffusionBlame extends BranchCommitRepo {
+	paths: Array<string>;
+	timeout?: number;
 }
 
 export interface DiffusionBranchQuery {
@@ -35,14 +38,11 @@ export interface RetDiffusionBranchquery {
 	};
 }
 
-export interface DiffusionBrowsequery {
+export interface DiffusionBrowsequery extends BranchCommitRepo {
 	path?: string;
-	commit?: string;
 	needValidityOnly?: boolean;
 	limit?: number;
 	offset?: number;
-	repository?: string;
-	branch?: string;
 }
 
 export interface RetDiffusionBrowsequery {
@@ -174,17 +174,8 @@ export interface DiffusionCommitEdit {
 	objectIdentifier: string | number;
 }
 
-export interface DiffusionCommitparentsquery {
-	commit: string;
-	repository?: string;
-	branch?: string;
-}
-
-export interface DiffusionDiffQuery {
+export interface DiffusionDiffQuery extends BranchCommitRepo {
 	path?: string;
-	commit?: string;
-	repository: string;
-	branch: string;
 }
 
 export interface RetDiffusionDiffquery extends ErrorCodes {
@@ -219,19 +210,10 @@ export interface RetDiffusionDiffquery extends ErrorCodes {
 	};
 }
 
-export interface DiffusionExistsquery {
-	commit: string;
-	repository?: string;
-	branch?: string;
-}
-
-export interface DiffusionFilecontentquery {
+export interface DiffusionFilecontentquery extends BranchCommitRepo {
 	path: string;
-	commit?: string;
 	timeout?: number;
 	byteLimit?: number;
-	repository: string;
-	branch?: string;
 }
 
 export interface RetDiffusionFilecontentquery extends ErrorCodes {
@@ -251,16 +233,13 @@ export interface DiffusionFindsymbols {
 	repositoryPHID?: string;
 }
 
-export interface DiffusionHistoryquery {
-	commit: string;
+export interface DiffusionHistoryquery extends BranchCommitRepo {
 	against?: string;
 	path: string;
 	offset?: number;
 	limit?: number;
 	needDirectChanges?: boolean;
 	needChildChanges?: boolean;
-	repository: string;
-	branch?: string;
 }
 
 export interface RetDiffusionHistoryquery extends ErrorCodes {
@@ -269,3 +248,301 @@ export interface RetDiffusionHistoryquery extends ErrorCodes {
 		parents: Array<string>;
 	};
 }
+
+export interface DiffusionLastmodifiedQuery {
+	paths: object;
+	repository?: string;
+	branch?: string;
+}
+
+export interface DiffusionMergedcommitsquery extends BranchCommitRepo {
+	limit?: number;
+}
+
+export interface DiffusionQuerycommits extends BeforeAfterLimit {
+	ids?: Array<number>;
+	phids?: Array<string>;
+	names?: Array<string>;
+	repositoryPHID?: string;
+	needMessages?: boolean;
+	bypassCache?: boolean;
+}
+
+export interface RetDiffusionQuerycommits extends ErrorCodes {
+	result: {
+		data: {
+			[phid: string]: {
+				id: string;
+				phid: string;
+				repositoryPHID: string;
+				identifier: string;
+				epoch: string;
+				authorEpoch: number;
+				uri: string;
+				isImporting: boolean;
+				summary: string;
+				authorPHID: string;
+				committerPHID: string;
+				author: string;
+				authorName: string;
+				authorEmail: string;
+				committer: string;
+				committerName: string;
+				committerEmail: string;
+				hashes: Array<string>;
+			};
+		};
+		identifierMap: object;
+		cursor: { limit: number; after: string; before: string };
+	};
+}
+
+export interface DiffusionQuerypaths extends BranchCommitRepo {
+	path: string;
+	pattern: string;
+	limit: number;
+	offset: number;
+}
+
+export interface DiffusionRawdiffquery extends BranchCommitRepo {
+	path?: string;
+	linesOfContext?: number;
+	againstCOmmit?: string;
+	timeout?: number;
+	byteLimit?: number;
+}
+
+export interface RetDiffusionRefsquery extends ErrorCodes {
+	result: {
+		[index: string]: {
+			ref: string;
+			href: object;
+		};
+	};
+}
+
+interface diffusionRepoEdit {
+	type:
+		| 'space'
+		| 'vcs'
+		| 'name'
+		| 'callsign'
+		| 'shortName'
+		| 'description'
+		| 'encoding'
+		| 'allowDangerousChanges'
+		| 'allowEnormousChanges'
+		| 'status'
+		| 'defaultBranch'
+		| 'fetchRefs'
+		| 'permanentRefs'
+		| 'trackOnly'
+		| 'importOnly'
+		| 'stagingAreaURI'
+		| 'automationBlueprintPHIDs'
+		| 'symbolLanguages'
+		| 'symbolRepositoryPHIDs'
+		| 'publish'
+		| 'filesizeLimit'
+		| 'copyTimeLimit'
+		| 'touchLimit'
+		| 'view'
+		| 'edit'
+		| 'policy.push'
+		| 'projects.add'
+		| 'projects.remove'
+		| 'projects.set'
+		| 'mfa';
+	value: any;
+}
+
+export interface DiffusionRepositoryEdit {
+	transactions: Array<diffusionRepoEdit>;
+	objectIdentifier: string | number;
+}
+
+export interface DiffusionRepositorySearch extends BeforeAfterLimit {
+	queryKey?: 'all' | 'active';
+	constraints?: {
+		ids?: Array<number>;
+		phids?: Array<string>;
+		callsigns?: Array<string>;
+		shortNames?: Array<string>;
+		types?: ['git' | 'hg' | 'svn'];
+		uris?: Array<string>;
+		almanacServicePHIDs?: Array<string>;
+		query?: string;
+		projects?: Array<string>;
+	};
+	attachments: { projects: boolean; uris: boolean; metrics: boolean };
+	order?:
+		| 'committed'
+		| 'name'
+		| 'callsign'
+		| 'size'
+		| 'newest'
+		| 'oldest'
+		| 'relevance';
+}
+
+interface retDiffusionRepositorySearchData extends RetSearchConstants {
+	fields: {
+		name: string;
+		vcs: string;
+		callsign: string;
+		shortName: string;
+		status: string;
+		isImporting: boolean;
+		almanacServicePHID: string;
+		refRules: object;
+		defaultBranch: string;
+		description: string;
+		spacePHID: string;
+		dateCreated: number;
+		dateModified: number;
+		policy: { view: string; edit: string };
+	};
+	attachments: {
+		subscribers: {
+			subscriberPHIDs: Array<string>;
+			subscriberCount: number;
+			viewerIsSubscribed: boolean;
+		};
+		projects: { projectPHIDs: Array<string> };
+		bindings: { bindings: Array<any> };
+	};
+}
+
+interface retDiffuRepoSearchAttachmentUri {
+	id: string;
+	type: string;
+	phid: string;
+	fields: {
+		repositoryPHID: string;
+		uri: {
+			raw: string;
+			display: string;
+			effective: string;
+			normalized: string;
+		};
+		io: { raw: string; default: string; effective: string };
+		display: {
+			raw: string;
+			default: string;
+			effective: string;
+		};
+		credentialPHID: string;
+		disabled: boolean;
+		builtin: { protocol: string; identifier: string };
+		dateCreated: string;
+		dateModified: string;
+	};
+}
+
+export interface RetDiffusionRepositorySearch extends ErrorCodes {
+	result: {
+		data: Array<retDiffusionRepositorySearchData>;
+		maps: object;
+		query: { queryKey: string };
+		cursor: {
+			limit: number;
+			after: string;
+			before: any;
+			order: any;
+		};
+		attachments: {
+			metrics: {
+				commitCount: number;
+				recentCommit: {
+					identifier: string;
+					repositoryPHID: string;
+					author: {
+						name: string;
+						email: string;
+						raw: string;
+						epoch: number;
+						identityPHID: string;
+						userPHID: string;
+					};
+					committer: {
+						name: string;
+						email: string;
+						raw: string;
+						epoch: number;
+						identityPHID: string;
+						userPHID: string;
+					};
+					isUnreachable: boolean;
+					isImported: boolean;
+					auditStatus: {
+						value: string;
+						name: string;
+						closed: false;
+						'color.ansi': string;
+					};
+					message: string;
+				};
+			};
+			projects: { projectPHIDs: Array<string> };
+			uris: {
+				uris: Array<retDiffuRepoSearchAttachmentUri>;
+			};
+		};
+	};
+}
+
+export interface DiffusionResolverefs {
+	refs?: Array<string>;
+	types?: Array<string>;
+	repository?: string;
+	branch?: string;
+}
+
+export interface DiffusionSearchquery extends BranchCommitRepo {
+	path: string;
+	grep: string;
+	limit?: number;
+	offset?: string;
+}
+
+export interface DiffusionTagsquery extends BranchCommitRepo {
+	names?: Array<string>;
+	needMessages?: boolean;
+	offset?: number;
+	limit?: number;
+	branch?: string;
+}
+
+interface diffuUriEditTransactions {
+	type:
+		| 'repository'
+		| 'uri'
+		| 'io'
+		| 'display'
+		| 'credential'
+		| 'disable'
+		| 'mfa';
+	value: any;
+}
+
+export interface DiffusionUriedit {
+	transactions: Array<diffuUriEditTransactions>;
+	objectIdentifier?: string | number;
+}
+
+export interface DiffusionGetlinemessages {
+	repositoryPHID: string;
+	branch: string;
+	commit?: string;
+	files: Array<string>;
+}
+
+export interface DiffusionUpdatecoverage {
+	repositoryPHID: string;
+	branch: string;
+	commit: string;
+	coverage: object;
+	mode?: 'overwrite' | 'update';
+}
+
+export { BranchCommitRepo };

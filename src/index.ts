@@ -33,7 +33,7 @@ import * as iSlowvote from './interfaces/iSlowvote';
 import * as iToken from './interfaces/iToken';
 import * as iTransactions from './interfaces/iTransactions';
 import * as iUser from './interfaces/iUser';
-import { Transactions } from './interfaces/iGlobal';
+import { Transactions, GenericReturn } from './interfaces/iGlobal';
 
 /**
  *The class to create an instance to use the Phabricator api
@@ -60,7 +60,7 @@ export class Condoit {
 	 * @private
 	 * @param {string} endpoint The name of the phabricator api endpoint
 	 * @param {object} params Options or info passed to the api
-	 * @returns {Promise<object>}
+	 * @returns {Promise<GenericReturn>}
 	 * @memberof Condoit
 	 */
 	private makeRequest(endpoint: string, params: object): Promise<any> {
@@ -447,9 +447,9 @@ export class Condoit {
 		 *Returns the parameters of the Conduit methods. 
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/conduit.query/}
 		 *
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
-		query: (): Promise<object> => {
+		query: (): Promise<GenericReturn> => {
 			return this.makeRequest('conduit.query', {});
 		}
 	};
@@ -538,11 +538,11 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/conpherence.updatethread/}
 		 *
 		 * @param {iConpherence.ConperhenceUpdatethread} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
 		updatethread: (
 			options: iConpherence.ConperhenceUpdatethread
-		): Promise<object> => {
+		): Promise<GenericReturn> => {
 			return this.makeRequest('conpherence.updatethread', {
 				id: options?.id,
 				phid: options?.phid,
@@ -608,9 +608,9 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.close/}
 		 *
 		 * @param {{revisionID: number}} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
-		close: (options: { revisionID: number }): Promise<object> => {
+		close: (options: { revisionID: number }): Promise<GenericReturn> => {
 			return this.makeRequest('differential.close', {
 				revisionID: options.revisionID
 			});
@@ -621,9 +621,11 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.createcomment/}
 		 *
 		 * @param {iDifferential.DiffComment} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
-		createcomment: (options: iDifferential.DiffComment): Promise<object> => {
+		createcomment: (
+			options: iDifferential.DiffComment
+		): Promise<GenericReturn> => {
 			return this.makeRequest('differential.createcomment', {
 				revision_id: options.revision_id,
 				message: options?.message,
@@ -638,9 +640,11 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.creatediff/}
 		 *
 		 * @param {iDifferential.DiffCreatediff} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
-		creatediff: (options: iDifferential.DiffCreatediff): Promise<object> => {
+		creatediff: (
+			options: iDifferential.DiffCreatediff
+		): Promise<GenericReturn> => {
 			return this.makeRequest('differential.creatediff', {
 				changes: options.changes,
 				sourceMachine: options.sourceMachine,
@@ -682,11 +686,11 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.createrawdiff/}
 		 *
 		 * @param {iDifferential.DiffCreaterawdiff} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
 		createrawdiff: (
 			options: iDifferential.DiffCreaterawdiff
-		): Promise<object> => {
+		): Promise<GenericReturn> => {
 			return this.makeRequest('differential.createrawdiff', {
 				diff: options.diff,
 				repositoryPHID: options?.repositoryPHID,
@@ -702,12 +706,12 @@ export class Condoit {
 		 * 			diffid: string;
 		 * 			fields: object;
 		 * 		}} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
 		createrevision: (options: {
 			diffid: string;
 			fields: object;
-		}): Promise<object> => {
+		}): Promise<GenericReturn> => {
 			return this.makeRequest('differential.createrevision', {
 				diffid: options.diffid,
 				fields: options.fields
@@ -735,11 +739,11 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.getcommitmessage/}
 		 *
 		 * @param {iDifferential.DiffGetcommitmessage} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
 		getcommitmessage: (
 			options: iDifferential.DiffGetcommitmessage
-		): Promise<object> => {
+		): Promise<GenericReturn> => {
 			return this.makeRequest('differential.getcommitmessage', {
 				revision_id: options?.revision_id,
 				edit: options?.edit,
@@ -752,9 +756,11 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.getcommitpaths/}
 		 *
 		 * @param {{revision_id: number}} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
-		getcommitpaths: (options: { revision_id: number }): Promise<object> => {
+		getcommitpaths: (options: {
+			revision_id: number;
+		}): Promise<GenericReturn> => {
 			return this.makeRequest('differential.getcommitpaths', {
 				revision_id: options.revision_id
 			});
@@ -765,9 +771,9 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.getrawdiff/}
 		 *
 		 * @param {{diffID: string}} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
-		getrawdiff: (options: { diffID: string }): Promise<object> => {
+		getrawdiff: (options: { diffID: string }): Promise<GenericReturn> => {
 			return this.makeRequest('differential.getrawdiff', {
 				diffID: options.diffID
 			});
@@ -778,12 +784,12 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.parsecommitmessage/}
 		 *
 		 * @param {{corpus: string, partial?: boolean}} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
 		parsecommitmessage: (options: {
 			corpus: string;
 			partial?: boolean;
-		}): Promise<object> => {
+		}): Promise<GenericReturn> => {
 			return this.makeRequest('differential.parsecommitmessage', {
 				corpus: options.corpus,
 				partial: options?.partial
@@ -795,9 +801,9 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.query/}
 		 *
 		 * @param {iDifferential.DiffQuery} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
-		query: (options: iDifferential.DiffQuery): Promise<object> => {
+		query: (options: iDifferential.DiffQuery): Promise<GenericReturn> => {
 			return this.makeRequest('differential.query', {
 				authors: options?.authors,
 				ccs: options?.ccs,
@@ -821,12 +827,12 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.querydiffs/}
 		 *
 		 * @param {{ids?: Array<number>, revisionIDs?: Array<number>}} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
 		querydiffs: (options: {
 			ids?: Array<number>;
 			revisionIDs?: Array<number>;
-		}): Promise<object> => {
+		}): Promise<GenericReturn> => {
 			return this.makeRequest('differential.querydiffs', {
 				ids: options?.ids,
 				revisionIDs: options?.revisionIDs
@@ -874,13 +880,13 @@ export class Condoit {
 		 * 			name: string;
 		 * 			data: string;
 		 * 		}} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
 		setdiffproperty: (options: {
 			diff_id: string;
 			name: string;
 			data: string;
-		}): Promise<object> => {
+		}): Promise<GenericReturn> => {
 			return this.makeRequest('differential.setdiffproperty', {
 				diff_id: options.diff_id,
 				data: options.data,
@@ -893,11 +899,11 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/differential.updaterevision/}
 		 *
 		 * @param {iDifferential.DiffUpdateRevision} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
 		updaterevision: (
 			options: iDifferential.DiffUpdateRevision
-		): Promise<object> => {
+		): Promise<GenericReturn> => {
 			return this.makeRequest('differential.updaterevision', {
 				od: options.id,
 				diffid: options.diffid,
@@ -918,9 +924,9 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.blame/}
 		 *
 		 * @param {iDiffusion.DiffusionBlame} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
-		blame: (options: iDiffusion.DiffusionBlame): Promise<object> => {
+		blame: (options: iDiffusion.DiffusionBlame): Promise<GenericReturn> => {
 			return this.makeRequest('diffusion.blame', {
 				paths: options.paths,
 				commit: options.commit,
@@ -1009,11 +1015,11 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.commitparentsquery/}
 		 *
 		 * @param {iDiffusion.DiffusionCommitparentsquery} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
 		commitparentsquery: (
-			options: iDiffusion.DiffusionCommitparentsquery
-		): Promise<object> => {
+			options: iDiffusion.BranchCommitRepo
+		): Promise<GenericReturn> => {
 			return this.makeRequest('diffusion.commitparentsquery', {
 				commit: options.commit,
 				repository: options?.repository,
@@ -1046,7 +1052,7 @@ export class Condoit {
 		 * @param {iDiffusion.DiffusionExistsquery} options
 		 * @returns {Promise<any>}
 		 */
-		existsquery: (options: iDiffusion.DiffusionExistsquery): Promise<any> => {
+		existsquery: (options: iDiffusion.BranchCommitRepo): Promise<any> => {
 			return this.makeRequest('diffusion.existsquery', {
 				commit: options.commit,
 				repository: options?.repository,
@@ -1079,11 +1085,11 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.findsymbols/}
 		 *
 		 * @param {iDiffusion.DiffusionFindsymbols} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
 		findsymbols: (
 			options: iDiffusion.DiffusionFindsymbols
-		): Promise<object> => {
+		): Promise<GenericReturn> => {
 			return this.makeRequest('diffusion.findsymbols', {
 				name: options?.name,
 				namePrefix: options?.namePrefix,
@@ -1117,60 +1123,283 @@ export class Condoit {
 			});
 		},
 
-		lastmodifiedquery: () => {
-			// TODO
+		/**
+		 *Get the commits at which paths were last modified. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.lastmodifiedquery/}
+		 *
+		 * @param {iDiffusion.DiffusionLastmodifiedQuery} options
+		 * @returns {Promise<GenericReturn>}
+		 */
+		lastmodifiedquery: (
+			options: iDiffusion.DiffusionLastmodifiedQuery
+		): Promise<GenericReturn> => {
+			return this.makeRequest('diffusion.lastmodifiedquery', {
+				paths: options.paths,
+				repository: options?.repository,
+				branch: options?.branch
+			});
 		},
 
-		mergedcommitsquery: () => {
-			// TODO
+		/**
+		 *Merged commit information for a specific commit in a repository. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.mergedcommitsquery/}
+		 *
+		 * @param {iDiffusion.DiffusionMergedcommitsquery} options
+		 * @returns {Promise<GenericReturn>}
+		 */
+		mergedcommitsquery: (
+			options: iDiffusion.DiffusionMergedcommitsquery
+		): Promise<GenericReturn> => {
+			return this.makeRequest('diffusion.mergedcommitsquery', {
+				commit: options.commit,
+				branch: options?.branch,
+				repository: options?.repository,
+				limit: options?.limit
+			});
 		},
 
-		querycommits: () => {
-			// TODO
+		/**
+		 ***Marked for deprecation** Retreive information about commits. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.querycommits/}
+		 *
+		 * @param {iDiffusion.DiffusionQuerycommits} options
+		 * @returns {Promise<iDiffusion.RetDiffusionQuerycommits>}
+		 */
+		querycommits: (
+			options: iDiffusion.DiffusionQuerycommits
+		): Promise<iDiffusion.RetDiffusionQuerycommits> => {
+			return this.makeRequest('diffusion.querycommits', {
+				ids: options?.ids,
+				phids: options?.phids,
+				names: options?.names,
+				repositoryPHID: options?.repositoryPHID,
+				needMessages: options?.needMessages,
+				bypassCache: options?.bypassCache,
+				before: options?.before,
+				after: options?.after,
+				limit: options?.limit
+			});
 		},
 
-		querypaths: () => {
-			// TODO
+		/**
+		 *Filename search on a repository. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.querypaths/}
+		 *
+		 * @param {iDiffusion.DiffusionQuerypaths} [options]
+		 * @returns {Promise<GenericReturn>}
+		 */
+		querypaths: (
+			options?: iDiffusion.DiffusionQuerypaths
+		): Promise<GenericReturn> => {
+			return this.makeRequest('diffusion.querypaths', {
+				path: options?.path,
+				commit: options?.commit,
+				pattern: options?.pattern,
+				limit: options?.limit,
+				offset: options?.offset,
+				repository: options?.repository,
+				branch: options?.branch
+			});
 		},
 
-		rawdiffquery: () => {
-			// TODO
+		/**
+		 *Get raw diff information from a repository for a specific commit at an (optional) path. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.rawdiffquery/}
+		 *
+		 * @param {iDiffusion.DiffusionRawdiffquery} options
+		 * @returns {Promise<GenericReturn>}
+		 */
+		rawdiffquery: (
+			options: iDiffusion.DiffusionRawdiffquery
+		): Promise<GenericReturn> => {
+			return this.makeRequest('diffusion.rawdiffquery', {
+				path: options?.path,
+				commit: options?.commit,
+				linesOfContext: options?.linesOfContext,
+				timeout: options?.timeout,
+				byteLimit: options?.byteLimit,
+				repository: options?.repository,
+				branch: options?.branch
+			});
 		},
 
-		refsquery: () => {
-			// TODO
+		/**
+		 *Query a git repository for ref information at a specific commit. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.refsquery/}
+		 *
+		 * @param {iDiffusion.BranchCommitRepo} options
+		 * @returns {Promise<iDiffusion.RetDiffusionRefsquery>}
+		 */
+		refsquery: (
+			options: iDiffusion.BranchCommitRepo
+		): Promise<iDiffusion.RetDiffusionRefsquery> => {
+			return this.makeRequest('diffusion.refsquery', {
+				branch: options?.branch,
+				commit: options?.commit,
+				repository: options?.repository
+			});
 		},
 
-		repository: () => {
-			// TODO
+		/**
+		 *Apply transactions to create a new repository or edit an existing one. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.repository.edit/}
+		 *
+		 * @param {iDiffusion.DiffusionRepositoryEdit} options
+		 * @returns {Promise<Transactions>}
+		 */
+		repositoryEdit: (
+			options: iDiffusion.DiffusionRepositoryEdit
+		): Promise<Transactions> => {
+			return this.makeRequest(
+				'diffusion.repository.edit',
+				this.transactionOptions(options)
+			);
 		},
 
-		resolverefs: () => {
-			// TODO
+		/**
+		 *Read information about repositories. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.repository.search/} 
+		 *
+		 * @param {iDiffusion.DiffusionRepositorySearch} options
+		 * @returns {Promise<iDiffusion.RetDiffusionRepositorySearch>}
+		 */
+		repositorySearch: (
+			options: iDiffusion.DiffusionRepositorySearch
+		): Promise<iDiffusion.RetDiffusionRepositorySearch> => {
+			return this.makeRequest(
+				'diffusion.repository.search',
+				this.returnOptionsAttachments(options)
+			);
 		},
 
-		searchquery: () => {
-			// TODO
+		/**
+		 *Resolve references into stable, canonical identifiers. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.resolverefs/}
+		 *
+		 * @param {iDiffusion.DiffusionResolverefs} options
+		 * @returns {Promise<GenericReturn>}
+		 */
+		resolverefs: (
+			options: iDiffusion.DiffusionResolverefs
+		): Promise<GenericReturn> => {
+			return this.makeRequest('diffusion.resolverefs', {
+				refs: options?.refs,
+				types: options?.types,
+				repository: options?.repository,
+				branch: options?.branch
+			});
 		},
 
-		tagsquery: () => {
-			// TODO
+		/**
+		 *Search (grep) a repository at a specific path and commit. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.searchquery/}
+		 *
+		 * @param {iDiffusion.DiffusionSearchquery} options
+		 * @returns {Promise<GenericReturn>}
+		 */
+		searchquery: (
+			options: iDiffusion.DiffusionSearchquery
+		): Promise<GenericReturn> => {
+			return this.makeRequest('diffusion.searchquery', {
+				path: options?.path,
+				commit: options?.commit,
+				grep: options.grep,
+				limit: options?.limit,
+				offset: options?.offset,
+				branch: options?.branch,
+				repository: options?.repository
+			});
 		},
 
-		uri: () => {
-			// TODO
+		/**
+		 *Retrieve information about tags in a repository. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.tagsquery/}
+		 *
+		 * @param {iDiffusion.DiffusionTagsquery} options
+		 * @returns {Promise<GenericReturn>}
+		 */
+		tagsquery: (
+			options: iDiffusion.DiffusionTagsquery
+		): Promise<GenericReturn> => {
+			return this.makeRequest('diffusion.tagsquery', {
+				names: options?.names,
+				needMessages: options?.needMessages,
+				commit: options?.commit,
+				limit: options?.limit,
+				offset: options?.offset,
+				branch: options?.branch,
+				repository: options?.repository
+			});
 		},
 
-		getlintmessages: () => {
-			// TODO
+		/**
+		 *Apply transactions to create a new repository URI or edit an existing one. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.uri.edit/}
+		 *
+		 * @param {iDiffusion.DiffusionUriedit} options
+		 * @returns {Promise<Transactions>}
+		 */
+		uriEdit: (options: iDiffusion.DiffusionUriedit): Promise<Transactions> => {
+			return this.makeRequest(
+				'diffusion.uri.edit',
+				this.transactionOptions(options)
+			);
 		},
 
-		looksoon: () => {
-			// TODO
+		/**
+		 *Get lint messages for existing code. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.getlintmessages/}
+		 *
+		 * @param {iDiffusion.DiffusionGetlinemessages} options
+		 * @returns {Promise<GenericReturn>}
+		 */
+		getlintmessages: (
+			options: iDiffusion.DiffusionGetlinemessages
+		): Promise<GenericReturn> => {
+			return this.makeRequest('diffusion.getlintmessages', {
+				repositoryPHID: options.repositoryPHID,
+				branch: options.branch,
+				commit: options?.commit,
+				files: options.files
+			});
 		},
 
-		updatecoverage: () => {
-			// TODO
+		/**
+		 *Advises Phabricator to look for new commits in a repository as soon 
+		 as possible. This advice is most useful if you have just pushed 
+		 new commits to that repository. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.looksoon/}
+		 *
+		 * @param {{repositories?: Array<string>, urgency?: string}} options
+		 * @returns {Promise<GenericReturn>}
+		 */
+		looksoon: (options: {
+			repositories?: Array<string>;
+			urgency?: string;
+		}): Promise<GenericReturn> => {
+			return this.makeRequest('diffusion.looksoon', {
+				repositories: options?.repositories,
+				urgency: options?.urgency
+			});
+		},
+
+		/**
+		 *Publish coverage information for a repository. 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/diffusion.updatecoverage/}
+		 *
+		 * @param {iDiffusion.DiffusionUpdatecoverage} options
+		 * @returns {Promise<GenericReturn>}
+		 */
+		updatecoverage: (
+			options: iDiffusion.DiffusionUpdatecoverage
+		): Promise<GenericReturn> => {
+			return this.makeRequest('diffusion.updatecoverage', {
+				repositoryPHID: options.repositoryPHID,
+				commit: options.commit,
+				branch: options.branch,
+				mode: options?.mode,
+				coverage: options.coverage
+			});
 		}
 	};
 
@@ -1272,9 +1501,9 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/edge.search/}
 		 *
 		 * @param {iEdge.EdgeSearch} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
-		search: (options: iEdge.EdgeSearch): Promise<object> => {
+		search: (options: iEdge.EdgeSearch): Promise<GenericReturn> => {
 			return this.makeRequest('edge.search', {
 				sourcePHIDs: options.sourcePHIDs,
 				types: options.types,
@@ -1301,13 +1530,13 @@ export class Condoit {
 		 * 			data: object;
 		 * 			time?: number;
 		 * 		}} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
 		publish: (options: {
 			type: string;
 			data: object;
 			time?: number;
-		}): Promise<object> => {
+		}): Promise<GenericReturn> => {
 			return this.makeRequest('feed.publish', {
 				type: options.type,
 				data: options.data,
@@ -1396,7 +1625,7 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/file.info/}
 		 *
 		 * @param {{ id?: number; phid?: string }} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
 		info: (options: {
 			id?: number;
@@ -1463,7 +1692,7 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/file.uploadchunk/}
 		 *
 		 * @param {iFile.FileUploadchunk} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
 		uploadchunk: (options: iFile.FileUploadchunk): Promise<null> => {
 			return this.makeRequest('file.uploadchunk', {
@@ -1665,11 +1894,11 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/harbormaster.createartifact/}
 		 *
 		 * @param {iHarbormaster.HarbormasterCreateartifact} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
 		createArtifact: (
 			options: iHarbormaster.HarbormasterCreateartifact
-		): Promise<object> => {
+		): Promise<GenericReturn> => {
 			return this.makeRequest('harbormaster.create.artifact', {
 				buildTargetPHID: options.buildTargetPHID,
 				artifactKey: options.artifactKey,
@@ -1686,12 +1915,12 @@ export class Condoit {
 		 * 			objectPHID: string;
 		 * 			targetKeys: Array<string>;
 		 * 		}} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
 		queryAutotargets: (options: {
 			objectPHID: string;
 			targetKeys: Array<string>;
-		}): Promise<object> => {
+		}): Promise<GenericReturn> => {
 			return this.makeRequest('harbormaster.queryautotargets', {
 				objectPHID: options.objectPHID,
 				targetKeys: options.targetKeys
@@ -1703,11 +1932,11 @@ export class Condoit {
 		 * [Docs]{@link https://secure.phabricator.com/conduit/method/harbormaster.querybuildables/}
 		 *
 		 * @param {iHarbormaster.HarbormasterQuerybuildables} [options]
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
 		querybuildables: (
 			options: iHarbormaster.HarbormasterQuerybuildables
-		): Promise<object> => {
+		): Promise<GenericReturn> => {
 			return this.makeRequest('harbormaster.querybuildables', {
 				ids: options?.ids,
 				phids: options?.phids,
@@ -1726,11 +1955,11 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/harbormaster.sendmessage/}
 		 *
 		 * @param {iHarbormaster.HarbormasterSendmessage} options
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
 		sendmessage: (
 			options: iHarbormaster.HarbormasterSendmessage
-		): Promise<object> => {
+		): Promise<GenericReturn> => {
 			return this.makeRequest('harbormaster.sendmessage', {
 				buildTargetPHID: options.buildTargetPHID,
 				type: options.type,
@@ -2525,7 +2754,7 @@ export class Condoit {
 		 *Search users
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/user.search/}
 		 *
-		 * @returns {Promise<object>}
+		 * @returns {Promise<GenericReturn>}
 		 */
 		search: (options: iUser.UsersSearch): Promise<iUser.RetUsersSearch> => {
 			return this.makeRequest(

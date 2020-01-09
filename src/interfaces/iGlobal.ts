@@ -26,4 +26,8 @@ export interface BeforeAfterLimit {
 	limit?: number;
 }
 
+export interface GenericReturn extends ErrorCodes {
+	result: object;
+}
+
 export { ErrorCodes };
