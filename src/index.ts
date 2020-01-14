@@ -33,6 +33,7 @@ import * as iSlowvote from './interfaces/iSlowvote';
 import * as iToken from './interfaces/iToken';
 import * as iTransactions from './interfaces/iTransactions';
 import * as iUser from './interfaces/iUser';
+import { WebhookParse } from './interfaces/iWebook';
 import { Transactions, GenericReturn } from './interfaces/iGlobal';
 
 /**
@@ -2773,4 +2774,26 @@ export class Condoit {
 			return this.makeRequest('user.whoami', {});
 		}
 	};
+}
+
+/**
+ *Just a simple helper function that allows intellisense for 
+ Herald webhook triggers. 
+ *
+ * @export
+ * @param {{
+ * 	object: { type: string; phid: string };
+ * 	triggers: Array<{ phid: string }>;
+ * 	action: { test: boolean; silent: boolean; epoch: number; secure: boolean };
+ * 	transactions: Array<{ phid: string }>;
+ * }} data
+ * @returns {WebhookParse}
+ */
+export function parseWebhook(data: {
+	object: { type: string; phid: string };
+	triggers: Array<{ phid: string }>;
+	action: { test: boolean; silent: boolean; epoch: number; secure: boolean };
+	transactions: Array<{ phid: string }>;
+}): WebhookParse {
+	return data;
 }

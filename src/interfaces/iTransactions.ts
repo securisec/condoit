@@ -18,7 +18,11 @@ interface retTransactionsSearchData {
 	dateModified: number;
 	groupID: string;
 	comments: Array<string>;
-	fields: object;
+	fields: {
+		old?: string;
+		new?: string;
+		operations?: Array<{ operation: string; phid: string }>;
+	};
 }
 
 export interface RetTransactionsSearch extends ErrorCodes {

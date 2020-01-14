@@ -5,10 +5,11 @@ cache:
   directories:
   - node_modules
 scripts:
-  - npm i -D
-  - npm test
-  - npm run docs
+- npm i -D
+- npm test
+- npm run docs
 deploy:
+  matrix:
   - provider: npm
     email: securisecdev@gmail.com
     api_key:
@@ -17,15 +18,16 @@ deploy:
       tags: true
       repo: securisec/condoit
       branch: master
-  
   - provider: pages
     skip_cleanup: true
-    local_dir: ./docs
-    github_token: 
-      secure: "PlBhY2nvymuJK1U6OMwTTn+Cko8R2wVpVDcs9yYo8zyG3WrAW3FSjYEDyliK8J62HnlVjvHKG3v/ZVGtF7ed6nbUKaU1yo5e4PqTEkWoCBTXCISiesc1qje+ev2v/Pp/tQdxW07gWvWOD0/Q/1/ug6/qmjjtPX4fntQSJH0JFhT1QvMqvnPB2Z5OCbsDxifmJ6thGpCOukZZrj60rX1dwQGmEgOttJJgT7ksXBY+brhrb2xxs6It0jLnI8ENxjzSmspB96GfPJh371pac/QNcHtfxAea9TtLEQ0mEwENrHReB44TeRRY1l5nJM0DgqpYxsUt8NgbeipdLlBf/QwNx6KRY3GLtRewqk5Ncyu8pDyvYv00Xrn0Is+ZQFIXxiBI9x5N1xtkFKnxic9c8B2Vqsto92QQW2OD1sU+S0gwh2ysRFNLG/Ak9IMBPa3IfVuQxVMSH8Kq+o/ywDcLZBLY865cItIcEJMlQSujJH+ckvRaXE45R6ntMH6wtUbouLwmit5W7aKGU2vNLNFQ/MCo8VwLtFyA0yoWvGMaUYF5sMQ/X9pvBdJJds4XHKJxsS39nnlShW8BIfsGvaMZ5q13oY/896CmikrIZnkqE6AH8cYEr6XSWLKgZy2jT4/mmwZe66u58HhXoO9XODytwlY7CLtXbv1kELVsqtUhAa8sOKw="
+    local_dir: "./docs"
+    github_token:
+      secure: PlBhY2nvymuJK1U6OMwTTn+Cko8R2wVpVDcs9yYo8zyG3WrAW3FSjYEDyliK8J62HnlVjvHKG3v/ZVGtF7ed6nbUKaU1yo5e4PqTEkWoCBTXCISiesc1qje+ev2v/Pp/tQdxW07gWvWOD0/Q/1/ug6/qmjjtPX4fntQSJH0JFhT1QvMqvnPB2Z5OCbsDxifmJ6thGpCOukZZrj60rX1dwQGmEgOttJJgT7ksXBY+brhrb2xxs6It0jLnI8ENxjzSmspB96GfPJh371pac/QNcHtfxAea9TtLEQ0mEwENrHReB44TeRRY1l5nJM0DgqpYxsUt8NgbeipdLlBf/QwNx6KRY3GLtRewqk5Ncyu8pDyvYv00Xrn0Is+ZQFIXxiBI9x5N1xtkFKnxic9c8B2Vqsto92QQW2OD1sU+S0gwh2ysRFNLG/Ak9IMBPa3IfVuQxVMSH8Kq+o/ywDcLZBLY865cItIcEJMlQSujJH+ckvRaXE45R6ntMH6wtUbouLwmit5W7aKGU2vNLNFQ/MCo8VwLtFyA0yoWvGMaUYF5sMQ/X9pvBdJJds4XHKJxsS39nnlShW8BIfsGvaMZ5q13oY/896CmikrIZnkqE6AH8cYEr6XSWLKgZy2jT4/mmwZe66u58HhXoO9XODytwlY7CLtXbv1kELVsqtUhAa8sOKw=
     on:
       branch: master
+  api_key:
+    secure: cFUF1PZcdcBxopoGgoorV2s70aaLzqAq7SCTI+x43bcLuzk9g1gbi34s9pOQOvAA81lu69muQB6ehzJM/DwapoXLvn42e+j81jwa8lt9U3rcZQXmDd5VC3l3XMVxOGwlbnV4OX/BrQOZOMbGFrNKO+AnbpauYDxSuX0SgI8/zYKdLOWT7qHNrslksjTGzWcdbmNN//Cu8zVnCjdLKyh7nwDLnWQXaTfUPaVhhb2nKh5K6XgaPhmcBFZAbdB0By3I5lO3SIRnQZc0foxIBExwTpCCY0ltokZyaI4UpDM12F3H5OkbCJdLdtFwgF1FMF9pV7IliVwQN46qeB3s+v0c5zyiQtTFjg26M2hdI3LO5ZXVr8AF0GjLCN0IGCX2dDqgymbifdNLEo9GtP/E5DQy06fzw9BQ5V+O/awyzUwzlQx3pu2dBy7sNyVun8K5RHGKuO51ldfln2KaCGD6y+B7upPdBNdzfpqB1fpk3kegcb0yYc/Wlji0n46hoJoP+1De5/rl/Uth9czPDgCY6iQLvJOtE/Uh3l3GD8Hs9heO91ba+jYaGAY/TY3QPqK3FPzxCL0VzAAmvkgzHry50W2xi5xGbf7kIi1cJhICK0k6B52RrP0silRiXyxI94N6YSQR2fWx6kr5cmOZsJ9JzhI84z/mXyc4qjh/8AuDMcrA0Gg=
 before_deploy:
-  - touch .nojekyll
-  - touch ./docs/.nojekyll
-  - sed -i '/docs/d' .gitignore
+- touch .nojekyll
+- touch ./docs/.nojekyll
+- sed -i '/docs/d' .gitignore
