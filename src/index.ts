@@ -44,15 +44,18 @@ import { Transactions, GenericReturn } from './interfaces/iGlobal';
 export class Condoit {
 	private baseUrl: string;
 	private apiToken: string;
+	private headers: object;
 	/**
 	 *Creates an instance of Condoit.
 	 * @param {string} baseUrl The base url for a phabricator instance
 	 * @param {string} apiToken A valid phabricator conduit api token
+	 * @param {object} headers Optional headers to pass to the phabricator endpoint
 	 * @memberof Condoit
 	 */
-	constructor(baseUrl: string, apiToken: string) {
+	constructor(baseUrl: string, apiToken: string, headers: object = {}) {
 		this.baseUrl = baseUrl;
 		this.apiToken = apiToken;
+		this.headers = headers;
 	}
 
 	/**
@@ -70,6 +73,7 @@ export class Condoit {
 			Axios({
 				method: 'POST',
 				baseURL: baseUrlAxios,
+				headers: this.headers,
 				url: endpoint,
 				data: qs.stringify({ ...params, 'api.token': this.apiToken })
 			})
