@@ -1,24 +1,29 @@
-import { ErrorCodes, RetSearchConstants, BeforeAfterLimit } from './iGlobal';
+import {
+	ErrorCodes,
+	RetSearchConstants,
+	BeforeAfterLimit,
+	phid
+} from './iGlobal';
 
 export interface ManiphestCreatetask {
 	title: string;
 	description?: string;
-	ownerPHID?: string;
+	ownerPHID?: phid;
 	viewPolicy?: string;
 	editPolicy?: string;
-	ccPHIDs?: Array<string>;
+	ccPHIDs?: Array<phid>;
 	priority?: number;
-	projectPHIDs?: Array<string>;
+	projectPHIDs?: Array<phid>;
 	auxiliary: object;
 }
 
 export interface RetManiphestCreatetask extends ErrorCodes {
 	result: {
 		id: string | number;
-		phid: string;
-		authorPHID: string;
-		ownerPHID: string;
-		ccPHIDs: Array<string>;
+		phid: phid;
+		authorPHID: phid;
+		ownerPHID: phid;
+		ccPHIDs: Array<phid>;
 		status: string;
 		statusName: string;
 		isClosed: boolean;
@@ -26,13 +31,13 @@ export interface RetManiphestCreatetask extends ErrorCodes {
 		priorityColor: string;
 		title: string;
 		description: string;
-		projectPHIDs: Array<string>;
+		projectPHIDs: Array<phid>;
 		uri: string;
 		auxiliary: object;
 		objectName: string;
 		dateCreated: string | number;
 		dateModified: string | number;
-		dependsOnTaskPHIDs: Array<string>;
+		dependsOnTaskPHIDs: Array<phid>;
 	};
 }
 
@@ -77,12 +82,12 @@ export interface ManiphestEdit {
 interface maniphestGettasktransactions {
 	taskID: string;
 	transactionID: string;
-	transactionPHID: string;
+	transactionPHID: phid;
 	transactionType: string;
 	oldValue: string;
 	newValue: string;
 	comments: string;
-	authorPHID: string;
+	authorPHID: phid;
 	dateCreated: string;
 }
 
@@ -95,10 +100,10 @@ export interface RetManiphestGettasktransactions extends ErrorCodes {
 export interface RetManiphestInfo extends ErrorCodes {
 	result: {
 		id: string;
-		phid: string;
-		authorPHID: string;
-		ownerPHID: string;
-		ccPHIDs: Array<string>;
+		phid: phid;
+		authorPHID: phid;
+		ownerPHID: phid;
+		ccPHIDs: Array<phid>;
 		status: string;
 		statusName: string;
 		test: Array<string>;
@@ -107,13 +112,13 @@ export interface RetManiphestInfo extends ErrorCodes {
 		priorityColor: string;
 		title: string;
 		description: string;
-		projectPHIDs: Array<string>;
+		projectPHIDs: Array<phid>;
 		uri: string;
 		auxiliary: object;
 		objectName: string;
 		dateCreated: string;
 		dateModified: string;
-		dependsOnTaskPHIDs: Array<string>;
+		dependsOnTaskPHIDs: Array<phid>;
 	};
 }
 
@@ -133,11 +138,11 @@ export interface RetManiphestPrioritySearch extends ErrorCodes {
 
 export interface ManiphestQuery {
 	ids?: Array<number>;
-	phids?: Array<string>;
-	ownerPHIDs?: Array<string>;
-	authorPHIDs?: Array<string>;
-	projectPHIDs?: Array<string>;
-	ccPHIDs?: Array<string>;
+	phids?: Array<phid>;
+	ownerPHIDs?: Array<phid>;
+	authorPHIDs?: Array<phid>;
+	projectPHIDs?: Array<phid>;
+	ccPHIDs?: Array<phid>;
 	fullText?: string;
 	status?:
 		| 'status-any'
@@ -157,10 +162,10 @@ export interface RetManiphestQuery extends ErrorCodes {
 	result: {
 		[phid: string]: {
 			id: string;
-			phid: string;
-			authorPHID: string;
-			ownerPHID: string;
-			ccPHIDs: Array<string>;
+			phid: phid;
+			authorPHID: phid;
+			ownerPHID: phid;
+			ccPHIDs: Array<phid>;
 			status: string;
 			statusName: string;
 			isClosed: false;
@@ -168,13 +173,13 @@ export interface RetManiphestQuery extends ErrorCodes {
 			priorityColor: string;
 			title: string;
 			description: string;
-			projectPHIDs: Array<string>;
+			projectPHIDs: Array<phid>;
 			uri: string;
 			auxiliary: object;
 			objectName: string;
 			dateCreated: string;
 			dateModified: string;
-			dependsOnTaskPHIDs: Array<string>;
+			dependsOnTaskPHIDs: Array<phid>;
 		};
 	};
 }
@@ -204,15 +209,15 @@ export interface ManiphestSearch extends BeforeAfterLimit {
 	queryKey?: 'assigned' | 'authored' | 'subscribed' | 'open' | 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		assigned?: Array<string>;
-		authorPHIDs?: Array<string>;
+		authorPHIDs?: Array<phid>;
 		statuses?: [
 			'open' | 'resolved' | 'wontfix' | 'invalid' | 'duplicate' | 'spite'
 		];
 		priorities?: Array<number>;
 		subtypes?: Array<string>;
-		columnPHIDs?: Array<string>;
+		columnPHIDs?: Array<phid>;
 		hasParents?: boolean;
 		hasSubtasks?: boolean;
 		parentIDs?: Array<number>;
@@ -223,7 +228,7 @@ export interface ManiphestSearch extends BeforeAfterLimit {
 		modifiedEnd?: number;
 		closedStart?: number;
 		closedEnd?: number;
-		closerPHIDs?: Array<string>;
+		closerPHIDs?: Array<phid>;
 		query?: string;
 		subscribers?: Array<string>;
 		projects?: Array<string>;
@@ -249,15 +254,15 @@ interface retManiphestSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		description: { raw: string };
-		authorPHID: string;
-		ownerPHID: string;
+		authorPHID: phid;
+		ownerPHID: phid;
 		status: { value: string; color: string };
 		priority: { value: number; name: string };
 		points: number;
 		subtype: string;
-		closerPHID: string;
+		closerPHID: phid;
 		dateClosed: number;
-		spacePHID: number;
+		spacePHID: phid;
 		dateCreated: number;
 		dateModified: number;
 		policy: { view: string };
@@ -289,15 +294,15 @@ export interface RetManiphestStatusSearch extends ErrorCodes {
 
 export interface ManiphestUpdate {
 	id?: number;
-	phid?: string;
+	phid?: phid;
 	title?: string;
 	description?: string;
-	ownerPHID?: string;
+	ownerPHID?: phid;
 	viewPolicy?: string;
 	editPolicy?: string;
-	ccPHIDs?: Array<string>;
+	ccPHIDs?: Array<phid>;
 	priority?: number;
-	projectPHIDs?: Array<string>;
+	projectPHIDs?: Array<phid>;
 	auxiliary?: object;
 	status?: string;
 	comments?: string;
@@ -306,10 +311,10 @@ export interface ManiphestUpdate {
 export interface RetManiphestUpdate extends ErrorCodes {
 	result: {
 		id: string;
-		phid: string;
-		authorPHID: string;
-		ownerPHID: string;
-		ccPHIDs: Array<string>;
+		phid: phid;
+		authorPHID: phid;
+		ownerPHID: phid;
+		ccPHIDs: Array<phid>;
 		status: string;
 		statusName: string;
 		isClosed: false;
@@ -317,12 +322,12 @@ export interface RetManiphestUpdate extends ErrorCodes {
 		priorityColor: string;
 		title: string;
 		description: string;
-		projectPHIDs: Array<string>;
+		projectPHIDs: Array<phid>;
 		uri: string;
 		auxiliary: Array<object>;
 		objectName: string;
 		dateCreated: string;
 		dateModified: string;
-		dependsOnTaskPHIDs: Array<string>;
+		dependsOnTaskPHIDs: Array<phid>;
 	};
 }

@@ -1,10 +1,15 @@
-import { BeforeAfterLimit, RetSearchConstants, ErrorCodes } from './iGlobal';
+import {
+	BeforeAfterLimit,
+	RetSearchConstants,
+	ErrorCodes,
+	phid
+} from './iGlobal';
 
 export interface BadgeSearch extends BeforeAfterLimit {
 	queryKey?: 'open' | 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		name?: string;
 		statuses?: ['closed' | 'open'];
 		subscribers?: Array<string>;
@@ -18,7 +23,7 @@ export interface BadgeSearch extends BeforeAfterLimit {
 interface retBadgeSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
-		creatorPHID: object;
+		creatorPHID: phid;
 		status: string;
 		dateCreated: number;
 		dateModified: number;
@@ -26,7 +31,7 @@ interface retBadgeSearchData extends RetSearchConstants {
 	};
 	attachments: {
 		subscribers: {
-			subscriberPHIDs: Array<string>;
+			subscriberPHIDs: Array<phid>;
 			subscriberCount: number;
 			viewerIsSubscribed: boolean;
 		};
@@ -62,7 +67,7 @@ interface badgeEditTransactions {
 		| 'subscribers.set'
 		| 'comment'
 		| 'mfa';
-	value: any
+	value: any;
 }
 
 export interface BadgeEdit {

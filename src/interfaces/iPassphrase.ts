@@ -1,8 +1,8 @@
-import { ErrorCodes, BeforeAfterLimit } from './iGlobal';
+import { ErrorCodes, BeforeAfterLimit, phid } from './iGlobal';
 
 export interface PassphraseQuery extends BeforeAfterLimit {
 	ids?: Array<number>;
-	phids?: Array<string>;
+	phids?: Array<phid>;
 	needSecrets?: boolean;
 	needPublicKeys?: boolean;
 	order?: string;
@@ -13,7 +13,7 @@ export interface RetPassphraseQuery extends ErrorCodes {
 		data: {
 			[phid: string]: {
 				id: string;
-				phid: string;
+				phid: phid;
 				type: string;
 				name: string;
 				description: string;

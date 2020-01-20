@@ -1,4 +1,4 @@
-import { ErrorCodes, BeforeAfterLimit } from './iGlobal';
+import { ErrorCodes, BeforeAfterLimit, phid } from './iGlobal';
 
 interface ownerSearchTransactions {
 	type:
@@ -26,7 +26,7 @@ export interface OwnersSearch extends BeforeAfterLimit {
 	queryKey?: 'authority' | 'active' | 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		owners?: Array<string>;
 		name?: string;
 		repositories: Array<string>;
@@ -41,7 +41,7 @@ export interface OwnersSearch extends BeforeAfterLimit {
 }
 
 interface retOwnersSearchDataOwners {
-	ownerPHID: string;
+	ownerPHID: phid;
 }
 
 export interface RetOwnersSearch extends ErrorCodes {
@@ -50,7 +50,7 @@ export interface RetOwnersSearch extends ErrorCodes {
 			{
 				id: 1;
 				type: string;
-				phid: string;
+				phid: phid;
 				fields: {
 					name: string;
 					description: string;

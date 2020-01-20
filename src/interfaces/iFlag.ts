@@ -1,19 +1,19 @@
-import { ErrorCodes } from './iGlobal';
+import { ErrorCodes, phid } from './iGlobal';
 
 export interface FlagQuery {
-	ownerPHIDs: Array<string>;
+	ownerPHIDs: Array<phid>;
 	types: Array<string>;
-	objectPHIDs: Array<string>;
+	objectPHIDs: Array<phid>;
 	offset: number;
 	limit: number;
 }
 
 interface retFlagQueryResult {
 	id: string;
-	ownerPHID: string;
+	ownerPHID: phid;
 	type: string;
-	objectPHID: string;
-	reasonPHID: string;
+	objectPHID: phid;
+	reasonPHID: phid;
 	color: string;
 	colorName: string;
 	note: string;
@@ -24,7 +24,7 @@ interface retFlagQueryResult {
 	};
 	dateCreated: string;
 	dateModified: string;
-};
+}
 
 export interface RetFlagQuery extends ErrorCodes {
 	result: Array<retFlagQueryResult>;
@@ -32,10 +32,10 @@ export interface RetFlagQuery extends ErrorCodes {
 
 interface retFlagEditResult {
 	id: string;
-	ownerPHID: string;
+	ownerPHID: phid;
 	type: string;
-	objectPHID: string;
-	reasonPHID: string;
+	objectPHID: phid;
+	reasonPHID: phid;
 	color: string;
 	colorName: string;
 	note: string;
@@ -46,7 +46,7 @@ interface retFlagEditResult {
 	};
 	dateCreated: string;
 	dateModified: string;
-};
+}
 
 export interface RetFlagEdit extends ErrorCodes {
 	result: Array<retFlagEditResult>;
@@ -55,10 +55,10 @@ export interface RetFlagEdit extends ErrorCodes {
 export interface RetFlagDelete extends ErrorCodes {
 	result: {
 		id: string;
-		ownerPHID: string;
+		ownerPHID: phid;
 		type: string;
-		objectPHID: string;
-		reasonPHID: string;
+		objectPHID: phid;
+		reasonPHID: phid;
 		color: string;
 		colorName: string;
 		note: string;

@@ -1,4 +1,9 @@
-import { ErrorCodes, RetSearchConstants, BeforeAfterLimit } from './iGlobal';
+import {
+	ErrorCodes,
+	RetSearchConstants,
+	BeforeAfterLimit,
+	phid
+} from './iGlobal';
 
 interface portalEditTransactionType {
 	type:
@@ -21,7 +26,7 @@ export interface PortalSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids: Array<number>;
-		phids: Array<string>;
+		phids: Array<phid>;
 		query: string;
 		projects: Array<string>;
 	};

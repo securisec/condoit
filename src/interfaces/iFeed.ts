@@ -1,7 +1,7 @@
-import { ErrorCodes } from './iGlobal';
+import { ErrorCodes, phid } from './iGlobal';
 
 export interface FeedQuery {
-	filterPHIDs?: Array<string>;
+	filterPHIDs?: Array<phid>;
 	limit?: number;
 	after?: number;
 	before?: number;
@@ -11,11 +11,11 @@ export interface FeedQuery {
 interface retFeedQueryData {
   class?: string;
   epoch?: number;
-  authorPHID?: string;
+  authorPHID?: phid;
   chronologicalKey?: string;
   text?: string
   data?: {
-    objectPHID: string;
+    objectPHID: phid;
     transactionPHIDs: {
       [phid: string]: string;
     };

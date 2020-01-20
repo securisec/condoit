@@ -1,8 +1,8 @@
-import { ErrorCodes } from './iGlobal';
+import { ErrorCodes, phid } from './iGlobal';
 
 export interface RetPhidLookup {
 	[phid: string]: {
-		phid: string;
+		phid: phid;
 		uri: string;
 		typeName: string;
 		type: string;
@@ -15,7 +15,7 @@ export interface RetPhidLookup {
 export interface RetPhidQuery extends ErrorCodes {
 	result: {
 		[phid: string]: {
-			phid: string;
+			phid: phid;
 			uri: string;
 			typeName: string;
 			type: string;

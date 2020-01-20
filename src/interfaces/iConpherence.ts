@@ -1,15 +1,15 @@
-import { ErrorCodes } from './iGlobal';
+import { ErrorCodes, phid } from './iGlobal';
 
 export interface ConperhenceCreatethread {
 	title: string;
 	topic?: string;
 	message?: string;
-	participantPHIDs: Array<string>;
+	participantPHIDs: Array<phid>;
 }
 
 export interface RetConperhenceCreatethread {
 	conpherenceID: string;
-	conpherencePHID: string;
+	conpherencePHID: phid;
 	conpherenceURI: string;
 }
 
@@ -34,7 +34,7 @@ export interface ConperhenceEdit {
 
 export interface ConpherenceQuerythread {
 	ids?: Array<number>;
-	phids?: Array<string>;
+	phids?: Array<phid>;
 	offset?: number;
 	limit?: number;
 }
@@ -43,7 +43,7 @@ export interface RetConpherenceQuerythread extends ErrorCodes {
 	result: {
 		[id: string]: {
 			conpherenceID: string;
-			conpherencePHID: string;
+			conpherencePHID: phid;
 			conpherenceTitle: string;
 			messageCount: string;
 			conpherenceURI: string;
@@ -53,7 +53,7 @@ export interface RetConpherenceQuerythread extends ErrorCodes {
 
 export interface ConpherenceQuerytransaction {
 	roomID?: number;
-	roomPHID?: string;
+	roomPHID?: phid;
 	offset?: number;
 	limit?: number;
 }
@@ -70,19 +70,19 @@ export interface RetConpherenceQuerytransaction extends ErrorCodes {
 			transactionMetadata: {
 				'core.groupID': string;
 			};
-			authorPHID: string;
+			authorPHID: phid;
 			dateCreated: string;
 			roomID: string;
-			roomPHID: string;
+			roomPHID: phid;
 		};
 	};
 }
 
 export interface ConperhenceUpdatethread {
 	id: string;
-	phid: string;
+	phid: phid;
 	title: string;
 	message: string;
-	addParticipantPHIDs: Array<string>;
-	removeParticipantPHIDs: Array<string>;
+	addParticipantPHIDs: Array<phid>;
+	removeParticipantPHIDs: Array<phid>;
 }

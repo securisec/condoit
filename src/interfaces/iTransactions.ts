@@ -1,19 +1,19 @@
-import { ErrorCodes, BeforeAfterLimit } from './iGlobal';
+import { ErrorCodes, BeforeAfterLimit, phid } from './iGlobal';
 
 export interface TransactionsSearch extends BeforeAfterLimit {
 	objectIdentifier: string;
 	constraints: {
-		phids: Array<string>;
-		authorPHIDs: Array<string>;
+		phids: Array<phid>;
+		authorPHIDs: Array<phid>;
 	};
 }
 
 interface retTransactionsSearchData {
 	id: number;
-	phid: string;
+	phid: phid;
 	type: string;
-	authorPHID: string;
-	objectPHID: string;
+	authorPHID: phid;
+	objectPHID: phid;
 	dateCreated: number;
 	dateModified: number;
 	groupID: string;
@@ -21,7 +21,7 @@ interface retTransactionsSearchData {
 	fields: {
 		old?: string;
 		new?: string;
-		operations?: Array<{ operation: string; phid: string }>;
+		operations?: Array<{ operation: string; phid: phid }>;
 	};
 }
 

@@ -1,7 +1,7 @@
-import { BeforeAfterLimit } from './iGlobal';
+import { BeforeAfterLimit, phid } from './iGlobal';
 
 export interface EdgeSearch extends BeforeAfterLimit {
-	sourcePHIDs: Array<string>;
+	sourcePHIDs: Array<phid>;
 	types: [
 		| 'commit.revision'
 		| 'commit.task'
@@ -16,5 +16,5 @@ export interface EdgeSearch extends BeforeAfterLimit {
 		| 'task.revision'
 		| 'task.subtask'
 	];
-	destinationPHIDs?: Array<string>;
+	destinationPHIDs?: Array<phid>;
 }

@@ -1,4 +1,9 @@
-import { ErrorCodes, RetSearchConstants, BeforeAfterLimit } from './iGlobal';
+import {
+	ErrorCodes,
+	RetSearchConstants,
+	BeforeAfterLimit,
+	phid
+} from './iGlobal';
 
 interface editUsersTransactions {
 	type:
@@ -19,7 +24,7 @@ export interface UsersEdit {
 
 interface UsersSearchConstraints {
 	ids?: Array<number>;
-	phids?: Array<string>;
+	phids?: Array<phid>;
 	usernames?: Array<string>;
 	nameLike?: string;
 	isAdmin?: boolean;
@@ -59,7 +64,7 @@ interface retUsersSearchData extends RetSearchConstants {
 			until: any;
 			name: string;
 			color: string;
-			eventPHID: string;
+			eventPHID: phid;
 		};
 	};
 }
@@ -80,7 +85,7 @@ export interface RetUsersSearch extends ErrorCodes {
 
 export interface RetUsersWhoami extends ErrorCodes {
 	result: {
-		phid: string;
+		phid: phid;
 		userName: string;
 		realName: string;
 		image: string;

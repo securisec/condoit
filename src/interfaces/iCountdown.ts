@@ -1,11 +1,16 @@
-import { BeforeAfterLimit, RetSearchConstants, ErrorCodes } from './iGlobal';
+import {
+	BeforeAfterLimit,
+	RetSearchConstants,
+	ErrorCodes,
+	phid
+} from './iGlobal';
 
 export interface CountdownServiceSearch extends BeforeAfterLimit {
 	queryKey?: 'all' | 'authored' | 'upcoming';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
-		authorPHIDs?: Array<string>;
+		phids?: Array<phid>;
+		authorPHIDs?: Array<phid>;
 		upcoming?: Array<'upcoming'>;
 		subscribers?: Array<string>;
 		projects?: Array<string>;
@@ -19,18 +24,18 @@ interface retCountdownServiceSearchData extends RetSearchConstants {
 		title: string;
 		description: string;
 		epoch: number;
-		spacePHID: string;
+		spacePHID: phid;
 		dateCreated: number;
 		dateModified: number;
 		policy: { view: string; edit: string };
 	};
 	attachments: {
 		subscribers: {
-			subscriberPHIDs: Array<string>;
+			subscriberPHIDs: Array<phid>;
 			subscriberCount: number;
 			viewerIsSubscribed: boolean;
 		};
-		projects: { projectPHIDs: Array<string> };
+		projects: { projectPHIDs: Array<phid> };
 		bindings: { bindings: Array<any> };
 	};
 }

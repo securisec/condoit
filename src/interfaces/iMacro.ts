@@ -1,4 +1,4 @@
-import { ErrorCodes } from './iGlobal';
+import { ErrorCodes, phid } from './iGlobal';
 
 interface macroEditTransactions {
 	type:
@@ -10,7 +10,7 @@ interface macroEditTransactions {
 		| 'comment'
 		| 'mfa';
 	value: any;
-};
+}
 
 export interface MarcoEdit {
 	transactions: Array<macroEditTransactions>;
@@ -18,8 +18,8 @@ export interface MarcoEdit {
 }
 
 export interface MacroQuery {
-	authorPHIDs: Array<string>;
-	phids: Array<string>;
+	authorPHIDs: Array<phid>;
+	phids: Array<phid>;
 	ids: Array<number>;
 	names: Array<string>;
 	nameLike: string;
@@ -29,10 +29,10 @@ export interface RetMacroQuery extends ErrorCodes {
 	result: {
 		[name: string]: {
 			uri: string;
-			phid: string;
-			authorPHID: string;
+			phid: phid;
+			authorPHID: phid;
 			dateCreated: string;
-			filePHID: string;
+			filePHID: phid;
 		};
 	};
 }

@@ -1,12 +1,17 @@
-import { BeforeAfterLimit, RetSearchConstants, ErrorCodes } from './iGlobal';
+import {
+	BeforeAfterLimit,
+	RetSearchConstants,
+	ErrorCodes,
+	phid
+} from './iGlobal';
 
 export interface AlmanacBindingSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
-		servicePHIDs?: string;
-		devicePHIDs?: Array<string>;
+		phids?: Array<phid>;
+		servicePHIDs?: phid;
+		devicePHIDs?: Array<phid>;
 	};
 	attachments?: {
 		properties: boolean;
@@ -16,9 +21,9 @@ export interface AlmanacBindingSearch extends BeforeAfterLimit {
 
 interface retAlmanacBindingSearchData extends RetSearchConstants {
 	fields: {
-		servicePHID: string;
-		devicePHID: string;
-		interfacePHID: string;
+		servicePHID: phid;
+		devicePHID: phid;
+		interfacePHID: phid;
 		disabled: boolean;
 		dateCreated: number;
 		dateModified: number;
@@ -45,11 +50,11 @@ export interface AlmanacDeviceSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		match?: string;
 		names?: Array<string>;
 		isClusterDevice: boolean;
-		devicePHIDs?: Array<string>;
+		devicePHIDs?: Array<phid>;
 	};
 	attachments?: {
 		properties: boolean;
@@ -91,8 +96,8 @@ export interface AlmanacInterfaceSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
-		devicePHIDs?: Array<string>;
+		phids?: Array<phid>;
+		devicePHIDs?: Array<phid>;
 	};
 	order?: 'name' | 'newest' | 'oldest';
 }
@@ -124,7 +129,7 @@ export interface AlmanacNamespaceSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		match?: string;
 		projects?: Array<string>;
 	};
@@ -159,7 +164,7 @@ export interface AlmanacNetworkSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		match?: string;
 	};
 	order?: 'newest' | 'oldest';
@@ -192,11 +197,11 @@ export interface AlmanacServiceSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		match?: string;
 		names?: Array<string>;
 		serviceTypes?: Array<string>;
-		devicePHIDs?: Array<string>;
+		devicePHIDs?: Array<phid>;
 		projects?: Array<string>;
 	};
 	attachments: { projects: boolean; properties: boolean; bindings: boolean };
@@ -215,7 +220,7 @@ interface retAlmanacServiceSearchData extends RetSearchConstants {
 		properties: {
 			properties: Array<{ key: string; value: string; builtin: boolean }>;
 		};
-		projects: { projectPHIDs: Array<string> };
+		projects: { projectPHIDs: Array<phid> };
 		bindings: { bindings: Array<any> };
 	};
 }

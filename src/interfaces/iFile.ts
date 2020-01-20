@@ -1,14 +1,19 @@
-import { ErrorCodes, RetSearchConstants, BeforeAfterLimit } from './iGlobal';
+import {
+	ErrorCodes,
+	RetSearchConstants,
+	BeforeAfterLimit,
+	phid
+} from './iGlobal';
 
 export interface RetFileInfo extends ErrorCodes {
 	result: {
 		id: string;
-		phid: string;
+		phid: phid;
 		objectName: string;
 		name: string;
 		mimeType: string;
 		byteSize: string;
-		authorPHID: string;
+		authorPHID: phid;
 		dateCreated: string;
 		dateModified: string;
 		uri: string;
@@ -23,8 +28,8 @@ export interface FileSearch extends BeforeAfterLimit {
 	queryKey?: 'authored' | 'all';
 	constraints?: {
 		ids: Array<number>;
-		phids: Array<string>;
-		authorPHIDs: Array<string>;
+		phids: Array<phid>;
+		authorPHIDs: Array<phid>;
 		explicit: boolean;
 		createdStart: string;
 		createdEnd: string;
@@ -50,7 +55,7 @@ interface retFileSearchData extends RetSearchConstants {
 	};
 	attachments: {
 		subscribers: {
-			subscriberPHIDs: Array<string>;
+			subscriberPHIDs: Array<phid>;
 			subscriberCount: number;
 			viewerIsSubscribed: boolean;
 		};
@@ -75,7 +80,7 @@ export interface FileAllocate {
 }
 
 export interface RetFileAllocate extends ErrorCodes {
-	result: { upload: boolean; filePHID: string };
+	result: { upload: boolean; filePHID: phid };
 }
 
 export interface FileUpload {
@@ -90,7 +95,7 @@ export interface RetFileUpload extends ErrorCodes {
 }
 
 export interface FileUploadchunk {
-	filePHID: string;
+	filePHID: phid;
 	byteStart: number;
 	data: string;
 	dataEncoding: 'base64';

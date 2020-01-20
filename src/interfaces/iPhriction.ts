@@ -1,11 +1,16 @@
-import { ErrorCodes, RetSearchConstants, BeforeAfterLimit } from './iGlobal';
+import {
+	ErrorCodes,
+	RetSearchConstants,
+	BeforeAfterLimit,
+	phid
+} from './iGlobal';
 
 export interface PhrictionContentSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids: Array<number>;
-		phids: Array<string>;
-		documentPHIDs: Array<string>;
+		phids: Array<phid>;
+		documentPHIDs: Array<phid>;
 		versions: Array<number>;
 	};
 	attachments: {
@@ -16,7 +21,7 @@ export interface PhrictionContentSearch extends BeforeAfterLimit {
 
 interface retPhrictionContentSearchData extends RetSearchConstants {
 	fields: {
-		documentPHID: string;
+		documentPHID: phid;
 		version: number;
 		dateCreated: number;
 		dateModified: number;
@@ -26,7 +31,7 @@ interface retPhrictionContentSearchData extends RetSearchConstants {
 		content: {
 			title: string;
 			path: string;
-			authorPHID: string;
+			authorPHID: phid;
 			content: { raw: string };
 		};
 	};
@@ -43,11 +48,11 @@ export interface RetPhrictionContentSearch extends ErrorCodes {
 
 export interface RetPhrictionCreate extends ErrorCodes {
 	result: {
-		phid: string;
+		phid: phid;
 		uri: string;
 		slug: string;
 		version: number;
-		authorPHID: string;
+		authorPHID: phid;
 		title: string;
 		content: string;
 		status: string;
@@ -60,7 +65,7 @@ export interface PhrictionDocumentSearch extends BeforeAfterLimit {
 	queryKey?: 'active' | 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		statuses?: ['active' | 'deleted' | 'moved' | 'stub'];
 		paths?: Array<string>;
 		parentPaths?: Array<string>;
@@ -81,19 +86,19 @@ interface retPhrictionDocumentSearchData extends RetSearchConstants {
 	fields: {
 		path: string;
 		status: { value: string };
-		spacePHID: string;
+		spacePHID: phid;
 		policy: { view: string };
 	};
 	attachments: {
 		content: {
 			title: string;
 			path: string;
-			authorPHID: string;
+			authorPHID: phid;
 			content: { raw: string };
 		};
-		projects: { projectPHIDs: Array<string> };
+		projects: { projectPHIDs: Array<phid> };
 		subscribers: {
-			subscriberPHIDs: Array<string>;
+			subscriberPHIDs: Array<phid>;
 			subscriberCount: number;
 			viewerIsSubscribed: false;
 		};
@@ -111,11 +116,11 @@ export interface RetPhrictionDocumentSearch extends ErrorCodes {
 
 export interface RetPhrictionEdit extends ErrorCodes {
 	result: {
-		phid: string;
+		phid: phid;
 		uri: string;
 		slug: string;
 		version: number;
-		authorPHID: string;
+		authorPHID: phid;
 		title: string;
 		content: string;
 		status: string;
@@ -126,11 +131,11 @@ export interface RetPhrictionEdit extends ErrorCodes {
 
 export interface RetPhrictionInfo extends ErrorCodes {
 	result: {
-		phid: string;
+		phid: phid;
 		uri: string;
 		slug: string;
 		version: string;
-		authorPHID: string;
+		authorPHID: phid;
 		title: string;
 		content: string;
 		status: string;

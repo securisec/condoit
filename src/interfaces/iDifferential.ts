@@ -1,4 +1,9 @@
-import { ErrorCodes, RetSearchConstants, BeforeAfterLimit } from './iGlobal';
+import {
+	ErrorCodes,
+	RetSearchConstants,
+	BeforeAfterLimit,
+	phid
+} from './iGlobal';
 
 export interface DiffComment {
 	revision_id: number;
@@ -20,7 +25,7 @@ export interface DiffCreatediff {
 	creationMethod: string;
 	lintStatus: 'none' | 'skip' | 'okay' | 'warn' | 'fail';
 	unitStatus: 'none' | 'skip' | 'okay' | 'warn' | 'fail';
-	repositoryPHID?: string;
+	repositoryPHID?: phid;
 }
 
 export interface DiffCreateinline {
@@ -35,7 +40,7 @@ export interface DiffCreateinline {
 
 export interface DiffCreaterawdiff {
 	diff: string;
-	repositoryPHID?: string;
+	repositoryPHID?: phid;
 	viewPolicy: string;
 }
 
@@ -43,8 +48,8 @@ export interface DiffDiffSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
-		revisionPHIDs?: Array<string>;
+		phids?: Array<phid>;
+		revisionPHIDs?: Array<phid>;
 	};
 	attachments: { commits: boolean };
 	order?: 'newest' | 'oldest';
@@ -52,9 +57,9 @@ export interface DiffDiffSearch extends BeforeAfterLimit {
 
 interface retDiffDiffSearchData extends RetSearchConstants {
 	fields: {
-		revisionPHID: string;
-		authorPHID: string;
-		repositoryPHID: number;
+		revisionPHID: phid;
+		authorPHID: phid;
+		repositoryPHID: phid;
 		refs: object;
 		dateCreated: number;
 		dateModified: number;
@@ -103,7 +108,7 @@ export interface DiffQuery {
 	limit?: number;
 	offset?: number;
 	ids?: Array<number>;
-	phids?: Array<string>;
+	phids?: Array<phid>;
 	subscribers?: Array<string>;
 	responsibleUsers?: Array<string>;
 	branches?: Array<string>;
@@ -162,11 +167,11 @@ export interface DiffRevisionSearch extends BeforeAfterLimit {
 	queryKey?: 'all' | 'active' | 'authored';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		responsiblePHIDs?: Array<string>;
-		authorPHIDs?: Array<string>;
-		reviewerPHIDs?: Array<string>;
-		repositoryPHIDs?: Array<string>;
+		authorPHIDs?: Array<phid>;
+		reviewerPHIDs?: Array<phid>;
+		repositoryPHIDs?: Array<phid>;
 		statuses?: Array<string>;
 		createdStart?: number;
 		createdEnd?: number;
@@ -182,9 +187,9 @@ export interface DiffRevisionSearch extends BeforeAfterLimit {
 
 interface retDiffRevisionSearchData extends RetSearchConstants {
 	fields: {
-		revisionPHID: string;
-		authorPHID: string;
-		repositoryPHID: number;
+		revisionPHID: phid;
+		authorPHID: phid;
+		repositoryPHID: phid;
 		refs: object;
 		dateCreated: number;
 		dateModified: number;

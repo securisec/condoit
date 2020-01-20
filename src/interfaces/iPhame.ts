@@ -1,4 +1,9 @@
-import { ErrorCodes, RetSearchConstants, BeforeAfterLimit } from './iGlobal';
+import {
+	ErrorCodes,
+	RetSearchConstants,
+	BeforeAfterLimit,
+	phid
+} from './iGlobal';
 
 interface phameBlogEditTransactionsType {
 	type:
@@ -30,7 +35,7 @@ export interface PhameBlogSearch extends BeforeAfterLimit {
 	queryKey?: 'active' | 'archived' | 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		query?: string;
 		subscribers?: Array<string>;
 		projects?: Array<string>;
@@ -52,9 +57,9 @@ interface retPhameBlogSearchData extends RetSearchConstants {
 		policy: { view: string };
 	};
 	attachments: {
-		projects: { projectPHIDs: Array<string> };
+		projects: { projectPHIDs: Array<phid> };
 		subscribers: {
-			subscriberPHIDs: Array<string>;
+			subscriberPHIDs: Array<phid>;
 			subscriberCount: number;
 			viewerIsSubscribed: boolean;
 		};
@@ -74,7 +79,7 @@ export interface PhamePostSearch {
 	queryKey?: 'live' | 'draft' | 'archived' | 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		visibility?: ['1', '0', '2'];
 		query?: string;
 		subscribers?: Array<string>;
@@ -91,8 +96,8 @@ interface retPhamePostSearchData extends RetSearchConstants {
 	fields: {
 		title: string;
 		slug: string;
-		blogPHID: string;
-		authorPHID: string;
+		blogPHID: phid;
+		authorPHID: phid;
 		body: string;
 		datePublished: number;
 		dateCreated: number;
@@ -101,11 +106,11 @@ interface retPhamePostSearchData extends RetSearchConstants {
 	};
 	attachments: {
 		subscribers: {
-			subscriberPHIDs: Array<string>;
+			subscriberPHIDs: Array<phid>;
 			subscriberCount: number;
 			viewerIsSubscribed: boolean;
 		};
-		projects: { projectPHIDs: Array<string> };
+		projects: { projectPHIDs: Array<phid> };
 	};
 }
 

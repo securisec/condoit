@@ -1,4 +1,9 @@
-import { BeforeAfterLimit, RetSearchConstants, ErrorCodes } from './iGlobal';
+import {
+	BeforeAfterLimit,
+	RetSearchConstants,
+	ErrorCodes,
+	phid
+} from './iGlobal';
 
 interface BranchCommitRepo {
 	branch?: string;
@@ -68,7 +73,7 @@ export interface DiffusionCommitSearch extends BeforeAfterLimit {
 	queryKey?: 'all' | 'authored' | 'active' | 'authored';
 	constraints?: {
 		ids?: Array<string>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		responsible?: Array<string>;
 		authors?: Array<string>;
 		auditors?: Array<string>;
@@ -97,22 +102,22 @@ export interface DiffusionCommitSearch extends BeforeAfterLimit {
 interface retDiffusionCommitSearchData extends RetSearchConstants {
 	fields: {
 		identifier: string;
-		repositoryPHID: string;
+		repositoryPHID: phid;
 		author: {
 			name: string;
 			email: string;
 			raw: string;
 			epoch: number;
-			identityPHID: string;
-			userPHID: string;
+			identityPHID: phid;
+			userPHID: phid;
 		};
 		commiter: {
 			name: string;
 			email: string;
 			raw: string;
 			epoch: number;
-			identityPHID: string;
-			userPHID: string;
+			identityPHID: phid;
+			userPHID: phid;
 		};
 		isImported: boolean;
 		isUnreachable: boolean;
@@ -127,11 +132,11 @@ interface retDiffusionCommitSearchData extends RetSearchConstants {
 	};
 	attachments: {
 		subscribers: {
-			subscriberPHIDs: Array<string>;
+			subscriberPHIDs: Array<phid>;
 			subscriberCount: number;
 			viewerIsSubscribed: boolean;
 		};
-		projects: { projectPHIDs: Array<string> };
+		projects: { projectPHIDs: Array<phid> };
 	};
 }
 
@@ -220,7 +225,7 @@ export interface RetDiffusionFilecontentquery extends ErrorCodes {
 	result: {
 		tooSlow: boolean;
 		tooHuge: boolean;
-		filePHID: string;
+		filePHID: phid;
 	};
 }
 
@@ -230,7 +235,7 @@ export interface DiffusionFindsymbols {
 	context?: string;
 	language?: string;
 	type?: string;
-	repositoryPHID?: string;
+	repositoryPHID?: phid;
 }
 
 export interface DiffusionHistoryquery extends BranchCommitRepo {
@@ -261,9 +266,9 @@ export interface DiffusionMergedcommitsquery extends BranchCommitRepo {
 
 export interface DiffusionQuerycommits extends BeforeAfterLimit {
 	ids?: Array<number>;
-	phids?: Array<string>;
+	phids?: Array<phid>;
 	names?: Array<string>;
-	repositoryPHID?: string;
+	repositoryPHID?: phid;
 	needMessages?: boolean;
 	bypassCache?: boolean;
 }
@@ -273,16 +278,16 @@ export interface RetDiffusionQuerycommits extends ErrorCodes {
 		data: {
 			[phid: string]: {
 				id: string;
-				phid: string;
-				repositoryPHID: string;
+				phid: phid;
+				repositoryPHID: phid;
 				identifier: string;
 				epoch: string;
 				authorEpoch: number;
 				uri: string;
 				isImporting: boolean;
 				summary: string;
-				authorPHID: string;
-				committerPHID: string;
+				authorPHID: phid;
+				committerPHID: phid;
 				author: string;
 				authorName: string;
 				authorEmail: string;
@@ -365,12 +370,12 @@ export interface DiffusionRepositorySearch extends BeforeAfterLimit {
 	queryKey?: 'all' | 'active';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		callsigns?: Array<string>;
 		shortNames?: Array<string>;
 		types?: ['git' | 'hg' | 'svn'];
 		uris?: Array<string>;
-		almanacServicePHIDs?: Array<string>;
+		almanacServicePHIDs?: Array<phid>;
 		query?: string;
 		projects?: Array<string>;
 	};
@@ -393,22 +398,22 @@ interface retDiffusionRepositorySearchData extends RetSearchConstants {
 		shortName: string;
 		status: string;
 		isImporting: boolean;
-		almanacServicePHID: string;
+		almanacServicePHID: phid;
 		refRules: object;
 		defaultBranch: string;
 		description: string;
-		spacePHID: string;
+		spacePHID: phid;
 		dateCreated: number;
 		dateModified: number;
 		policy: { view: string; edit: string };
 	};
 	attachments: {
 		subscribers: {
-			subscriberPHIDs: Array<string>;
+			subscriberPHIDs: Array<phid>;
 			subscriberCount: number;
 			viewerIsSubscribed: boolean;
 		};
-		projects: { projectPHIDs: Array<string> };
+		projects: { projectPHIDs: Array<phid> };
 		bindings: { bindings: Array<any> };
 	};
 }
@@ -416,9 +421,9 @@ interface retDiffusionRepositorySearchData extends RetSearchConstants {
 interface retDiffuRepoSearchAttachmentUri {
 	id: string;
 	type: string;
-	phid: string;
+	phid: phid;
 	fields: {
-		repositoryPHID: string;
+		repositoryPHID: phid;
 		uri: {
 			raw: string;
 			display: string;
@@ -431,7 +436,7 @@ interface retDiffuRepoSearchAttachmentUri {
 			default: string;
 			effective: string;
 		};
-		credentialPHID: string;
+		credentialPHID: phid;
 		disabled: boolean;
 		builtin: { protocol: string; identifier: string };
 		dateCreated: string;
@@ -455,22 +460,22 @@ export interface RetDiffusionRepositorySearch extends ErrorCodes {
 				commitCount: number;
 				recentCommit: {
 					identifier: string;
-					repositoryPHID: string;
+					repositoryPHID: phid;
 					author: {
 						name: string;
 						email: string;
 						raw: string;
 						epoch: number;
-						identityPHID: string;
-						userPHID: string;
+						identityPHID: phid;
+						userPHID: phid;
 					};
 					committer: {
 						name: string;
 						email: string;
 						raw: string;
 						epoch: number;
-						identityPHID: string;
-						userPHID: string;
+						identityPHID: phid;
+						userPHID: phid;
 					};
 					isUnreachable: boolean;
 					isImported: boolean;
@@ -483,7 +488,7 @@ export interface RetDiffusionRepositorySearch extends ErrorCodes {
 					message: string;
 				};
 			};
-			projects: { projectPHIDs: Array<string> };
+			projects: { projectPHIDs: Array<phid> };
 			uris: {
 				uris: Array<retDiffuRepoSearchAttachmentUri>;
 			};
@@ -531,14 +536,14 @@ export interface DiffusionUriedit {
 }
 
 export interface DiffusionGetlinemessages {
-	repositoryPHID: string;
+	repositoryPHID: phid;
 	branch: string;
 	commit?: string;
 	files: Array<string>;
 }
 
 export interface DiffusionUpdatecoverage {
-	repositoryPHID: string;
+	repositoryPHID: phid;
 	branch: string;
 	commit: string;
 	coverage: object;

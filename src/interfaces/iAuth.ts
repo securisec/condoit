@@ -1,17 +1,17 @@
-import { BeforeAfterLimit, ErrorCodes } from './iGlobal';
+import { BeforeAfterLimit, ErrorCodes, phid } from './iGlobal';
 
 export interface AuthQuerypublickeys extends BeforeAfterLimit {
 	ids?: Array<number>;
-	phids?: Array<string>;
-	objectPHIDs?: Array<string>;
+	phids?: Array<phid>;
+	objectPHIDs?: Array<phid>;
 	keys?: Array<string>;
 }
 
 interface retAuthPublicKeyData {
 	id: string;
 	name: string;
-	phid: string;
-	objectPHID: string;
+	phid: phid;
+	objectPHID: phid;
 	isTrusted: boolean;
 	key: string;
 }

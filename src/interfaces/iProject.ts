@@ -1,10 +1,15 @@
-import { ErrorCodes, RetSearchConstants, BeforeAfterLimit } from './iGlobal';
+import {
+	ErrorCodes,
+	RetSearchConstants,
+	BeforeAfterLimit,
+	phid
+} from './iGlobal';
 
 export interface ColumnSearch {
 	queryKey?: string;
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		projects?: Array<string>;
 	};
 	order?: 'newest' | 'oldest';
@@ -13,10 +18,10 @@ export interface ColumnSearch {
 interface prjectRetColumnSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
-		proxyPHID: string;
+		proxyPHID: phid;
 		project: {
 			id: number;
-			phid: string;
+			phid: phid;
 			name: string;
 		};
 		dateCreated: number;
@@ -64,7 +69,7 @@ export interface ProjectEdit {
 export interface ProjectQuery {
 	ids: Array<number>;
 	names: Array<string>;
-	phids: Array<string>;
+	phids: Array<phid>;
 	slugs: Array<string>;
 	icons: Array<string>;
 	colors: Array<string>;
@@ -84,9 +89,9 @@ export interface RetProjectQuery extends ErrorCodes {
 		data: {
 			[phid: string]: {
 				id: string;
-				phid: string;
+				phid: phid;
 				name: string;
-				profileImagePHID: string;
+				profileImagePHID: phid;
 				icon: string;
 				color: string;
 				members: Array<string>;
@@ -104,7 +109,7 @@ export interface ProjectSearch extends BeforeAfterLimit {
 	queryKey?: 'joined' | 'watching' | 'active' | 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		name?: string;
 		slugs?: Array<string>;
 		members?: Array<string>;
@@ -173,7 +178,7 @@ interface retProjectSearchData extends RetSearchConstants {
 		parent: string;
 		icon: { key: string };
 		color: { key: string };
-		spacePHID: string;
+		spacePHID: phid;
 		dateCreated: number;
 		dateModified: number;
 		policy: { view: string };

@@ -1,5 +1,5 @@
-
 # Condoit
+
 [![](https://img.shields.io/badge/Docs-Docs-00a02e?logo=github&style=for-the-badge&color=0000ff)](https://securisec.github.io/condoit/)
 ![](https://img.shields.io/npm/v/condoit?style=for-the-badge)
 
@@ -72,6 +72,23 @@ condoit.maniphest
 		console.dir(res);
 	})
 	.catch((error) => console.log(error));
+```
+
+#### Alternate way to add transactions
+
+```js
+const { transactions } = require('condoit');
+
+let maniphest = transactions.maniphest;
+
+condoit.maniphest
+	.edit({
+		transactions: [maniphest.title('Some title'), maniphest.priority('low')],
+		objectIdentifier: 4
+	})
+	.then((data) => {
+		console.dir(data, { depth: null });
+	});
 ```
 
 #### Add a token to a task

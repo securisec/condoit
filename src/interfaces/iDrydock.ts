@@ -1,21 +1,26 @@
-import { BeforeAfterLimit, ErrorCodes, RetSearchConstants } from './iGlobal';
+import {
+	BeforeAfterLimit,
+	ErrorCodes,
+	RetSearchConstants,
+	phid
+} from './iGlobal';
 
 export interface DrydockAlmanacSearch extends BeforeAfterLimit {
 	queryKey?: 'active' | 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		blueprintPHIDs?: Array<string>;
-		objectPHIDs?: Array<string>;
+		objectPHIDs?: Array<phid>;
 	};
 	order?: 'newest' | 'oldest';
 }
 
 interface retDDAlmanacSearchData extends RetSearchConstants {
 	fields: {
-		blueprintPHID: string;
+		blueprintPHID: phid;
 		blueprintAuthorizationState: object;
-		objectPHID: string;
+		objectPHID: phid;
 		objectAuthorizationState: object;
 		dateCreated: number;
 		dateModified: number;
@@ -41,7 +46,7 @@ export interface DrydockBlueprintSearch extends BeforeAfterLimit {
 	queryKey?: 'active' | 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		match?: string;
 		isDisabled?: boolean;
 		projects?: Array<string>;
@@ -80,23 +85,23 @@ export interface DrydockLeaseSearch extends BeforeAfterLimit {
 	queryKey?: 'active' | 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		statuses?: [
 			'pending' | 'acquired' | 'active' | 'released' | 'broken' | 'destroyed'
 		];
-		ownerPHIDs?: Array<string>;
-		resourcePHIDs?: Array<string>;
+		ownerPHIDs?: Array<phid>;
+		resourcePHIDs?: Array<phid>;
 	};
 	order?: 'newest' | 'oldest';
 }
 
 interface retDDLeaseSearchData extends RetSearchConstants {
 	fields: {
-		resourcePHID: string;
+		resourcePHID: phid;
 		resourceType: string;
 		until: number;
-		ownerPHID: string;
-		authorizingPHID: string;
+		ownerPHID: phid;
+		authorizingPHID: phid;
 		status: object;
 		dateCreated: number;
 		dateModified: number;
@@ -122,18 +127,18 @@ export interface DrydockResourceSearch extends BeforeAfterLimit {
 	queryKey?: 'active' | 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		statuses?: [
 			'pending' | 'acquired' | 'active' | 'released' | 'broken' | 'destroyed'
 		];
-		blueprintPHIDs?: Array<string>;
+		blueprintPHIDs?: Array<phid>;
 	};
 	order?: 'newest' | 'oldest';
 }
 
 interface retDDResourceSearchData extends RetSearchConstants {
 	fields: {
-		blueprintPHID: string;
+		blueprintPHID: phid;
 		status: object;
 		dateCreated: number;
 		dateModified: number;

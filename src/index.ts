@@ -22,6 +22,7 @@ import * as iMacro from './interfaces/iMacro';
 import * as iManiphest from './interfaces/iManiphest';
 import * as iOwners from './interfaces/iOwners';
 import * as iPassphrase from './interfaces/iPassphrase';
+import * as iPaste from './interfaces/iPaste';
 import * as iPhame from './interfaces/iPhame';
 import * as iPhid from './interfaces/iPhid';
 import * as iPhriction from './interfaces/iPhriction';
@@ -35,6 +36,9 @@ import * as iTransactions from './interfaces/iTransactions';
 import * as iUser from './interfaces/iUser';
 import { WebhookParse } from './interfaces/iWebook';
 import { Transactions, GenericReturn } from './interfaces/iGlobal';
+import { transactions } from './transactions';
+
+export { transactions };
 
 /**
  *The class to create an instance to use the Phabricator api
@@ -2266,6 +2270,70 @@ export class Condoit {
 	};
 
 	/**
+	 *Paste is the application to host code snippets.
+	 *
+	 * @memberof Condoit
+	 */
+	public paste = {
+		/**
+		 ***Marked for deprecation** Create a new paste 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/paste.create/}
+		 *
+		 * @param {iPaste.PasteCreate} options
+		 * @returns {Promise<iPaste.RetPasteCreate>}
+		 */
+		create: (options: iPaste.PasteCreate): Promise<iPaste.RetPasteCreate> => {
+			return this.makeRequest('paste.create', {
+				content: options.content,
+				title: options?.title,
+				language: options?.language
+			});
+		},
+
+		/**
+		 *Apply transactions to edit or create a new paste 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/paste.edit/}
+		 *
+		 * @param {iPaste.PasteEdit} options
+		 * @returns {Promise<Transactions>}
+		 */
+		edit: (options: iPaste.PasteEdit): Promise<Transactions> => {
+			return this.makeRequest('paste.edit', this.transactionOptions(options));
+		},
+
+		/**
+		 ***Marked for deprecation** Query pastes 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/paste.query/}
+		 *
+		 * @param {iPaste.PasteQuery} options
+		 * @returns {Promise<iPaste.RetPasteQuery>}
+		 */
+		query: (options: iPaste.PasteQuery): Promise<iPaste.RetPasteQuery> => {
+			return this.makeRequest('paste.query', {
+				ids: options?.ids,
+				phids: options?.phids,
+				authorPHIDs: options?.authorPHIDs,
+				after: options?.after,
+				limit: options?.limit
+			});
+		},
+
+		/**
+		 *Search for pastes 
+		 [Docs]{@link https://secure.phabricator.com/conduit/method/paste.search/}
+		 *
+		 * @param {iPaste.PasteSearch} options
+		 * @returns {Promise<iPaste.RetPasteSearch>}
+		 */
+		search: (options: iPaste.PasteSearch): Promise<iPaste.RetPasteSearch> => {
+			return this.makeRequest(
+				'paste.search',
+				this.returnOptionsAttachments(options)
+			);
+		}
+	};
+
+	/**
 	 *API around the Phame application which is the blogging 
 	 service provided by Phabricator. 
 	 *
@@ -2793,11 +2861,20 @@ export class Condoit {
  * }} data
  * @returns {WebhookParse}
  */
-export function parseWebhook(data: {
-	object: { type: string; phid: string };
-	triggers: Array<{ phid: string }>;
-	action: { test: boolean; silent: boolean; epoch: number; secure: boolean };
-	transactions: Array<{ phid: string }>;
-}): WebhookParse {
+export function parseWebhook(
+	data:
+		| {
+				object: { type: string; phid: string };
+				triggers: Array<{ phid: string }>;
+				action: {
+					test: boolean;
+					silent: boolean;
+					epoch: number;
+					secure: boolean;
+				};
+				transactions: Array<{ phid: string }>;
+		  }
+		| any
+): WebhookParse {
 	return data;
 }

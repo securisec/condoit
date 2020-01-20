@@ -1,18 +1,23 @@
-import { RetSearchConstants, ErrorCodes, BeforeAfterLimit } from './iGlobal';
+import {
+	RetSearchConstants,
+	ErrorCodes,
+	BeforeAfterLimit,
+	phid
+} from './iGlobal';
 
 export interface HarbormasterArtifactSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
-		buildTargetPHIDs?: Array<string>;
+		phids?: Array<phid>;
+		buildTargetPHIDs?: Array<phid>;
 	};
 	order?: 'newest' | 'oldest';
 }
 
 interface retHMArtifaceSearchData extends RetSearchConstants {
 	fields: {
-		buildTargetPHID: string;
+		buildTargetPHID: phid;
 		artifactType: string;
 		artifactKey: string;
 		isReleased: boolean;
@@ -40,7 +45,7 @@ export interface HarbormasterBuildSearch extends BeforeAfterLimit {
 	queryKey?: 'all' | 'initiated' | 'waiting' | 'active' | 'completed';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		plans?: Array<string>;
 		buildables?: Array<string>;
 		statuses?: Array<string>;
@@ -51,10 +56,10 @@ export interface HarbormasterBuildSearch extends BeforeAfterLimit {
 
 interface retHMBuildSearchData extends RetSearchConstants {
 	fields: {
-		buildablePHID: string;
-		buildPlanPHID: string;
+		buildablePHID: phid;
+		buildPlanPHID: phid;
 		buildStatus: object;
-		initiatorPHID: string;
+		initiatorPHID: phid;
 		name: string;
 		dateCreated: number;
 		dateModified: number;
@@ -80,9 +85,9 @@ export interface HarbormasterBuildableSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
-		objectPHIDs?: Array<string>;
-		containerPHIDs?: Array<string>;
+		phids?: Array<phid>;
+		objectPHIDs?: Array<phid>;
+		containerPHIDs?: Array<phid>;
 		statuses?: ['preparing' | 'building' | 'passed' | 'failed'];
 		manual?: boolean;
 	};
@@ -91,8 +96,8 @@ export interface HarbormasterBuildableSearch extends BeforeAfterLimit {
 
 interface retHMBuildableSearchData extends RetSearchConstants {
 	fields: {
-		objectPHID: string;
-		containerPHID: string;
+		objectPHID: phid;
+		containerPHID: phid;
 		buildableStatus: object;
 		isManual: boolean;
 		dateCreated: number;
@@ -119,7 +124,7 @@ export interface HarbormasterBuildplanSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
+		phids?: Array<phid>;
 		match?: string;
 		statuses?: ['active' | 'disabled'];
 		subscribers?: Array<string>;
@@ -188,17 +193,17 @@ export interface HarbormasterLogSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
-		buildTargetPHIDs?: Array<string>;
+		phids?: Array<phid>;
+		buildTargetPHIDs?: Array<phid>;
 	};
 	order?: 'newest' | 'oldest';
 }
 
 interface retHMLogSearchData extends RetSearchConstants {
 	fields: {
-		buildTargetPHID: string;
+		buildTargetPHID: phid;
 		byteLength: number;
-		filePHID: string;
+		filePHID: phid;
 		dateCreated: number;
 		dateModified: number;
 		policy: { view: string; edit: string };
@@ -223,8 +228,8 @@ export interface HarbormasterTargetSearch extends BeforeAfterLimit {
 	queryKey?: 'all';
 	constraints?: {
 		ids?: Array<number>;
-		phids?: Array<string>;
-		buildPHIDs?: Array<string>;
+		phids?: Array<phid>;
+		buildPHIDs?: Array<phid>;
 	};
 	order?: 'newest' | 'oldest';
 }
@@ -232,8 +237,8 @@ export interface HarbormasterTargetSearch extends BeforeAfterLimit {
 interface retHMTargetSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
-		buildPHID: string;
-		buildStepPHID: string;
+		buildPHID: phid;
+		buildStepPHID: phid;
 		status: object;
 		epochStarted: number;
 		epochCompleted: number;
@@ -259,12 +264,12 @@ export interface RetHarbormasterTargetSearch extends ErrorCodes {
 }
 
 export interface HarbormasterCreateartifact {
-	buildTargetPHID: string;
+	buildTargetPHID: phid;
 	artifactKey: string;
 	artifactType: 'host' | 'working-copy' | 'file' | 'uri';
 	artifactData: {
-		drydockLeasePHID?: string;
-		filePHID?: string;
+		drydockLeasePHID?: phid;
+		filePHID?: phid;
 		uri?: string;
 		name?: string;
 		'ui.external'?: boolean;
@@ -273,9 +278,9 @@ export interface HarbormasterCreateartifact {
 
 export interface HarbormasterQuerybuildables extends BeforeAfterLimit {
 	ids?: Array<string>;
-	phids?: Array<string>;
-	buildablePHIDs?: Array<string>;
-	containerPHIDs?: Array<string>;
+	phids?: Array<phid>;
+	buildablePHIDs?: Array<phid>;
+	containerPHIDs?: Array<phid>;
 	manualBuildables?: boolean;
 }
 
@@ -302,7 +307,7 @@ interface hmSendMessageLint {
 }
 
 export interface HarbormasterSendmessage {
-	buildTargetPHID: string;
+	buildTargetPHID: phid;
 	type: 'pass' | 'fail' | 'work';
 	unit: Array<hmSendMessageUnit>;
 	lint: Array<hmSendMessageLint>;

@@ -1,8 +1,8 @@
-import { ErrorCodes, BeforeAfterLimit } from './iGlobal';
+import { ErrorCodes, BeforeAfterLimit, phid } from './iGlobal';
 
-export interface RepositoryQuery extends BeforeAfterLimit{
+export interface RepositoryQuery extends BeforeAfterLimit {
 	ids: Array<number>;
-	phids: Array<string>;
+	phids: Array<phid>;
 	callsigns: Array<string>;
 	vcsTypes: Array<string>;
 	remoteURIs: Array<string>;
@@ -13,7 +13,7 @@ export interface RepositoryQuery extends BeforeAfterLimit{
 interface retRepositoryQueryResult {
 	id: string;
 	name: string;
-	phid: string;
+	phid: phid;
 	callsign: string;
 	monogram: string;
 	vcs: string;
@@ -25,7 +25,7 @@ interface retRepositoryQueryResult {
 	isImporting: boolean;
 	encoding: string;
 	staging: { supported: boolean; prefix: string; uri: string };
-};
+}
 
 export interface RetRepositoryQuery extends ErrorCodes {
 	result: Array<retRepositoryQueryResult>;

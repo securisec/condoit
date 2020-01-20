@@ -1,4 +1,4 @@
-import { ErrorCodes } from './iGlobal';
+import { ErrorCodes, phid } from './iGlobal';
 
 export const tokens = {
 	'100': 'PHID-TOKN-emoji-1',
@@ -55,7 +55,7 @@ type validToken =
 
 export interface TokenGive {
 	token: validToken;
-	objectPHID: string;
+	objectPHID: phid;
 }
 
 export interface RetTokenGive extends ErrorCodes {
@@ -63,15 +63,15 @@ export interface RetTokenGive extends ErrorCodes {
 }
 
 export interface TokenGiven {
-	authorPHIDs?: Array<string>;
-	objectPHIDs?: Array<string>;
+	authorPHIDs?: Array<phid>;
+	objectPHIDs?: Array<phid>;
 	tokenPHIDs?: Array<validToken>;
 }
 
 type retTokenGivenResult = {
-	authorPHID: string;
-	objectPHID: string;
-	tokenPHID: string;
+	authorPHID: phid;
+	objectPHID: phid;
+	tokenPHID: phid;
 	dateCreated: string;
 };
 
@@ -82,7 +82,7 @@ export interface RetTokenGiven extends ErrorCodes {
 type retTokenQueryResult = {
 	id: number;
 	name: string;
-	phid: string;
+	phid: phid;
 };
 
 export interface RetTokenQuery extends ErrorCodes {

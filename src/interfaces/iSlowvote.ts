@@ -1,11 +1,16 @@
-import { ErrorCodes, RetSearchConstants, BeforeAfterLimit } from './iGlobal';
+import {
+	ErrorCodes,
+	RetSearchConstants,
+	BeforeAfterLimit,
+	phid
+} from './iGlobal';
 
 export interface PollSearch extends BeforeAfterLimit {
 	queryKey: string;
 	constraints: {
 		ids: Array<number>;
-		phids: Array<string>;
-		authorPHIDs: Array<string>;
+		phids: Array<phid>;
+		authorPHIDs: Array<phid>;
 		statuses: ['open' | 'closed'];
 		subscribers: Array<string>;
 		projects: Array<string>;
@@ -20,8 +25,8 @@ export interface PollSearch extends BeforeAfterLimit {
 interface retPollSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
-		authorPHID: string;
-		spacePHID: string;
+		authorPHID: phid;
+		spacePHID: phid;
 		dateCreated: number;
 		dateModified: number;
 		policy: { view: string };

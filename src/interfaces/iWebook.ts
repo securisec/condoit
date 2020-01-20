@@ -1,18 +1,16 @@
-interface Phid {
-	phid: string;
-}
+import { phid } from './iGlobal';
 
 export interface WebhookParse {
 	object: {
 		type: string;
-		phid: string;
+		phid: phid;
 	};
-	triggers: Array<Phid>;
+	triggers: Array<phid>;
 	action: {
 		test: boolean;
 		silent: boolean;
 		secure: boolean;
 		epoch: number;
 	};
-	transactions: Array<Phid>;
+	transactions: Array<phid>;
 }

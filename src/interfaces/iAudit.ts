@@ -1,9 +1,9 @@
-import { ErrorCodes } from './iGlobal';
+import { ErrorCodes, phid } from './iGlobal';
 
 interface retAuditQueryData {
 	id: string;
-	commitPHID: string;
-	authorPHID: string;
+	commitPHID: phid;
+	authorPHID: phid;
 	reasons: Array<string>;
 	status: string;
 }
@@ -13,8 +13,8 @@ export interface RetAuditQuery extends ErrorCodes {
 }
 
 export interface AuditQuery {
-	authorPHIDs?: Array<string>;
-	commitPHIDs?: Array<string>;
+	authorPHIDs?: Array<phid>;
+	commitPHIDs?: Array<phid>;
 	status?:
 		| 'audit-status-any'
 		| 'audit-status-open'

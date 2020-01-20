@@ -2,6 +2,8 @@ interface transactionsObject {
 	phid: string;
 }
 
+export type phid = string;
+
 export interface Transactions extends ErrorCodes {
 	result: {
 		object: { id: number; phid: string };
