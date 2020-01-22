@@ -19,7 +19,7 @@ export interface PhrictionContentSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest';
 }
 
-interface retPhrictionContentSearchData extends RetSearchConstants {
+export interface retPhrictionContentSearchData extends RetSearchConstants {
 	fields: {
 		documentPHID: phid;
 		version: number;
@@ -82,7 +82,7 @@ export interface PhrictionDocumentSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest' | 'relevance' | 'hierarchy';
 }
 
-interface retPhrictionDocumentSearchData extends RetSearchConstants {
+export interface retPhrictionDocumentSearchData extends RetSearchConstants {
 	fields: {
 		path: string;
 		status: { value: string };

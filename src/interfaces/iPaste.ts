@@ -28,7 +28,7 @@ export interface RetPasteCreate extends ErrorCodes {
 	};
 }
 
-interface pasteTransactions {
+export interface pasteTransactions {
 	type:
 		| 'space'
 		| 'title'
@@ -77,7 +77,7 @@ export interface RetPasteQuery {
 	};
 }
 
-interface PasteSearchConstraints {
+export interface PasteSearchConstraints {
 	ids?: Array<number>;
 	phids?: Array<phid>;
 	authors?: Array<phid>;
@@ -100,7 +100,7 @@ export interface PasteSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest';
 }
 
-interface retPasteData extends RetSearchConstants {
+export interface retPasteData extends RetSearchConstants {
 	fields: {
 		title: string;
 		authorPHID: phid;

@@ -41,7 +41,7 @@ export interface RetManiphestCreatetask extends ErrorCodes {
 	};
 }
 
-interface ManiphestEditTransactions {
+export interface ManiphestEditTransactions {
 	type:
 		| 'parent'
 		| 'column'
@@ -79,7 +79,7 @@ export interface ManiphestEdit {
 	objectIdentifier: number | string;
 }
 
-interface maniphestGettasktransactions {
+export interface maniphestGettasktransactions {
 	taskID: string;
 	transactionID: string;
 	transactionPHID: phid;
@@ -122,7 +122,7 @@ export interface RetManiphestInfo extends ErrorCodes {
 	};
 }
 
-interface maniphestPrioritysearchData {
+export interface maniphestPrioritysearchData {
 	name: string;
 	keywords: Array<string>;
 	short: string;
@@ -250,7 +250,7 @@ export interface ManiphestSearch extends BeforeAfterLimit {
 		| [string];
 }
 
-interface retManiphestSearchData extends RetSearchConstants {
+export interface retManiphestSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		description: { raw: string };
@@ -279,7 +279,7 @@ export interface RetManiphestSearch extends ErrorCodes {
 	};
 }
 
-interface retManiphestStatusSearchData {
+export interface retManiphestStatusSearchData {
 	name: string;
 	value: string;
 	closed: boolean;

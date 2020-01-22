@@ -5,7 +5,7 @@ import {
 	phid
 } from './iGlobal';
 
-interface portalEditTransactionType {
+export interface portalEditTransactionType {
 	type:
 		| 'name'
 		| 'view'
@@ -34,7 +34,7 @@ export interface PortalSearch extends BeforeAfterLimit {
 	attachments?: { projects: boolean };
 }
 
-interface retPortalSearchData extends RetSearchConstants {
+export interface retPortalSearchData extends RetSearchConstants {
 	fields: {
 		dateCreated: number;
 		dateModified: number;

@@ -11,7 +11,7 @@ export interface Transactions extends ErrorCodes {
 	};
 }
 
-interface ErrorCodes {
+export interface ErrorCodes {
 	error_code: string;
 	error_info: string;
 }
@@ -31,5 +31,3 @@ export interface BeforeAfterLimit {
 export interface GenericReturn extends ErrorCodes {
 	result: object;
 }
-
-export { ErrorCodes };

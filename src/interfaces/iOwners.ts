@@ -1,6 +1,6 @@
 import { ErrorCodes, BeforeAfterLimit, phid } from './iGlobal';
 
-interface ownerSearchTransactions {
+export interface ownerSearchTransactions {
 	type:
 		| 'name'
 		| 'owners'
@@ -40,7 +40,7 @@ export interface OwnersSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest' | 'name' | 'relevance';
 }
 
-interface retOwnersSearchDataOwners {
+export interface retOwnersSearchDataOwners {
 	ownerPHID: phid;
 }
 

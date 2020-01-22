@@ -55,7 +55,7 @@ export interface DiffDiffSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest';
 }
 
-interface retDiffDiffSearchData extends RetSearchConstants {
+export interface retDiffDiffSearchData extends RetSearchConstants {
 	fields: {
 		revisionPHID: phid;
 		authorPHID: phid;
@@ -114,7 +114,7 @@ export interface DiffQuery {
 	branches?: Array<string>;
 }
 
-interface diffRevisionEditTransactions {
+export interface diffRevisionEditTransactions {
 	type:
 		| 'update'
 		| 'title'
@@ -185,7 +185,7 @@ export interface DiffRevisionSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest' | 'relevance' | 'updated' | 'outdated';
 }
 
-interface retDiffRevisionSearchData extends RetSearchConstants {
+export interface retDiffRevisionSearchData extends RetSearchConstants {
 	fields: {
 		revisionPHID: phid;
 		authorPHID: phid;

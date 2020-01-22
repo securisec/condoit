@@ -8,7 +8,7 @@ export interface TransactionsSearch extends BeforeAfterLimit {
 	};
 }
 
-interface retTransactionsSearchData {
+export interface retTransactionsSearchData {
 	id: number;
 	phid: phid;
 	type: string;

@@ -22,7 +22,7 @@ export interface PollSearch extends BeforeAfterLimit {
 	order: any;
 }
 
-interface retPollSearchData extends RetSearchConstants {
+export interface retPollSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		authorPHID: phid;

@@ -1,6 +1,6 @@
 import { ErrorCodes, phid } from './iGlobal';
 
-interface macroEditTransactions {
+export interface macroEditTransactions {
 	type:
 		| 'name'
 		| 'filePHID'

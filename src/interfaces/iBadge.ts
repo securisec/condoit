@@ -20,7 +20,7 @@ export interface BadgeSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest' | 'quality' | 'shoddiness';
 }
 
-interface retBadgeSearchData extends RetSearchConstants {
+export interface retBadgeSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		creatorPHID: phid;
@@ -52,7 +52,7 @@ export interface RetBadgeSearch extends ErrorCodes {
 	};
 }
 
-interface badgeEditTransactions {
+export interface badgeEditTransactions {
 	type:
 		| 'name'
 		| 'flavor'

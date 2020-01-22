@@ -8,7 +8,7 @@ export interface FlagQuery {
 	limit: number;
 }
 
-interface retFlagQueryResult {
+export interface retFlagQueryResult {
 	id: string;
 	ownerPHID: phid;
 	type: string;
@@ -30,7 +30,7 @@ export interface RetFlagQuery extends ErrorCodes {
 	result: Array<retFlagQueryResult>;
 }
 
-interface retFlagEditResult {
+export interface retFlagEditResult {
 	id: string;
 	ownerPHID: phid;
 	type: string;

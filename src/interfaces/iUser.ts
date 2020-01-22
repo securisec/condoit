@@ -5,7 +5,7 @@ import {
 	phid
 } from './iGlobal';
 
-interface editUsersTransactions {
+export interface editUsersTransactions {
 	type:
 		| 'disabled'
 		| 'approved'
@@ -22,7 +22,7 @@ export interface UsersEdit {
 	objectIdentifier?: number | string;
 }
 
-interface UsersSearchConstraints {
+export interface UsersSearchConstraints {
 	ids?: Array<number>;
 	phids?: Array<phid>;
 	usernames?: Array<string>;
@@ -49,7 +49,7 @@ export interface UsersSearch extends BeforeAfterLimit {
 		| ['id' | 'username' | 'rank' | 'fulltext-created' | 'fulltext-modified'];
 }
 
-interface retUsersSearchData extends RetSearchConstants {
+export interface retUsersSearchData extends RetSearchConstants {
 	fields: {
 		username: string;
 		realName: string;

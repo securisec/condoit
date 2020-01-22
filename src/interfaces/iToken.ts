@@ -27,7 +27,7 @@ export const tokens = {
 	'Pirate Logo': 'PHID-TOKN-emoji-8'
 };
 
-type validToken =
+export type validToken =
 	| '100'
 	| 'Like'
 	| 'Dislike'
@@ -68,7 +68,7 @@ export interface TokenGiven {
 	tokenPHIDs?: Array<validToken>;
 }
 
-type retTokenGivenResult = {
+export type retTokenGivenResult = {
 	authorPHID: phid;
 	objectPHID: phid;
 	tokenPHID: phid;
@@ -79,7 +79,7 @@ export interface RetTokenGiven extends ErrorCodes {
 	result: Array<retTokenGivenResult>;
 }
 
-type retTokenQueryResult = {
+export type retTokenQueryResult = {
 	id: number;
 	name: string;
 	phid: phid;

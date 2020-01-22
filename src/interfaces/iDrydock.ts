@@ -16,7 +16,7 @@ export interface DrydockAlmanacSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest';
 }
 
-interface retDDAlmanacSearchData extends RetSearchConstants {
+export interface retDDAlmanacSearchData extends RetSearchConstants {
 	fields: {
 		blueprintPHID: phid;
 		blueprintAuthorizationState: object;
@@ -57,7 +57,7 @@ export interface DrydockBlueprintSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest';
 }
 
-interface retDDBlueprintSearchData extends RetSearchConstants {
+export interface retDDBlueprintSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		type: string;
@@ -95,7 +95,7 @@ export interface DrydockLeaseSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest';
 }
 
-interface retDDLeaseSearchData extends RetSearchConstants {
+export interface retDDLeaseSearchData extends RetSearchConstants {
 	fields: {
 		resourcePHID: phid;
 		resourceType: string;
@@ -136,7 +136,7 @@ export interface DrydockResourceSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest';
 }
 
-interface retDDResourceSearchData extends RetSearchConstants {
+export interface retDDResourceSearchData extends RetSearchConstants {
 	fields: {
 		blueprintPHID: phid;
 		status: object;
@@ -160,7 +160,7 @@ export interface RetDDResourceSearch extends ErrorCodes {
 	};
 }
 
-interface blueprintEditTrans {
+export interface blueprintEditTrans {
 	type:
 		| 'type'
 		| 'name'

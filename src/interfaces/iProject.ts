@@ -15,7 +15,7 @@ export interface ColumnSearch {
 	order?: 'newest' | 'oldest';
 }
 
-interface prjectRetColumnSearchData extends RetSearchConstants {
+export interface prjectRetColumnSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		proxyPHID: phid;
@@ -40,7 +40,7 @@ export interface RetColumnSearch extends ErrorCodes {
 	};
 }
 
-interface projectEditTransactionsType {
+export interface projectEditTransactionsType {
 	type:
 		| 'parent'
 		| 'milestone'
@@ -168,7 +168,7 @@ export interface ProjectSearch extends BeforeAfterLimit {
 		| 'status';
 }
 
-interface retProjectSearchData extends RetSearchConstants {
+export interface retProjectSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		slug: string;

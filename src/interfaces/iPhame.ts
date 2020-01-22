@@ -5,7 +5,7 @@ import {
 	phid
 } from './iGlobal';
 
-interface phameBlogEditTransactionsType {
+export interface phameBlogEditTransactionsType {
 	type:
 		| 'name'
 		| 'subtitle'
@@ -47,7 +47,7 @@ export interface PhameBlogSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest' | 'relevance';
 }
 
-interface retPhameBlogSearchData extends RetSearchConstants {
+export interface retPhameBlogSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		description: string;
@@ -92,7 +92,7 @@ export interface PhamePostSearch {
 	order?: 'newest' | 'oldest' | 'relevance' | 'datePublished';
 }
 
-interface retPhamePostSearchData extends RetSearchConstants {
+export interface retPhamePostSearchData extends RetSearchConstants {
 	fields: {
 		title: string;
 		slug: string;
@@ -123,7 +123,7 @@ export interface RetPhamePostSearch extends ErrorCodes {
 	};
 }
 
-interface phamePostEditTransactionsType {
+export interface phamePostEditTransactionsType {
 	type:
 		| 'blog'
 		| 'title'

@@ -15,7 +15,7 @@ export interface HarbormasterArtifactSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest';
 }
 
-interface retHMArtifaceSearchData extends RetSearchConstants {
+export interface retHMArtifaceSearchData extends RetSearchConstants {
 	fields: {
 		buildTargetPHID: phid;
 		artifactType: string;
@@ -54,7 +54,7 @@ export interface HarbormasterBuildSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest';
 }
 
-interface retHMBuildSearchData extends RetSearchConstants {
+export interface retHMBuildSearchData extends RetSearchConstants {
 	fields: {
 		buildablePHID: phid;
 		buildPlanPHID: phid;
@@ -94,7 +94,7 @@ export interface HarbormasterBuildableSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest';
 }
 
-interface retHMBuildableSearchData extends RetSearchConstants {
+export interface retHMBuildableSearchData extends RetSearchConstants {
 	fields: {
 		objectPHID: phid;
 		containerPHID: phid;
@@ -133,7 +133,7 @@ export interface HarbormasterBuildplanSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest';
 }
 
-interface retHMBuildplanSearchData extends RetSearchConstants {
+export interface retHMBuildplanSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		status: object;
@@ -164,7 +164,7 @@ export interface RetHarbormasterBuildplanSearch extends ErrorCodes {
 	};
 }
 
-interface hmBuildplanEditTransactions {
+export interface hmBuildplanEditTransactions {
 	type:
 		| 'name'
 		| 'behavior.hold-drafts'
@@ -199,7 +199,7 @@ export interface HarbormasterLogSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest';
 }
 
-interface retHMLogSearchData extends RetSearchConstants {
+export interface retHMLogSearchData extends RetSearchConstants {
 	fields: {
 		buildTargetPHID: phid;
 		byteLength: number;
@@ -234,7 +234,7 @@ export interface HarbormasterTargetSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest';
 }
 
-interface retHMTargetSearchData extends RetSearchConstants {
+export interface retHMTargetSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		buildPHID: phid;
@@ -284,7 +284,7 @@ export interface HarbormasterQuerybuildables extends BeforeAfterLimit {
 	manualBuildables?: boolean;
 }
 
-interface hmSendMessageUnit {
+export interface hmSendMessageUnit {
 	name: string;
 	result: 'pass' | 'fail' | 'skip' | 'broken' | 'unsound';
 	namespace?: string;
@@ -296,7 +296,7 @@ interface hmSendMessageUnit {
 	format?: string;
 }
 
-interface hmSendMessageLint {
+export interface hmSendMessageLint {
 	name: string;
 	code: string;
 	severity: 'advice' | 'autofix' | 'warning' | 'error' | 'disabled';

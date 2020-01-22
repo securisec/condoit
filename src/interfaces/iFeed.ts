@@ -8,22 +8,22 @@ export interface FeedQuery {
 	view?: 'data' | 'html' | 'html-summary' | 'text';
 }
 
-interface retFeedQueryData {
-  class?: string;
-  epoch?: number;
-  authorPHID?: phid;
-  chronologicalKey?: string;
-  text?: string
-  data?: {
-    objectPHID: phid;
-    transactionPHIDs: {
-      [phid: string]: string;
-    };
-  };
-};
+export interface retFeedQueryData {
+	class?: string;
+	epoch?: number;
+	authorPHID?: phid;
+	chronologicalKey?: string;
+	text?: string;
+	data?: {
+		objectPHID: phid;
+		transactionPHIDs: {
+			[phid: string]: string;
+		};
+	};
+}
 
 export interface RetFeedQuery extends ErrorCodes {
 	result: {
-		[phid: string]: string  | retFeedQueryData
+		[phid: string]: string | retFeedQueryData;
 	};
 }

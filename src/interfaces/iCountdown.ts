@@ -19,7 +19,7 @@ export interface CountdownServiceSearch extends BeforeAfterLimit {
 	order?: 'ending' | 'unending' | 'newest' | 'oldest';
 }
 
-interface retCountdownServiceSearchData extends RetSearchConstants {
+export interface retCountdownServiceSearchData extends RetSearchConstants {
 	fields: {
 		title: string;
 		description: string;
@@ -54,7 +54,7 @@ export interface RetCountdownServiceSearch extends ErrorCodes {
 	};
 }
 
-interface countdownEditTransactions {
+export interface countdownEditTransactions {
 	type:
 		| 'space'
 		| 'name'

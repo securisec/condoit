@@ -13,7 +13,7 @@ export interface RetConperhenceCreatethread {
 	conpherenceURI: string;
 }
 
-interface conpherenceEditTransactions {
+export interface conpherenceEditTransactions {
 	type:
 		| 'name'
 		| 'topic'

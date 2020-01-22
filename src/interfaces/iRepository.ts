@@ -10,7 +10,7 @@ export interface RepositoryQuery extends BeforeAfterLimit {
 	order: string;
 }
 
-interface retRepositoryQueryResult {
+export interface retRepositoryQueryResult {
 	id: string;
 	name: string;
 	phid: phid;

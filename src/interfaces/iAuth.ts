@@ -7,7 +7,7 @@ export interface AuthQuerypublickeys extends BeforeAfterLimit {
 	keys?: Array<string>;
 }
 
-interface retAuthPublicKeyData {
+export interface retAuthPublicKeyData {
 	id: string;
 	name: string;
 	phid: phid;

@@ -1,6 +1,6 @@
 import { ErrorCodes, phid } from './iGlobal';
 
-interface retAuditQueryData {
+export interface retAuditQueryData {
 	id: string;
 	commitPHID: phid;
 	authorPHID: phid;

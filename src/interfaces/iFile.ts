@@ -44,7 +44,7 @@ export interface FileSearch extends BeforeAfterLimit {
 		| ['id' | 'username' | 'rank' | 'fulltext-created' | 'fulltext-modified'];
 }
 
-interface retFileSearchData extends RetSearchConstants {
+export interface retFileSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		dataURI: string;

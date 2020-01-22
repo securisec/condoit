@@ -19,7 +19,7 @@ export interface AlmanacBindingSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest';
 }
 
-interface retAlmanacBindingSearchData extends RetSearchConstants {
+export interface retAlmanacBindingSearchData extends RetSearchConstants {
 	fields: {
 		servicePHID: phid;
 		devicePHID: phid;
@@ -63,7 +63,7 @@ export interface AlmanacDeviceSearch extends BeforeAfterLimit {
 	order?: 'name' | 'newest' | 'oldest';
 }
 
-interface retAlmanacDeviceSearchData extends RetSearchConstants {
+export interface retAlmanacDeviceSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		dateCreated: number;
@@ -102,7 +102,7 @@ export interface AlmanacInterfaceSearch extends BeforeAfterLimit {
 	order?: 'name' | 'newest' | 'oldest';
 }
 
-interface retAlmanacInterfaceSearchData extends RetSearchConstants {
+export interface retAlmanacInterfaceSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		dateCreated: number;
@@ -137,7 +137,7 @@ export interface AlmanacNamespaceSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest';
 }
 
-interface retAlmanacNamespaceSearchData extends RetSearchConstants {
+export interface retAlmanacNamespaceSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		dateCreated: number;
@@ -170,7 +170,7 @@ export interface AlmanacNetworkSearch extends BeforeAfterLimit {
 	order?: 'newest' | 'oldest';
 }
 
-interface retAlmanacNetworkSearchData extends RetSearchConstants {
+export interface retAlmanacNetworkSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		dateCreated: number;
@@ -208,7 +208,7 @@ export interface AlmanacServiceSearch extends BeforeAfterLimit {
 	order?: 'name' | 'newest' | 'oldest';
 }
 
-interface retAlmanacServiceSearchData extends RetSearchConstants {
+export interface retAlmanacServiceSearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		serviceType: string;
@@ -239,7 +239,7 @@ export interface RetAlmanacServiceSearch extends ErrorCodes {
 	};
 }
 
-interface almanacBindingEdit {
+export interface almanacBindingEdit {
 	type:
 		| 'service'
 		| 'interface'
@@ -255,7 +255,7 @@ export interface AlmanacBindingEdit {
 	objectIdentifier?: number | string;
 }
 
-interface almanacDeviceEdit {
+export interface almanacDeviceEdit {
 	type:
 		| 'name'
 		| 'view'
@@ -274,7 +274,7 @@ export interface AlmanacDeviceEdit {
 	objectIdentifier?: number | string;
 }
 
-interface almanacInterfaceEdit {
+export interface almanacInterfaceEdit {
 	type: 'device' | 'network' | 'address' | 'port' | 'mfa';
 	value: any;
 }
@@ -284,7 +284,7 @@ export interface AlmanacInterfaceEdit {
 	objectIdentifier?: number | string;
 }
 
-interface almanacNetworkEdit {
+export interface almanacNetworkEdit {
 	type: 'view' | 'edit' | 'mfa';
 	value: any;
 }
@@ -294,7 +294,7 @@ export interface AlmanacNetworkEdit {
 	objectIdentifier?: number | string;
 }
 
-interface almanacServiceEdit {
+export interface almanacServiceEdit {
 	type:
 		| 'name'
 		| 'type'

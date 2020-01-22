@@ -5,7 +5,7 @@ import {
 	phid
 } from './iGlobal';
 
-interface BranchCommitRepo {
+export interface BranchCommitRepo {
 	branch?: string;
 	commit?: string;
 	repository: string;
@@ -99,7 +99,7 @@ export interface DiffusionCommitSearch extends BeforeAfterLimit {
 	order?: 'ending' | 'unending' | 'newest' | 'oldest';
 }
 
-interface retDiffusionCommitSearchData extends RetSearchConstants {
+export interface retDiffusionCommitSearchData extends RetSearchConstants {
 	fields: {
 		identifier: string;
 		repositoryPHID: phid;
@@ -154,7 +154,7 @@ export interface RetDiffusionCommitSearch extends ErrorCodes {
 	};
 }
 
-interface diffusionCommitEditTransactions {
+export interface diffusionCommitEditTransactions {
 	key:
 		| 'auditors.add'
 		| 'auditors.remove'
@@ -326,7 +326,7 @@ export interface RetDiffusionRefsquery extends ErrorCodes {
 	};
 }
 
-interface diffusionRepoEdit {
+export interface diffusionRepoEdit {
 	type:
 		| 'space'
 		| 'vcs'
@@ -390,7 +390,7 @@ export interface DiffusionRepositorySearch extends BeforeAfterLimit {
 		| 'relevance';
 }
 
-interface retDiffusionRepositorySearchData extends RetSearchConstants {
+export interface retDiffusionRepositorySearchData extends RetSearchConstants {
 	fields: {
 		name: string;
 		vcs: string;
@@ -418,7 +418,7 @@ interface retDiffusionRepositorySearchData extends RetSearchConstants {
 	};
 }
 
-interface retDiffuRepoSearchAttachmentUri {
+export interface retDiffuRepoSearchAttachmentUri {
 	id: string;
 	type: string;
 	phid: phid;
@@ -518,7 +518,7 @@ export interface DiffusionTagsquery extends BranchCommitRepo {
 	branch?: string;
 }
 
-interface diffuUriEditTransactions {
+export interface diffuUriEditTransactions {
 	type:
 		| 'repository'
 		| 'uri'
@@ -549,5 +549,3 @@ export interface DiffusionUpdatecoverage {
 	coverage: object;
 	mode?: 'overwrite' | 'update';
 }
-
-export { BranchCommitRepo };

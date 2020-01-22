@@ -11,7 +11,7 @@ export interface RemarkupProcess {
 	contents: Array<string>;
 }
 
-interface retRemarkupProcessResult {
+export interface retRemarkupProcessResult {
 	content: string;
 }
 
