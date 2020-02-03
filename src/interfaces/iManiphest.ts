@@ -69,7 +69,7 @@ export interface ManiphestEditTransactions {
 		| 'subscribers.remove'
 		| 'subscribers.set'
 		| 'subtype'
-		| 'commnet'
+		| 'comment'
 		| 'mfa';
 	value: any;
 }

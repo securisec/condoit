@@ -27,14 +27,14 @@ export interface RetFileQuerychunks extends ErrorCodes {
 export interface FileSearch extends BeforeAfterLimit {
 	queryKey?: 'authored' | 'all';
 	constraints?: {
-		ids: Array<number>;
-		phids: Array<phid>;
-		authorPHIDs: Array<phid>;
-		explicit: boolean;
-		createdStart: string;
-		createdEnd: string;
-		name: string;
-		subscribers: Array<string>;
+		ids?: Array<number>;
+		phids?: Array<phid>;
+		authorPHIDs?: Array<phid>;
+		explicit?: boolean;
+		createdStart?: string;
+		createdEnd?: string;
+		name?: string;
+		subscribers?: Array<string>;
 	};
 	attachments?: { subscribers: boolean };
 	order?:

@@ -274,6 +274,18 @@ export const transactions = {
 	 */
 	maniphest: {
 		/**
+		 *Use this to set transactions with custom fields. The type
+		 argument is the transaction type name, the value is value. 
+		 An example transaction type name is `custom.myfield`
+		 *
+		 * @param {string} type
+		 * @param {*} value
+		 * @returns
+		 */
+		custom: (type: string, value: any) => {
+			return { type: type, value: value };
+		},
+		/**
 		 *Create as a subtask of another task
 		 *
 		 * @param {phid} value
@@ -321,7 +333,14 @@ export const transactions = {
 		 * @returns {object}
 		 */
 		status: (
-			value: 'open' | 'resolved' | 'wontfix' | 'invalid' | 'duplicate' | 'spite'
+			value:
+				| 'open'
+				| 'resolved'
+				| 'wontfix'
+				| 'invalid'
+				| 'duplicate'
+				| 'spite'
+				| string
 		): object => {
 			return { type: 'status', value: value };
 		},
@@ -442,7 +461,7 @@ export const transactions = {
 		 * @param {('default'|'bug'|'feature')} value
 		 * @returns {object}
 		 */
-		subtype: (value: 'default' | 'bug' | 'feature'): object => {
+		subtype: (value: 'default' | 'bug' | 'feature' | string): object => {
 			return { type: 'subtype', value: value };
 		},
 		comment: comment,
