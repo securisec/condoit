@@ -86,8 +86,8 @@ export interface RetFileAllocate extends ErrorCodes {
 export interface FileUpload {
 	filePath: string;
 	name?: string;
-	viewPolicy: string;
-	canCDN: boolean;
+	viewPolicy?: string;
+	canCDN?: boolean;
 }
 
 export interface RetFileUpload extends ErrorCodes {

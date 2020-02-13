@@ -82,7 +82,11 @@ export class Condoit {
 				data: qs.stringify({ ...params, 'api.token': this.apiToken })
 			})
 				.then((res: AxiosResponse) => {
-					resolve(res.data);
+					if (res.data.error_info !== null) {
+						reject(res.data);
+					} else {
+						resolve(res.data);
+					}
 				})
 				.catch((error: AxiosError) => reject(error));
 		});
@@ -1510,9 +1514,9 @@ export class Condoit {
 		 [Docs]{@link https://secure.phabricator.com/conduit/method/edge.search/}
 		 *
 		 * @param {iEdge.EdgeSearch} options
-		 * @returns {Promise<GenericReturn>}
+		 * @returns {Promise<iEdge.RetEdgeSearch>}
 		 */
-		search: (options: iEdge.EdgeSearch): Promise<GenericReturn> => {
+		search: (options: iEdge.EdgeSearch): Promise<iEdge.RetEdgeSearch> => {
 			return this.makeRequest('edge.search', {
 				sourcePHIDs: options.sourcePHIDs,
 				types: options.types,
@@ -2844,6 +2848,47 @@ export class Condoit {
 		 */
 		whoami: (): Promise<iUser.RetUsersWhoami> => {
 			return this.makeRequest('user.whoami', {});
+		}
+	};
+
+	/**
+	 *Helper functions
+	 *
+	 * @memberof Condoit
+	 */
+	public helper = {
+		/**
+		 *Get all the parents of a subtask
+		 *
+		 * @param {{
+		 * 			phids: Array<string>;
+		 * 		}} options
+		 * @returns {Promise<iEdge.RetEdgeSearch>}
+		 */
+		getSubtaskParent: (options: {
+			phids: Array<string>;
+		}): Promise<iEdge.RetEdgeSearch> => {
+			return this.edge.search({
+				sourcePHIDs: options.phids,
+				types: ['task.parent']
+			});
+		},
+
+		/**
+		 *Get all subtasks for a task
+		 *
+		 * @param {{
+		 * 			phids: Array<string>;
+		 * 		}} options
+		 * @returns {Promise<iEdge.RetEdgeSearch>}
+		 */
+		getSubtasks: (options: {
+			phids: Array<string>;
+		}): Promise<iEdge.RetEdgeSearch> => {
+			return this.edge.search({
+				sourcePHIDs: options.phids,
+				types: ['task.subtask']
+			});
 		}
 	};
 }

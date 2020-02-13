@@ -76,7 +76,7 @@ export interface ManiphestEditTransactions {
 
 export interface ManiphestEdit {
 	transactions: Array<ManiphestEditTransactions>;
-	objectIdentifier: number | string;
+	objectIdentifier?: number | string;
 }
 
 export interface maniphestGettasktransactions {

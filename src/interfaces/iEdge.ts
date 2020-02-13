@@ -1,4 +1,15 @@
-import { BeforeAfterLimit, phid } from './iGlobal';
+import { BeforeAfterLimit, phid, ErrorCodes } from './iGlobal';
+
+export interface RetEdgeSearch extends ErrorCodes {
+	result: {
+		data: Array<{
+			sourcePHID: string;
+			edgeType: string;
+			destinationPHID: string;
+		}>;
+		cursor: { limit: number; after: number; before: number };
+	};
+}
 
 export interface EdgeSearch extends BeforeAfterLimit {
 	sourcePHIDs: Array<phid>;
