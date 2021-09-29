@@ -1,12 +1,13 @@
 {
 	"name": "condoit",
-	"version": "2.0.8",
+	"version": "2.0.11",
 	"description": "",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"scripts": {
 		"test": "./node_modules/.bin/tsc",
-		"docs": "./node_modules/typedoc/bin/typedoc --excludePrivate --out docs ./src/index.ts"
+		"docs": "./node_modules/typedoc/bin/typedoc --excludePrivate --out docs ./src/index.ts",
+		"publish": "npm run test && npm publish"
 	},
 	"repository": {
 		"type": "git",

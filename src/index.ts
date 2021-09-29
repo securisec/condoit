@@ -1619,7 +1619,7 @@ export class Condoit {
 							writeFile(
 								options.path,
 								saveData,
-								options?.encoding ?? 'utf8',
+								(options?.encoding as any) ?? 'utf8',
 								(err) => {
 									if (err) reject(err);
 									resolve({ downloadedFile: options.path });
