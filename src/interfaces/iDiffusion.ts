@@ -111,7 +111,7 @@ export interface retDiffusionCommitSearchData extends RetSearchConstants {
 			identityPHID: phid;
 			userPHID: phid;
 		};
-		commiter: {
+		committer: {
 			name: string;
 			email: string;
 			raw: string;
