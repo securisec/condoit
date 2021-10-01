@@ -1,4 +1,9 @@
-import Axios, { AxiosResponse, AxiosError } from 'axios';
+import Axios, {
+	AxiosResponse,
+	AxiosError,
+	AxiosPromise,
+	AxiosInstance,
+} from 'axios';
 import qs from 'qs';
 import { resolve } from 'url';
 import { writeFile, readFileSync } from 'fs';
@@ -49,17 +54,32 @@ export class Condoit {
 	private baseUrl: string;
 	private apiToken: string;
 	private headers: object;
+	private axiosInstance: AxiosInstance;
 	/**
 	 *Creates an instance of Condoit.
 	 * @param {string} baseUrl The base url for a phabricator instance
 	 * @param {string} apiToken A valid phabricator conduit api token
 	 * @param {object} headers Optional headers to pass to the phabricator endpoint
+	 * @param {AxiosInstance | undefined} axiosInstance Optional axios instance to use. If a 
+	 * custom axios instance is used, it needs to be set up with the baseURL. 
 	 * @memberof Condoit
 	 */
-	constructor(baseUrl: string, apiToken: string, headers: object = {}) {
+	constructor(
+		baseUrl: string,
+		apiToken: string,
+		headers: object = {},
+		axiosInstance: AxiosInstance | undefined = undefined
+	) {
 		this.baseUrl = baseUrl;
 		this.apiToken = apiToken;
 		this.headers = headers;
+		if (axiosInstance) {
+			this.axiosInstance = axiosInstance;
+		} else {
+			this.axiosInstance = Axios.create({
+				baseURL: resolve(this.baseUrl, '/api'),
+			});
+		}
 	}
 
 	/**
@@ -72,14 +92,12 @@ export class Condoit {
 	 * @memberof Condoit
 	 */
 	private makeRequest(endpoint: string, params: object): Promise<any> {
-		let baseUrlAxios = resolve(this.baseUrl, '/api');
 		return new Promise((resolve, reject) => {
-			Axios({
+			this.axiosInstance({
 				method: 'POST',
-				baseURL: baseUrlAxios,
 				headers: this.headers,
 				url: endpoint,
-				data: qs.stringify({ ...params, 'api.token': this.apiToken })
+				data: qs.stringify({ ...params, 'api.token': this.apiToken }),
 			})
 				.then((res: AxiosResponse) => {
 					if (res.data.error_info !== null) {
@@ -99,7 +117,7 @@ export class Condoit {
 			order: options?.order,
 			before: options?.before,
 			after: options?.after,
-			limit: options?.limit
+			limit: options?.limit,
 		};
 	}
 
@@ -111,14 +129,14 @@ export class Condoit {
 			order: options?.order,
 			before: options?.before,
 			after: options?.after,
-			limit: options?.limit
+			limit: options?.limit,
 		};
 	}
 
 	private transactionOptions(options: any) {
 		return {
 			transactions: options.transactions,
-			objectIdentifier: options?.objectIdentifier
+			objectIdentifier: options?.objectIdentifier,
 		};
 	}
 
@@ -306,7 +324,7 @@ export class Condoit {
 				'almanac.service.search',
 				this.returnOptionsAttachments(options)
 			);
-		}
+		},
 	};
 
 	/**
@@ -322,9 +340,9 @@ export class Condoit {
 				commitPHIDs: options?.commitPHIDs,
 				status: options?.status,
 				offset: options?.offset,
-				limit: options?.limit
+				limit: options?.limit,
 			});
-		}
+		},
 	};
 
 	/**
@@ -359,9 +377,9 @@ export class Condoit {
 				objectPHIDs: options?.objectPHIDs,
 				before: options?.before,
 				after: options?.after,
-				limit: options?.limit
+				limit: options?.limit,
 			});
-		}
+		},
 	};
 
 	/**
@@ -393,7 +411,7 @@ export class Condoit {
 				'badge.search',
 				this.returnOptionsAttachments(options)
 			);
-		}
+		},
 	};
 
 	/**
@@ -415,7 +433,7 @@ export class Condoit {
 				clientVersion: options.clientVersion,
 				user: options?.user,
 				authToken: options?.authToken,
-				authSignature: options?.authSignature
+				authSignature: options?.authSignature,
 			});
 		},
 
@@ -442,7 +460,7 @@ export class Condoit {
 		}): Promise<any> => {
 			return this.makeRequest('conduit.getcertificate', {
 				token: options.token,
-				host: options.host
+				host: options.host,
 			});
 		},
 
@@ -464,7 +482,7 @@ export class Condoit {
 		 */
 		query: (): Promise<GenericReturn> => {
 			return this.makeRequest('conduit.query', {});
-		}
+		},
 	};
 
 	/**
@@ -487,7 +505,7 @@ export class Condoit {
 				title: options.title,
 				topic: options?.topic,
 				message: options?.message,
-				participantPHIDs: options.participantPHIDs
+				participantPHIDs: options.participantPHIDs,
 			});
 		},
 
@@ -521,7 +539,7 @@ export class Condoit {
 				ids: options?.ids,
 				phids: options?.phids,
 				offset: options?.offset,
-				limit: options?.limit
+				limit: options?.limit,
 			});
 		},
 
@@ -542,7 +560,7 @@ export class Condoit {
 				roomID: options?.roomID,
 				roomPHID: options?.roomPHID,
 				offset: options?.offset,
-				limit: options?.limit
+				limit: options?.limit,
 			});
 		},
 
@@ -562,9 +580,9 @@ export class Condoit {
 				title: options?.title,
 				message: options?.message,
 				addParticipantPHIDs: options?.addParticipantPHIDs,
-				removeParticipantPHIDs: options?.removeParticipantPHIDs
+				removeParticipantPHIDs: options?.removeParticipantPHIDs,
 			});
-		}
+		},
 	};
 
 	/**
@@ -601,13 +619,13 @@ export class Condoit {
 				'countdown.edit',
 				this.transactionOptions(options)
 			);
-		}
+		},
 	};
 
 	public dashboard = {
 		panelEdit: () => {
 			throw Error('Not implemented');
-		}
+		},
 	};
 
 	/**
@@ -625,7 +643,7 @@ export class Condoit {
 		 */
 		close: (options: { revisionID: number }): Promise<GenericReturn> => {
 			return this.makeRequest('differential.close', {
-				revisionID: options.revisionID
+				revisionID: options.revisionID,
 			});
 		},
 
@@ -644,7 +662,7 @@ export class Condoit {
 				message: options?.message,
 				action: options?.action,
 				silent: options?.silent,
-				attach_inlines: options?.attach_inlines
+				attach_inlines: options?.attach_inlines,
 			});
 		},
 
@@ -669,7 +687,7 @@ export class Condoit {
 				creationMethod: options.creationMethod,
 				lintStatus: options.lintStatus,
 				unitStatus: options.unitStatus,
-				repositoryPHID: options?.repositoryPHID
+				repositoryPHID: options?.repositoryPHID,
 			});
 		},
 
@@ -690,7 +708,7 @@ export class Condoit {
 				isNewFile: options?.isNewFile,
 				lineNumber: options?.lineNumber,
 				lineLength: options?.lineLength,
-				content: options?.content
+				content: options?.content,
 			});
 		},
 
@@ -707,7 +725,7 @@ export class Condoit {
 			return this.makeRequest('differential.createrawdiff', {
 				diff: options.diff,
 				repositoryPHID: options?.repositoryPHID,
-				viewPolicy: options?.viewPolicy
+				viewPolicy: options?.viewPolicy,
 			});
 		},
 
@@ -727,7 +745,7 @@ export class Condoit {
 		}): Promise<GenericReturn> => {
 			return this.makeRequest('differential.createrevision', {
 				diffid: options.diffid,
-				fields: options.fields
+				fields: options.fields,
 			});
 		},
 
@@ -760,7 +778,7 @@ export class Condoit {
 			return this.makeRequest('differential.getcommitmessage', {
 				revision_id: options?.revision_id,
 				edit: options?.edit,
-				fields: options?.fields
+				fields: options?.fields,
 			});
 		},
 
@@ -775,7 +793,7 @@ export class Condoit {
 			revision_id: number;
 		}): Promise<GenericReturn> => {
 			return this.makeRequest('differential.getcommitpaths', {
-				revision_id: options.revision_id
+				revision_id: options.revision_id,
 			});
 		},
 
@@ -788,7 +806,7 @@ export class Condoit {
 		 */
 		getrawdiff: (options: { diffID: string }): Promise<GenericReturn> => {
 			return this.makeRequest('differential.getrawdiff', {
-				diffID: options.diffID
+				diffID: options.diffID,
 			});
 		},
 
@@ -805,7 +823,7 @@ export class Condoit {
 		}): Promise<GenericReturn> => {
 			return this.makeRequest('differential.parsecommitmessage', {
 				corpus: options.corpus,
-				partial: options?.partial
+				partial: options?.partial,
 			});
 		},
 
@@ -831,7 +849,7 @@ export class Condoit {
 				phids: options?.phids,
 				subscribers: options?.subscribers,
 				responsibleUsers: options?.responsibleUsers,
-				branches: options?.branches
+				branches: options?.branches,
 			});
 		},
 
@@ -848,7 +866,7 @@ export class Condoit {
 		}): Promise<GenericReturn> => {
 			return this.makeRequest('differential.querydiffs', {
 				ids: options?.ids,
-				revisionIDs: options?.revisionIDs
+				revisionIDs: options?.revisionIDs,
 			});
 		},
 
@@ -903,7 +921,7 @@ export class Condoit {
 			return this.makeRequest('differential.setdiffproperty', {
 				diff_id: options.diff_id,
 				data: options.data,
-				name: options.name
+				name: options.name,
 			});
 		},
 
@@ -921,9 +939,9 @@ export class Condoit {
 				od: options.id,
 				diffid: options.diffid,
 				message: options.message,
-				fields: options.fields
+				fields: options.fields,
 			});
-		}
+		},
 	};
 
 	/**
@@ -945,7 +963,7 @@ export class Condoit {
 				commit: options.commit,
 				timeout: options?.timeout,
 				repository: options?.repository,
-				branch: options?.branch
+				branch: options?.branch,
 			});
 		},
 
@@ -966,7 +984,7 @@ export class Condoit {
 				contains: options?.contains,
 				pattern: options?.pattern,
 				repository: options?.repository,
-				branch: options?.branch
+				branch: options?.branch,
 			});
 		},
 
@@ -987,7 +1005,7 @@ export class Condoit {
 				limit: options?.limit,
 				offset: options?.offset,
 				repository: options?.repository,
-				branch: options?.branch
+				branch: options?.branch,
 			});
 		},
 
@@ -1036,7 +1054,7 @@ export class Condoit {
 			return this.makeRequest('diffusion.commitparentsquery', {
 				commit: options.commit,
 				repository: options?.repository,
-				branch: options?.branch
+				branch: options?.branch,
 			});
 		},
 
@@ -1054,7 +1072,7 @@ export class Condoit {
 				path: options?.path,
 				commit: options?.commit,
 				repository: options.repository,
-				branch: options?.branch
+				branch: options?.branch,
 			});
 		},
 
@@ -1069,7 +1087,7 @@ export class Condoit {
 			return this.makeRequest('diffusion.existsquery', {
 				commit: options.commit,
 				repository: options?.repository,
-				branch: options?.branch
+				branch: options?.branch,
 			});
 		},
 
@@ -1089,7 +1107,7 @@ export class Condoit {
 				timeout: options?.timeout,
 				byteLimit: options?.byteLimit,
 				repository: options.repository,
-				branch: options?.branch
+				branch: options?.branch,
 			});
 		},
 
@@ -1109,7 +1127,7 @@ export class Condoit {
 				context: options?.context,
 				language: options?.language,
 				type: options?.type,
-				repositoryPHID: options?.repositoryPHID
+				repositoryPHID: options?.repositoryPHID,
 			});
 		},
 
@@ -1132,7 +1150,7 @@ export class Condoit {
 				needDirectChanges: options?.needDirectChanges,
 				needChildChanges: options?.needChildChanges,
 				repository: options?.repository,
-				branch: options?.branch
+				branch: options?.branch,
 			});
 		},
 
@@ -1149,7 +1167,7 @@ export class Condoit {
 			return this.makeRequest('diffusion.lastmodifiedquery', {
 				paths: options.paths,
 				repository: options?.repository,
-				branch: options?.branch
+				branch: options?.branch,
 			});
 		},
 
@@ -1167,7 +1185,7 @@ export class Condoit {
 				commit: options.commit,
 				branch: options?.branch,
 				repository: options?.repository,
-				limit: options?.limit
+				limit: options?.limit,
 			});
 		},
 
@@ -1190,7 +1208,7 @@ export class Condoit {
 				bypassCache: options?.bypassCache,
 				before: options?.before,
 				after: options?.after,
-				limit: options?.limit
+				limit: options?.limit,
 			});
 		},
 
@@ -1211,7 +1229,7 @@ export class Condoit {
 				limit: options?.limit,
 				offset: options?.offset,
 				repository: options?.repository,
-				branch: options?.branch
+				branch: options?.branch,
 			});
 		},
 
@@ -1232,7 +1250,7 @@ export class Condoit {
 				timeout: options?.timeout,
 				byteLimit: options?.byteLimit,
 				repository: options?.repository,
-				branch: options?.branch
+				branch: options?.branch,
 			});
 		},
 
@@ -1249,7 +1267,7 @@ export class Condoit {
 			return this.makeRequest('diffusion.refsquery', {
 				branch: options?.branch,
 				commit: options?.commit,
-				repository: options?.repository
+				repository: options?.repository,
 			});
 		},
 
@@ -1299,7 +1317,7 @@ export class Condoit {
 				refs: options?.refs,
 				types: options?.types,
 				repository: options?.repository,
-				branch: options?.branch
+				branch: options?.branch,
 			});
 		},
 
@@ -1320,7 +1338,7 @@ export class Condoit {
 				limit: options?.limit,
 				offset: options?.offset,
 				branch: options?.branch,
-				repository: options?.repository
+				repository: options?.repository,
 			});
 		},
 
@@ -1341,7 +1359,7 @@ export class Condoit {
 				limit: options?.limit,
 				offset: options?.offset,
 				branch: options?.branch,
-				repository: options?.repository
+				repository: options?.repository,
 			});
 		},
 
@@ -1373,7 +1391,7 @@ export class Condoit {
 				repositoryPHID: options.repositoryPHID,
 				branch: options.branch,
 				commit: options?.commit,
-				files: options.files
+				files: options.files,
 			});
 		},
 
@@ -1392,7 +1410,7 @@ export class Condoit {
 		}): Promise<GenericReturn> => {
 			return this.makeRequest('diffusion.looksoon', {
 				repositories: options?.repositories,
-				urgency: options?.urgency
+				urgency: options?.urgency,
 			});
 		},
 
@@ -1411,9 +1429,9 @@ export class Condoit {
 				commit: options.commit,
 				branch: options.branch,
 				mode: options?.mode,
-				coverage: options.coverage
+				coverage: options.coverage,
 			});
-		}
+		},
 	};
 
 	/**
@@ -1500,7 +1518,7 @@ export class Condoit {
 				'drydock.resource.search',
 				this.returnOptions(options)
 			);
-		}
+		},
 	};
 
 	/**
@@ -1523,9 +1541,9 @@ export class Condoit {
 				destinationPHIDs: options?.destinationPHIDs,
 				before: options?.before,
 				after: options?.after,
-				limit: options?.limit
+				limit: options?.limit,
 			});
-		}
+		},
 	};
 
 	/**
@@ -1553,7 +1571,7 @@ export class Condoit {
 			return this.makeRequest('feed.publish', {
 				type: options.type,
 				data: options.data,
-				time: options?.time
+				time: options?.time,
 			});
 		},
 
@@ -1570,9 +1588,9 @@ export class Condoit {
 				limit: options?.limit,
 				before: options?.before,
 				after: options?.after,
-				view: options?.view
+				view: options?.view,
 			});
-		}
+		},
 	};
 
 	/**
@@ -1594,7 +1612,7 @@ export class Condoit {
 				contentLength: options.contentLength,
 				contentHash: options?.contentHash,
 				viewPolicy: options?.viewPolicy,
-				deleteAfterEpoch: options?.deleteAfterEpoch
+				deleteAfterEpoch: options?.deleteAfterEpoch,
 			});
 		},
 
@@ -1646,7 +1664,7 @@ export class Condoit {
 		}): Promise<iFile.RetFileInfo> => {
 			return this.makeRequest('file.info', {
 				id: options?.id,
-				phid: options?.phid
+				phid: options?.phid,
 			});
 		},
 
@@ -1663,7 +1681,7 @@ export class Condoit {
 			filePHID: string;
 		}): Promise<iFile.RetFileQuerychunks> => {
 			return this.makeRequest('file.querychunks', {
-				filePHID: options.filePHID
+				filePHID: options.filePHID,
 			});
 		},
 
@@ -1696,7 +1714,7 @@ export class Condoit {
 				),
 				name: options.name,
 				viewPolicy: options?.viewPolicy,
-				canCDN: options?.canCDN
+				canCDN: options?.canCDN,
 			});
 		},
 
@@ -1712,9 +1730,9 @@ export class Condoit {
 				filePHID: options.filePHID,
 				byteStart: options.byteStart,
 				data: options.data,
-				dataEncoding: options.dataEncoding
+				dataEncoding: options.dataEncoding,
 			});
-		}
+		},
 	};
 
 	/**
@@ -1739,7 +1757,7 @@ export class Condoit {
 		}): Promise<iFlag.RetFlagDelete> => {
 			return this.makeRequest('flag.delete', {
 				id: options?.id,
-				objectPHID: options?.objectPHID
+				objectPHID: options?.objectPHID,
 			});
 		},
 
@@ -1762,7 +1780,7 @@ export class Condoit {
 			return this.makeRequest('flag.edit', {
 				objectPHID: options?.objectPHID,
 				color: options?.color,
-				note: options?.note
+				note: options?.note,
 			});
 		},
 
@@ -1779,9 +1797,9 @@ export class Condoit {
 				types: options?.types,
 				objectPHIDs: options?.objectPHIDs,
 				offset: options?.offset,
-				limit: options?.limit
+				limit: options?.limit,
 			});
-		}
+		},
 	};
 
 	/**
@@ -1916,7 +1934,7 @@ export class Condoit {
 				buildTargetPHID: options.buildTargetPHID,
 				artifactKey: options.artifactKey,
 				artifactType: options.artifactType,
-				artifactData: options.artifactData
+				artifactData: options.artifactData,
 			});
 		},
 
@@ -1936,7 +1954,7 @@ export class Condoit {
 		}): Promise<GenericReturn> => {
 			return this.makeRequest('harbormaster.queryautotargets', {
 				objectPHID: options.objectPHID,
-				targetKeys: options.targetKeys
+				targetKeys: options.targetKeys,
 			});
 		},
 
@@ -1958,7 +1976,7 @@ export class Condoit {
 				manualBuildables: options?.manualBuildables,
 				before: options?.before,
 				after: options?.after,
-				limit: options?.limit
+				limit: options?.limit,
 			});
 		},
 
@@ -1977,9 +1995,9 @@ export class Condoit {
 				buildTargetPHID: options.buildTargetPHID,
 				type: options.type,
 				unit: options?.unit,
-				lint: options?.lint
+				lint: options?.lint,
 			});
-		}
+		},
 	};
 
 	/**
@@ -2012,7 +2030,7 @@ export class Condoit {
 				phids: options?.phids,
 				ids: options?.ids,
 				names: options?.names,
-				nameLike: options?.nameLike
+				nameLike: options?.nameLike,
 			});
 		},
 
@@ -2035,9 +2053,9 @@ export class Condoit {
 			return this.makeRequest('macro.creatememe', {
 				macroName: options.macroName,
 				upperText: options?.upperText,
-				lowerText: options?.lowerText
+				lowerText: options?.lowerText,
 			});
-		}
+		},
 	};
 
 	/**
@@ -2065,7 +2083,7 @@ export class Condoit {
 				ccPHIDs: options?.ccPHIDs,
 				priority: options?.priority,
 				projectPHIDs: options?.projectPHIDs,
-				auxiliary: options?.auxiliary
+				auxiliary: options?.auxiliary,
 			});
 		},
 
@@ -2079,7 +2097,7 @@ export class Condoit {
 		edit: (options: iManiphest.ManiphestEdit): Promise<Transactions> => {
 			return this.makeRequest('maniphest.edit', {
 				transactions: options.transactions,
-				objectIdentifier: options.objectIdentifier
+				objectIdentifier: options.objectIdentifier,
 			});
 		},
 
@@ -2094,7 +2112,7 @@ export class Condoit {
 			ids: Array<number>;
 		}): Promise<iManiphest.RetManiphestGettasktransactions> => {
 			return this.makeRequest('maniphest.gettasktransactions', {
-				ids: options.ids
+				ids: options.ids,
 			});
 		},
 
@@ -2142,7 +2160,7 @@ export class Condoit {
 				status: options?.status,
 				order: options?.order,
 				limit: options?.limit,
-				offset: options?.offset
+				offset: options?.offset,
 			});
 		},
 
@@ -2205,9 +2223,9 @@ export class Condoit {
 				projectPHIDs: options?.projectPHIDs,
 				auxiliary: options?.auxiliary,
 				status: options?.status,
-				comments: options?.comments
+				comments: options?.comments,
 			});
-		}
+		},
 	};
 
 	/**
@@ -2241,7 +2259,7 @@ export class Condoit {
 				'owners.search',
 				this.returnOptionsAttachments(options)
 			);
-		}
+		},
 	};
 
 	/**
@@ -2268,9 +2286,9 @@ export class Condoit {
 				order: options?.order,
 				before: options?.before,
 				after: options?.after,
-				limit: options?.limit
+				limit: options?.limit,
 			});
-		}
+		},
 	};
 
 	/**
@@ -2290,7 +2308,7 @@ export class Condoit {
 			return this.makeRequest('paste.create', {
 				content: options.content,
 				title: options?.title,
-				language: options?.language
+				language: options?.language,
 			});
 		},
 
@@ -2318,7 +2336,7 @@ export class Condoit {
 				phids: options?.phids,
 				authorPHIDs: options?.authorPHIDs,
 				after: options?.after,
-				limit: options?.limit
+				limit: options?.limit,
 			});
 		},
 
@@ -2334,7 +2352,7 @@ export class Condoit {
 				'paste.search',
 				this.returnOptionsAttachments(options)
 			);
-		}
+		},
 	};
 
 	/**
@@ -2402,7 +2420,7 @@ export class Condoit {
 				'phame.post.search',
 				this.returnOptionsAttachments(options)
 			);
-		}
+		},
 	};
 
 	/**
@@ -2428,7 +2446,7 @@ export class Condoit {
 			names: Array<string>;
 		}): Promise<iPhid.RetPhidLookup> => {
 			return this.makeRequest('phid.lookup', {
-				names: options.names
+				names: options.names,
 			});
 		},
 
@@ -2444,9 +2462,9 @@ export class Condoit {
 		 */
 		query: (options: { phids: Array<string> }): Promise<iPhid.RetPhidQuery> => {
 			return this.makeRequest('phid.query', {
-				phids: options.phids
+				phids: options.phids,
 			});
-		}
+		},
 	};
 
 	/**
@@ -2499,7 +2517,7 @@ export class Condoit {
 				slug: options.slug,
 				title: options.title,
 				content: options.content,
-				description: options?.description
+				description: options?.description,
 			});
 		},
 
@@ -2544,7 +2562,7 @@ export class Condoit {
 				slug: options.slug,
 				title: options?.title,
 				content: options?.content,
-				description: options?.description
+				description: options?.description,
 			});
 		},
 
@@ -2557,7 +2575,7 @@ export class Condoit {
 		 */
 		info: (options: { slug: string }): Promise<iPhriction.RetPhrictionInfo> => {
 			return this.makeRequest('phriction.info', { slug: options.slug });
-		}
+		},
 	};
 
 	public portal = {
@@ -2586,7 +2604,7 @@ export class Condoit {
 				'portal.search',
 				this.returnOptionsAttachments(options)
 			);
-		}
+		},
 	};
 
 	/**
@@ -2642,7 +2660,7 @@ export class Condoit {
 				status: options?.status,
 				members: options?.members,
 				limit: options?.limit,
-				offset: options?.offset
+				offset: options?.offset,
 			});
 		},
 
@@ -2660,7 +2678,7 @@ export class Condoit {
 				'project.search',
 				this.returnOptionsAttachments(options)
 			);
-		}
+		},
 	};
 
 	/**
@@ -2681,9 +2699,9 @@ export class Condoit {
 		): Promise<iRemarkup.RetRemarkupProcess> => {
 			return this.makeRequest('remarkup.process', {
 				context: options.context,
-				contents: options.contents
+				contents: options.contents,
 			});
-		}
+		},
 	};
 
 	/**
@@ -2711,9 +2729,9 @@ export class Condoit {
 				order: options?.order,
 				before: options?.before,
 				after: options?.after,
-				limit: options?.limit
+				limit: options?.limit,
 			});
-		}
+		},
 	};
 
 	/**
@@ -2736,7 +2754,7 @@ export class Condoit {
 				'slowvote.poll.search',
 				this.returnOptionsAttachments(options)
 			);
-		}
+		},
 	};
 
 	/**
@@ -2756,7 +2774,7 @@ export class Condoit {
 			let tokens = iToken.tokens;
 			return this.makeRequest('token.give', {
 				tokenPHID: tokens[options.token],
-				objectPHID: options.objectPHID
+				objectPHID: options.objectPHID,
 			});
 		},
 
@@ -2771,13 +2789,13 @@ export class Condoit {
 			return this.makeRequest('token.given', {
 				authorPHIDs: options?.authorPHIDs,
 				objectPHIDs: options?.objectPHIDs,
-				tokenPHIDs: options?.tokenPHIDs?.map((t) => iToken.tokens[t])
+				tokenPHIDs: options?.tokenPHIDs?.map((t) => iToken.tokens[t]),
 			});
 		},
 
 		query: (): Promise<iToken.RetTokenQuery> => {
 			return this.makeRequest('token.query', {});
-		}
+		},
 	};
 
 	/**
@@ -2802,9 +2820,9 @@ export class Condoit {
 				constraints: options?.constraints,
 				before: options?.before,
 				after: options?.after,
-				limit: options?.limit
+				limit: options?.limit,
 			});
-		}
+		},
 	};
 
 	/**
@@ -2823,7 +2841,7 @@ export class Condoit {
 		edit: (options: iUser.UsersEdit): Promise<Transactions> => {
 			return this.makeRequest('user.edit', {
 				transactions: options.transactions,
-				objectIdentifier: options.objectIdentifier
+				objectIdentifier: options.objectIdentifier,
 			});
 		},
 
@@ -2848,7 +2866,7 @@ export class Condoit {
 		 */
 		whoami: (): Promise<iUser.RetUsersWhoami> => {
 			return this.makeRequest('user.whoami', {});
-		}
+		},
 	};
 
 	/**
@@ -2870,7 +2888,7 @@ export class Condoit {
 		}): Promise<iEdge.RetEdgeSearch> => {
 			return this.edge.search({
 				sourcePHIDs: options.phids,
-				types: ['task.parent']
+				types: ['task.parent'],
 			});
 		},
 
@@ -2887,9 +2905,9 @@ export class Condoit {
 		}): Promise<iEdge.RetEdgeSearch> => {
 			return this.edge.search({
 				sourcePHIDs: options.phids,
-				types: ['task.subtask']
+				types: ['task.subtask'],
 			});
-		}
+		},
 	};
 }
 
